@@ -1,0 +1,480 @@
+<!-- ─────────────────────────────────────────
+     Rafi's Study Hub — Practice Page
+     Linear Algebra · Fri 29 May 2026 (Week 1)
+     P2 Basis & Span drill (5 problems, EZ Ch.5.3)
+     P4 Rank-Nullity flashcards (EZ Ch.5.6)
+     Lives in the LA/ subfolder → theme pulled from ../style.css
+───────────────────────────────────────── -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lin Alg — Basis &amp; Span + Rank-Nullity Flashcards · 29 May</title>
+
+<!-- This page lives in the LA/ subfolder, while style.css is in the root
+     (next to index.html). "../" goes up one level to reach it. -->
+<link rel="stylesheet" href="../style.css">
+
+<!-- MathJax for matrices / fractions -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
+
+<!-- ── Page-specific styles only (Q&A + flashcards). Theme comes from ../style.css ── -->
+<style>
+  .main { padding-top: 8px; }
+
+  /* Timed-block header */
+  .block-head {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin: 40px 0 22px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .block-head:first-of-type { margin-top: 8px; }
+  .block-time {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em;
+    color: var(--la);
+    border: 1px solid rgba(244,114,182,0.3);
+    background: rgba(244,114,182,0.07);
+    padding: 4px 11px; border-radius: 99px;
+  }
+  .block-title {
+    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
+    letter-spacing: -0.02em; color: var(--text);
+  }
+  .block-meta { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--text3); }
+
+  /* Problem card */
+  .prob {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-left: 3px solid var(--la); border-radius: 12px;
+    padding: 24px 26px; margin-bottom: 18px;
+  }
+  .prob-num {
+    font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text3); margin-bottom: 10px;
+  }
+  .prob-pts { color: var(--la); }
+  .prob-stem { font-size: 0.95rem; line-height: 1.7; color: var(--text); font-weight: 300; }
+  .prob-stem em { color: var(--text2); font-style: italic; }
+
+  /* Sub-parts list */
+  ol.parts { list-style: none; counter-reset: part; margin: 18px 0 4px; padding: 0; }
+  ol.parts > li {
+    counter-increment: part; position: relative; padding: 10px 0 10px 38px;
+    font-size: 0.92rem; line-height: 1.65; font-weight: 300; color: var(--text);
+    border-top: 1px solid var(--border);
+  }
+  ol.parts > li:first-child { border-top: none; }
+  ol.parts > li::before {
+    content: "(" counter(part, lower-alpha) ")"; position: absolute; left: 0; top: 10px;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--la);
+  }
+  .pts { font-family: 'DM Mono', monospace; font-size: 0.64rem; color: var(--text3); margin-left: 6px; }
+
+  /* Answer toggle */
+  details.ans {
+    margin-top: 16px; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  details.ans > summary {
+    cursor: pointer; list-style: none; font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text2); padding: 12px 18px; transition: color 0.15s, background 0.15s;
+  }
+  details.ans > summary::-webkit-details-marker { display: none; }
+  details.ans > summary::before { content: "▸  "; color: var(--la); }
+  details.ans[open] > summary::before { content: "▾  "; }
+  details.ans > summary:hover { color: var(--text); background: rgba(244,114,182,0.05); }
+  .ans-body {
+    padding: 4px 20px 20px; font-size: 0.9rem; line-height: 1.75;
+    font-weight: 300; color: var(--text2); border-top: 1px solid var(--border);
+  }
+  .ans-body strong { color: var(--text); font-weight: 500; }
+  .ans-body .lead {
+    font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--la); display: block; margin: 14px 0 4px;
+  }
+  .ans-body .lead:first-child { margin-top: 4px; }
+
+  .rules { font-size: 0.82rem; line-height: 1.7; color: var(--text2); font-weight: 300; max-width: 760px; }
+  .rules b { color: var(--text); font-weight: 500; }
+
+  /* ── Flashcard deck ── */
+  .flash-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px;
+  }
+  details.flash {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-left: 3px solid var(--la); border-radius: 12px; overflow: hidden;
+  }
+  details.flash > summary {
+    cursor: pointer; list-style: none; padding: 18px 20px;
+    transition: background 0.15s;
+  }
+  details.flash > summary::-webkit-details-marker { display: none; }
+  details.flash > summary:hover { background: var(--bg3); }
+  .flash-tag {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text3); display: block; margin-bottom: 8px;
+  }
+  .flash-q { font-size: 0.95rem; line-height: 1.55; color: var(--text); font-weight: 400; }
+  .flash-hint {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--la); margin-top: 12px; display: inline-block;
+  }
+  details.flash[open] .flash-hint { display: none; }
+  .flash-a {
+    padding: 2px 20px 20px; font-size: 0.9rem; line-height: 1.7;
+    color: var(--text2); font-weight: 300; border-top: 1px solid var(--border);
+  }
+  .flash-a strong { color: var(--text); font-weight: 500; }
+  .flash-a .label {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--la); display: block; margin: 12px 0 4px;
+  }
+</style>
+
+<!-- ── Top bar (shared classes) ── -->
+<header class="topbar">
+  <span class="topbar-title">Study Hub</span>
+  <span class="topbar-sub">PRACTICE · LINEAR ALGEBRA</span>
+  <span class="topbar-date">FRI 29 MAY 2026 · WEEK 1</span>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <h1>Basis &amp; Span Drill <em>+ Rank-Nullity Flashcards</em></h1>
+  <p class="hero-meta">
+    Tomorrow's two Linear Algebra self-study blocks. Block one is a five-problem drill in
+    your professor's exam format — work each on a separate sheet, <em>then</em> reveal.
+    Block two is rapid recall: flip each card, say the answer aloud, and re-test anything you
+    rate ≤ 2. Sources: EZ.pdf Ch.5.3 &amp; Ch.5.6.
+  </p>
+  <div class="exam-pills">
+    <span class="pill pill-la">📐 P2 · 09:50–12:15 · 145 min · 5 problems</span>
+    <span class="pill pill-la">📐 P4 · 15:20–16:55 · 95 min · flashcards</span>
+    <span class="pill pill-la">FINAL: 25 JUN</span>
+  </div>
+</section>
+
+<main class="main">
+
+  <p class="rules" style="margin-top:36px;">
+    <b>Note on today's other slots.</b> P3 (13:30–15:05) is your live Linear Algebra lecture
+    with Prof. 杨一龙 (三教3200) and P5 is C++ OJ practice — neither is on this sheet. This page
+    covers only the two Lin Alg self-study blocks. Same exam conventions as Prof. Yang's finals:
+    open-book, partial credit, <em>always justify your answer</em>.
+  </p>
+
+  <!-- ════════════════ BLOCK P2 ════════════════ -->
+  <div class="block-head">
+    <span class="block-time">09:50–12:15</span>
+    <span class="block-title">Basis &amp; Span Drill</span>
+    <span class="block-meta">~145 MIN · EZ Ch.5.3 · 5 problems</span>
+  </div>
+
+  <!-- Problem 1 -->
+  <article class="prob">
+    <div class="prob-num">Problem 1 &nbsp;·&nbsp; <span class="prob-pts">10 points</span> &nbsp;·&nbsp; span &amp; independence in \(\mathbb R^4\)</div>
+    <p class="prob-stem">
+      A robotic arm can push in the directions
+      \(v_1=(1,2,0,1),\;v_2=(2,4,1,3),\;v_3=(3,6,1,4),\;v_4=(0,0,1,1)\) in its 4-D configuration
+      space. The engineer wants to know how much of the space the arm can actually reach.
+    </p>
+    <ol class="parts">
+      <li>Do \(v_1,\dots,v_4\) span all of \(\mathbb R^4\)? <span class="pts">[2 pts]</span></li>
+      <li>Find a basis for \(\operatorname{span}\{v_1,\dots,v_4\}\) and state its dimension.
+          <span class="pts">[3 pts]</span></li>
+      <li>Are the four vectors linearly independent? If not, write each redundant vector as a
+          combination of the others. <span class="pts">[2 pts]</span></li>
+      <li>Is \(w=(1,2,2,3)\) reachable (i.e. in the span)? <span class="pts">[2 pts]</span></li>
+      <li>If so, give the coordinates of \(w\) in your basis from (b). <span class="pts">[1 pt]</span></li>
+    </ol>
+    <details class="ans"><summary>Reveal answer</summary><div class="ans-body">
+      <span class="lead">(a)</span> Row-reduce the matrix with these as rows.
+      \(R_2-2R_1=R_3-3R_1=R_4=(0,0,1,1)\), so only <strong>2 pivots</strong> survive — they
+      cannot span \(\mathbb R^4\) (you'd need 4 independent vectors).
+      <span class="lead">(b)</span> A basis of the span is
+      \(\{(1,2,0,1),\,(0,0,1,1)\}\); <strong>\(\dim=2\)</strong>.
+      <span class="lead">(c)</span> Dependent. From the reduction,
+      \(v_2=2v_1+v_4\) and \(v_3=3v_1+v_4\) (and \(v_3-v_2=v_1\)).
+      <span class="lead">(d)</span> Solve \(w=a(1,2,0,1)+b(0,0,1,1)\): first entry \(a=1\),
+      third \(b=2\), check fourth \(a+b=3\)✓ and second \(2a=2\)✓. So <strong>yes</strong>, \(w=v_1+2v_4\).
+      <span class="lead">(e)</span> Coordinates \((a,b)=(1,2)\).
+    </div></details>
+  </article>
+
+  <!-- Problem 2 -->
+  <article class="prob">
+    <div class="prob-num">Problem 2 &nbsp;·&nbsp; <span class="prob-pts">10 points</span> &nbsp;·&nbsp; basis of a solution space</div>
+    <p class="prob-stem">
+      A sensor network's consistency constraints are the homogeneous system \(A\mathbf x=\mathbf 0\) with
+      \[A=\begin{pmatrix}1&2&-1&3\\2&4&-1&7\\1&2&0&4\end{pmatrix}.\]
+      The valid sensor states form the null space — describe it completely.
+    </p>
+    <ol class="parts">
+      <li>Solve \(A\mathbf x=\mathbf 0\) and give the general solution. <span class="pts">[3 pts]</span></li>
+      <li>Give a basis for \(\operatorname{Null}(A)\) and the nullity. <span class="pts">[3 pts]</span></li>
+      <li>State \(\operatorname{rank}(A)\) (count the pivots). <span class="pts">[2 pts]</span></li>
+      <li>Verify the rank-nullity bookkeeping for this matrix. <span class="pts">[2 pts]</span></li>
+    </ol>
+    <details class="ans"><summary>Reveal answer</summary><div class="ans-body">
+      <span class="lead">(a)</span> \(R_2-2R_1=(0,0,1,1)\), \(R_3-R_1=(0,0,1,1)\); clearing gives RREF
+      \(\begin{pmatrix}1&2&0&4\\0&0&1&1\end{pmatrix}\). Pivots in columns 1, 3; free \(x_2,x_4\):
+      \(x_1=-2x_2-4x_4,\; x_3=-x_4\).
+      <span class="lead">(b)</span> Setting \((x_2,x_4)=(1,0)\) and \((0,1)\):
+      \[\operatorname{Null}(A)=\operatorname{span}\{(-2,1,0,0),\,(-4,0,-1,1)\},\quad \text{nullity}=2.\]
+      <span class="lead">(c)</span> Two pivots \(\Rightarrow \operatorname{rank}(A)=2\).
+      <span class="lead">(d)</span> \(\operatorname{rank}+\text{nullity}=2+2=4=\) number of columns. ✓
+    </div></details>
+  </article>
+
+  <!-- Problem 3 -->
+  <article class="prob">
+    <div class="prob-num">Problem 3 &nbsp;·&nbsp; <span class="prob-pts">9 points</span> &nbsp;·&nbsp; coordinate map in \(P_2\)</div>
+    <p class="prob-stem">
+      In the space \(P_2\) of polynomials of degree \(\le 2\), a colleague proposes the set
+      \(S=\big(1+x,\;x+x^2,\;1+x^2\big)\) as a "nicer" basis.
+    </p>
+    <ol class="parts">
+      <li>Decide whether \(S\) is a basis of \(P_2\). <span class="pts">[4 pts]</span></li>
+      <li>Find the coordinate vector of \(p(x)=2+4x+4x^2\) relative to \(S\). <span class="pts">[3 pts]</span></li>
+      <li>Explain in one or two sentences why checking independence of the three coordinate
+          vectors in \(\mathbb R^3\) settles whether \(S\) is a basis of \(P_2\). <span class="pts">[2 pts]</span></li>
+    </ol>
+    <details class="ans"><summary>Reveal answer</summary><div class="ans-body">
+      <span class="lead">(a)</span> In the standard basis \((1,x,x^2)\) the vectors are
+      \((1,1,0),(0,1,1),(1,0,1)\). Their determinant is
+      \(\det\!\begin{pmatrix}1&0&1\\1&1&0\\0&1&1\end{pmatrix}=2\neq0\), so they are independent;
+      three independent vectors in a 3-dimensional space form a <strong>basis</strong>.
+      <span class="lead">(b)</span> Solve \(a(1+x)+b(x+x^2)+c(1+x^2)=2+4x+4x^2\):
+      \(a+c=2,\;a+b=4,\;b+c=4\Rightarrow a=1,\,b=3,\,c=1\). So \([p]_S=(1,3,1)\).
+      (Check: \(1(1+x)+3(x+x^2)+1(1+x^2)=2+4x+4x^2\).✓)
+      <span class="lead">(c)</span> The coordinate map \([\,\cdot\,]_{\text{std}}:P_2\to\mathbb R^3\) is an
+      <strong>isomorphism</strong>; it sends bases to bases and preserves independence, so \(S\) is a
+      basis of \(P_2\) exactly when its image is a basis of \(\mathbb R^3\).
+    </div></details>
+  </article>
+
+  <!-- Problem 4 -->
+  <article class="prob">
+    <div class="prob-num">Problem 4 &nbsp;·&nbsp; <span class="prob-pts">10 points</span> &nbsp;·&nbsp; subspaces of \(M_{2\times2}\)</div>
+    <p class="prob-stem">
+      An engineer models stress with \(2\times2\) matrices. Let \(W\) be the symmetric matrices
+      and \(U\) the trace-zero matrices, both inside \(M_{2\times2}\).
+    </p>
+    <ol class="parts">
+      <li>Show \(W\) is a subspace of \(M_{2\times2}\). <span class="pts">[2 pts]</span></li>
+      <li>Give a basis and the dimension of \(W\). <span class="pts">[3 pts]</span></li>
+      <li>Give the dimension of \(U\). <span class="pts">[2 pts]</span></li>
+      <li>Find \(\dim(W\cap U)\) and then \(\dim(W+U)\) via the dimension formula. What is \(W+U\)?
+          <span class="pts">[3 pts]</span></li>
+    </ol>
+    <details class="ans"><summary>Reveal answer</summary><div class="ans-body">
+      <span class="lead">(a)</span> The zero matrix is symmetric; if \(A,B\) symmetric and
+      \(c\) a scalar then \((A+cB)^{\mathsf T}=A^{\mathsf T}+cB^{\mathsf T}=A+cB\), so \(W\) is closed
+      under addition and scaling — a subspace.
+      <span class="lead">(b)</span> Basis
+      \(\Big\{\begin{psmallmatrix}1&0\\0&0\end{psmallmatrix},
+      \begin{psmallmatrix}0&0\\0&1\end{psmallmatrix},
+      \begin{psmallmatrix}0&1\\1&0\end{psmallmatrix}\Big\}\), so \(\dim W=3\).
+      <span class="lead">(c)</span> Trace-zero imposes one equation \(a+d=0\) on \(M_{2\times2}\)
+      (\(\dim 4\)), so \(\dim U=3\).
+      <span class="lead">(d)</span> \(W\cap U=\) symmetric &amp; trace-zero \(=\begin{psmallmatrix}a&b\\b&-a\end{psmallmatrix}\),
+      \(\dim=2\). Then \(\dim(W+U)=\dim W+\dim U-\dim(W\cap U)=3+3-2=4\), so
+      \(W+U=M_{2\times2}\) (the whole space).
+    </div></details>
+  </article>
+
+  <!-- Problem 5 -->
+  <article class="prob">
+    <div class="prob-num">Problem 5 &nbsp;·&nbsp; <span class="prob-pts">11 points</span> &nbsp;·&nbsp; the fundamental subspaces</div>
+    <p class="prob-stem">
+      A data matrix is
+      \[A=\begin{pmatrix}1&2&1&3\\2&4&3&8\\1&2&2&5\end{pmatrix}.\]
+      Map out its four fundamental subspaces.
+    </p>
+    <ol class="parts">
+      <li>Find a basis for the column space \(\operatorname{Col}(A)\) and its dimension. <span class="pts">[3 pts]</span></li>
+      <li>Find a basis for the row space \(\operatorname{Row}(A)\). <span class="pts">[2 pts]</span></li>
+      <li>Find a basis for the null space \(\operatorname{Null}(A)\). <span class="pts">[3 pts]</span></li>
+      <li>Verify rank-nullity, and confirm \(\dim\operatorname{Col}=\dim\operatorname{Row}\). <span class="pts">[2 pts]</span></li>
+      <li>Find a basis for the left null space \(\{\mathbf y:\mathbf y^{\mathsf T}A=\mathbf 0\}\). <span class="pts">[1 pt]</span></li>
+    </ol>
+    <details class="ans"><summary>Reveal answer</summary><div class="ans-body">
+      Row-reduction: \(R_2-2R_1=(0,0,1,2)\), \(R_3-R_1=(0,0,1,2)\); clearing gives RREF
+      \(\begin{pmatrix}1&2&0&1\\0&0&1&2\end{pmatrix}\). Pivots in columns 1 and 3, so \(\operatorname{rank}=2\).
+      <span class="lead">(a)</span> Pivot columns of the <strong>original</strong> \(A\):
+      \(\{(1,2,1),\,(1,3,2)\}\); \(\dim\operatorname{Col}=2\).
+      <span class="lead">(b)</span> Nonzero RREF rows: \(\{(1,2,0,1),\,(0,0,1,2)\}\); \(\dim\operatorname{Row}=2\).
+      <span class="lead">(c)</span> Free \(x_2,x_4\): \(x_1=-2x_2-x_4,\;x_3=-2x_4\). Basis
+      \(\{(-2,1,0,0),\,(-1,0,-2,1)\}\); nullity \(=2\).
+      <span class="lead">(d)</span> \(\operatorname{rank}+\text{nullity}=2+2=4=\#\text{columns}\)✓, and
+      \(\dim\operatorname{Col}=\dim\operatorname{Row}=2\) (row rank = column rank).
+      <span class="lead">(e)</span> Rows satisfy \(R_3=R_2-R_1\), i.e. \(R_1-R_2+R_3=0\), so
+      \(\mathbf y=(1,-1,1)\) spans the left null space (dimension \(m-\operatorname{rank}=3-2=1\)).
+    </div></details>
+  </article>
+
+  <!-- ════════════════ BLOCK P4 ════════════════ -->
+  <div class="block-head">
+    <span class="block-time">15:20–16:55</span>
+    <span class="block-title">Rank-Nullity Flashcards</span>
+    <span class="block-meta">~95 MIN · EZ Ch.5.6 · flip &amp; recall</span>
+  </div>
+
+  <p class="rules" style="margin:0 0 18px;">
+    <b>How to use.</b> Read the front, answer out loud or on paper <em>before</em> flipping.
+    Rate each 1–5; anything ≤ 2 goes back into the pile and gets re-tested before you leave the block.
+  </p>
+
+  <div class="flash-grid">
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Definition · 01</span>
+      <span class="flash-q">Define the <strong>kernel</strong> (null space) of a linear map \(L:V\to W\).</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\operatorname{Ker}(L)=\{v\in V: L(v)=0\}\) — the set of inputs sent to \(0\). It is a
+        <strong>subspace of \(V\)</strong>.</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Definition · 02</span>
+      <span class="flash-q">Define the <strong>range</strong> (image) of \(L:V\to W\).</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\operatorname{Ran}(L)=\{L(v):v\in V\}\) — all achievable outputs. A
+        <strong>subspace of \(W\)</strong>.</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Definition · 03</span>
+      <span class="flash-q">Define <strong>rank</strong> and <strong>nullity</strong>.</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\operatorname{rank}(L)=\dim\operatorname{Ran}(L)\) and
+        \(\text{nullity}(L)=\dim\operatorname{Ker}(L)\).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Theorem · 04</span>
+      <span class="flash-q">State the <strong>Rank-Nullity Theorem</strong>.</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        For \(L:V\to W\) with \(\dim V<\infty\):
+        \(\dim V=\operatorname{rank}(L)+\text{nullity}(L)\).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Matrix form · 05</span>
+      <span class="flash-q">For an \(m\times n\) matrix \(A\), rank + nullity \(=\) ?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(=n\), the number of <strong>columns</strong> (the dimension of the domain \(\mathbb R^n\)).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Computation · 06</span>
+      <span class="flash-q">In solving \(A\mathbf x=\mathbf 0\), what does the nullity count?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        The number of <strong>free variables</strong> = (columns − pivots) = dimension of the solution space.</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Theorem · 07</span>
+      <span class="flash-q">How do <strong>row rank</strong> and <strong>column rank</strong> compare?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        They are <strong>equal</strong> — both equal \(\operatorname{rank}(A)\) (= number of pivots).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Theorem · 08</span>
+      <span class="flash-q">Relate \(\operatorname{rank}(A^{\mathsf T})\) and \(\operatorname{rank}(A)\).</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\operatorname{rank}(A^{\mathsf T})=\operatorname{rank}(A)\) (immediate from row rank = column rank).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Criterion · 09</span>
+      <span class="flash-q">\(L\) is <strong>injective</strong> \(\iff\) ?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\iff \operatorname{Ker}(L)=\{0\}\iff\text{nullity}=0\).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Criterion · 10</span>
+      <span class="flash-q">\(L:V\to W\) is <strong>surjective</strong> \(\iff\) ?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\iff \operatorname{Ran}(L)=W\iff \operatorname{rank}(L)=\dim W\).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Criterion · 11</span>
+      <span class="flash-q">A square \(n\times n\) matrix \(A\) is invertible \(\iff\) (rank/nullity)?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\iff \operatorname{rank}(A)=n \iff \text{nullity}(A)=0\) (full rank, trivial kernel).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Inequality · 12</span>
+      <span class="flash-q">Bound \(\operatorname{rank}(AB)\).</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\operatorname{rank}(AB)\le\min\{\operatorname{rank}(A),\operatorname{rank}(B)\}\).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Subspace algebra · 13</span>
+      <span class="flash-q">State the <strong>dimension formula</strong> for subspaces \(U,W\).</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\dim(U+W)=\dim U+\dim W-\dim(U\cap W)\).</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Apply · 14</span>
+      <span class="flash-q">\(A\) is \(5\times3\) with rank 3. Is \(\mathbb R^3\to\mathbb R^5\) injective? surjective?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        Nullity \(=3-3=0\Rightarrow\) <strong>injective</strong>. Rank \(3<5\Rightarrow\) <strong>not surjective</strong>.</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Corollary · 15</span>
+      <span class="flash-q">For \(L:V\to V\) with \(\dim V<\infty\): injective \(\iff\) ?</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\iff\) <strong>surjective</strong>. By rank-nullity, nullity \(=0 \iff \operatorname{rank}=\dim V \iff\) onto.</div>
+    </details>
+
+    <details class="flash"><summary>
+      <span class="flash-tag">Advanced · 16</span>
+      <span class="flash-q">State <strong>Sylvester's rank inequality</strong> (\(A\) is \(m\times n\), \(B\) is \(n\times p\)).</span>
+      <span class="flash-hint">tap to flip</span></summary>
+      <div class="flash-a"><span class="label">Answer</span>
+        \(\operatorname{rank}(A)+\operatorname{rank}(B)-n\le\operatorname{rank}(AB)\).</div>
+    </details>
+
+  </div>
+
+  <p class="rules" style="margin:28px 0 10px;">
+    <b>After you finish:</b> log every card you rated ≤ 2 plus any drill slip in the Error Log
+    (Conceptual / Formula / Algebra / Time / Misread). Tomorrow's Sunday mock covers all of Ch.5,
+    so these are the exact facts that'll be tested.
+  </p>
+
+</main>
+
+<footer class="footer-note">
+  RAFI'S STUDY HUB · LINEAR ALGEBRA PRACTICE · 29 MAY 2026 · THEME FROM ../style.css
+</footer>
