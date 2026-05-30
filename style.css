@@ -372,6 +372,201 @@ body {
 .answer         { display: none; }
 .answer.open    { display: block; }
 
+/* ── Utilities ── */
+.text-calc {
+  color: var(--calc);
+}
+
+/* ── Progress Bar ── */
+.progress-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  z-index: 1000;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--calc);
+  width: 0%;
+  transition: width 0.15s ease-out;
+}
+
+/* ── Formulas ── */
+.formula-ref {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 48px;
+  text-align: center;
+}
+.formula-ref-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+.formula-ref-sub {
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+/* ── Problems ── */
+.problem {
+  padding: 40px 0;
+  border-top: 1px dashed var(--border);
+}
+.problem-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.problem-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--calc);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+.problem-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.pts {
+  margin-left: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text3);
+}
+.badge-hard {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+/* ── Problem Body & Parts ── */
+.problem-body {
+  margin-top: 12px;
+}
+.context-box {
+  font-size: 0.95rem;
+  color: var(--text2);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.define-block {
+  margin: 24px 0;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  overflow-x: auto;
+}
+.parts {
+  list-style: none;
+  margin: 28px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.parts li {
+  display: flex;
+  gap: 16px;
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.part-label {
+  font-family: 'DM Mono', monospace;
+  color: var(--calc);
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+/* ── Answer Section ── */
+.ans-toggle {
+  margin-top: 32px;
+}
+.ans-btn {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.ans-btn:hover {
+  background: var(--bg2);
+  color: var(--text);
+  border-color: var(--text3);
+}
+.answer {
+  display: none;
+  margin-top: 20px;
+  padding: 28px;
+  background: var(--bg2);
+  border-left: 3px solid var(--calc);
+  border-radius: 0 12px 12px 0;
+  animation: fadeUp 0.3s ease-out;
+}
+.answer.open {
+  display: block;
+}
+.ans-part {
+  margin-bottom: 28px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+.ans-part:last-child {
+  margin-bottom: 0;
+}
+.ans-part-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--calc);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.key-result {
+  background: var(--bg3);
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.ans-note {
+  font-size: 0.85rem;
+  color: var(--text3);
+  font-style: italic;
+  margin-top: 12px;
+}
+
 /* ── Animation ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
