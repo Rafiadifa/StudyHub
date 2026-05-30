@@ -368,6 +368,10 @@ body {
 .timer-chip.urgent { border-color: rgba(239,68,68,0.5); }
 .timer-chip.urgent .timer-display { color: #f87171; }
 
+/* ── Answer toggle (practice pages) ── */
+.answer         { display: none; }
+.answer.open    { display: block; }
+
 /* ── Animation ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
