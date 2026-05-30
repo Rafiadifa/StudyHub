@@ -1,860 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice — Saturday 30 May</title>
-<link rel="stylesheet" href="../style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
-<style>
-  /* ── Page-specific additions ── */
-  .hero::before {
-    background: radial-gradient(circle, rgba(244,114,182,0.07) 0%, transparent 70%);
-  }
-
-  /* ── Problem container ── */
-  .problem {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .problem-header {
-    padding: 14px 20px 10px;
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg3);
-  }
-  .problem-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-  }
-  .problem-num.calc { color: var(--calc); }
-  .problem-num.la   { color: var(--la); }
-  .problem-num.cpp  { color: var(--cpp); }
-  .problem-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.05rem;
-    letter-spacing: -0.01em;
-    color: var(--text);
-  }
-  .pts {
-    margin-left: auto;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text3);
-    white-space: nowrap;
-  }
-
-  .problem-body { padding: 18px 20px; }
-
-  .context-box {
-    background: var(--bg);
-    border-left: 3px solid var(--border);
-    padding: 12px 16px;
-    margin-bottom: 14px;
-    color: var(--text2);
-    font-size: 0.92rem;
-    font-style: italic;
-    border-radius: 0 6px 6px 0;
-  }
-
-  .define-block {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px 18px;
-    margin: 12px 0;
-    text-align: center;
-    font-size: 1rem;
-  }
-
-  /* context-box accent per subject */
-  .context-calc { border-left-color: rgba(96,165,250,0.4); }
-  .context-la   { border-left-color: rgba(244,114,182,0.4); }
-  .context-cpp  { border-left-color: rgba(74,222,128,0.4); }
-
-  ol.parts { list-style: none; padding: 0; }
-  ol.parts li {
-    display: flex;
-    gap: 12px;
-    align-items: baseline;
-    padding: 9px 0;
-    border-bottom: 1px solid rgba(42,42,51,0.8);
-    font-size: 0.92rem;
-    color: var(--text2);
-    line-height: 1.6;
-  }
-  ol.parts li:last-child { border-bottom: none; }
-  .part-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    font-weight: 500;
-    min-width: 26px;
-    flex-shrink: 0;
-  }
-  .part-label.calc { color: var(--calc); }
-  .part-label.la   { color: var(--la); }
-  .part-label.cpp  { color: var(--cpp); }
-
-  /* ── Code blocks ── */
-  pre {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--text2);
-    overflow-x: auto;
-    margin: 10px 0;
-    line-height: 1.7;
-  }
-  .kw  { color: #c792ea; }
-  .ty  { color: #82aaff; }
-  .cm  { color: var(--text3); font-style: italic; }
-  .fn  { color: #82aaff; }
-  .str { color: #c3e88d; }
-  .num { color: #f78c6c; }
-  .op  { color: var(--text2); }
-
-  /* ── Answer toggle ── */
-  .ans-toggle {
-    margin-top: 16px;
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
-  }
-  .ans-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text3);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .ans-btn:hover { color: var(--text2); border-color: var(--text3); }
-  .ans-btn.calc:hover { color: var(--calc); border-color: rgba(96,165,250,0.5); }
-  .ans-btn.la:hover   { color: var(--la);   border-color: rgba(244,114,182,0.5); }
-  .ans-btn.cpp:hover  { color: var(--cpp);  border-color: rgba(74,222,128,0.5); }
-
-  .answer {
-    display: none;
-    margin-top: 14px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 18px;
-    font-size: 0.88rem;
-    color: var(--text2);
-    line-height: 1.75;
-  }
-  .answer.open { display: block; }
-
-  .ans-part { margin: 10px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  .ans-part:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .ans-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .ans-label.calc { color: var(--calc); }
-  .ans-label.la   { color: var(--la); }
-  .ans-label.cpp  { color: var(--cpp); }
-
-  .key-result {
-    background: var(--bg2);
-    border-left: 3px solid var(--border);
-    padding: 8px 14px;
-    margin: 8px 0;
-    border-radius: 0 5px 5px 0;
-    font-size: 0.9rem;
-  }
-  .key-result.calc { border-left-color: rgba(96,165,250,0.5); }
-  .key-result.la   { border-left-color: rgba(244,114,182,0.5); }
-  .key-result.cpp  { border-left-color: rgba(74,222,128,0.5); }
-
-  .note {
-    font-style: italic;
-    color: var(--text3);
-    font-size: 0.82rem;
-    margin-top: 6px;
-  }
-
-  /* ── Concept chip ── */
-  .concept-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: 10px 0 16px;
-  }
-  .concept-chip {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    padding: 3px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    color: var(--text3);
-    background: var(--bg);
-    letter-spacing: 0.04em;
-  }
-
-  /* ── Formula reference box ── */
-  .formula-ref {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 16px;
-  }
-  .formula-ref-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 8px;
-  }
-
-  /* ── Timer ── */
-  .timer-chip {
-    position: fixed;
-    bottom: 24px; right: 28px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    color: var(--text2);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    padding: 7px 16px;
-    border-radius: 20px;
-    letter-spacing: 0.06em;
-    z-index: 20;
-  }
-  .timer-chip span { color: var(--text3); font-size: 0.6rem; display: block; text-align: center; margin-bottom: 2px; }
-
-  /* ── Progress ── */
-  .progress-wrap {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--border);
-    z-index: 100;
-  }
-  .progress-bar { height: 2px; background: var(--la); width: 0%; transition: width 0.2s; }
-
-  /* ── Warning badge ── */
-  .hard-badge {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    padding: 2px 7px;
-    border-radius: 4px;
-    background: rgba(239,68,68,0.1);
-    border: 1px solid rgba(239,68,68,0.3);
-    color: #f87171;
-    letter-spacing: 0.06em;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calc A2 · Newton's Method · 30 May</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="practice.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 </head>
 <body>
 
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<!-- ── Top bar ── -->
-<div class="topbar">
-  <span class="topbar-title">Rafi's Study Hub</span>
-  <span class="topbar-sub">/ practice</span>
-  <span class="topbar-date" id="clock">SAT · 30 MAY 2026</span>
-</div>
-
-<!-- ── Hero ── -->
-<div class="hero">
-  <h1>Saturday <em>Practice</em><br>30 May 2026</h1>
-  <p class="hero-meta">Week 1 · Three sessions today — Newton's Method, Change of Basis, and C++ Pointers. Harder than last time. Work every part before checking answers.</p>
-  <div class="exam-pills">
-    <span class="pill pill-calc">🔴 Calc A2 · Ch.13.4</span>
-    <span class="pill pill-la">📐 Lin Alg · Ch.5.4</span>
-    <span class="pill pill-cpp">💻 C++ · Ch.8 Pointers</span>
+  <!-- ── Progress bar ── -->
+  <div class="progress-wrap">
+    <div class="progress-bar calc" id="pbar"></div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════
-     SESSION 1 — CALC A2: NEWTON'S METHOD
-══════════════════════════════════════════ -->
-<div class="main">
-  <div class="subject-block">
-    <div class="subject-header">
-      <div class="subject-dot dot-calc"></div>
-      <div>
-        <div class="subject-label">P1 · 08:00 – 09:35 · Self-Study 1.5 h</div>
-        <div class="subject-title" style="color:var(--calc)">Newton's Method · Ch.13.4</div>
-      </div>
-      <div class="subject-exam-date"><strong>Calc A2 Final</strong>23 June 2026</div>
-    </div>
-
-    <!-- Key formula -->
-    <div class="formula-ref">
-      <div class="formula-ref-label">Core Formula</div>
-      \[\mathbf{x}_{n+1} = \mathbf{x}_n - [DF(\mathbf{x}_n)]^{-1}\,F(\mathbf{x}_n)\]
-      <div style="font-size:0.82rem;color:var(--text3);margin-top:6px;">For \(2\times2\): \(\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}\)</div>
-    </div>
-
-    <!-- Problem C1 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num calc">C–1</span>
-        <span class="problem-title">Two-Step Iteration &amp; Convergence Check <span class="hard-badge">HARDER</span></span>
-        <span class="pts">12 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-calc">
-          We want to solve \(F(x,y)=\mathbf{0}\) where
-        </div>
-        <div class="define-block">
-          \[F(x,y)=\begin{pmatrix}x^2-2y\\xy-1\end{pmatrix}.\]
-          Use initial guess \((x_0,y_0)=(2,\,1)\).
-        </div>
-        <ol class="parts">
-          <li><span class="part-label calc">(a)</span><span>Compute the Jacobian \([DF(x,y)]\) in general, then evaluate at \((2,1)\). Explain why \(F\) is differentiable everywhere.</span><span class="pts">3 pts</span></li>
-          <li><span class="part-label calc">(b)</span><span>Evaluate \(F(2,1)\) and use linear approximation to estimate \(F(2.01,\,1.01)\).</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label calc">(c)</span><span>Perform one Newton step to find \(\mathbf{x}_1\). Compute \(F(\mathbf{x}_1)\) and verify it is closer to \(\mathbf{0}\).</span><span class="pts">4 pts</span></li>
-          <li><span class="part-label calc">(d)</span><span>Perform a second Newton step using \(\mathbf{x}_1\) to find \(\mathbf{x}_2\). What do you notice about convergence?</span><span class="pts">3 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn calc" onclick="toggleAns('c1')">Show Answer</button>
-          <div class="answer" id="c1">
-            <div class="ans-part">
-              <div class="ans-label calc">(a) Jacobian</div>
-              \[[DF(x,y)]=\begin{pmatrix}2x&-2\\y&x\end{pmatrix},\qquad [DF(2,1)]=\begin{pmatrix}4&-2\\1&2\end{pmatrix}.\]
-              All entries are polynomials, hence continuous — \(F\) differentiable everywhere.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(b) Linear Approximation</div>
-              \(F(2,1)=\begin{pmatrix}4-2\\2-1\end{pmatrix}=\begin{pmatrix}2\\1\end{pmatrix}\). With \(\mathbf{h}=\begin{pmatrix}0.01\\0.01\end{pmatrix}\):
-              <div class="key-result calc">\[F(2.01,1.01)\approx\begin{pmatrix}2\\1\end{pmatrix}+\begin{pmatrix}4&-2\\1&2\end{pmatrix}\begin{pmatrix}0.01\\0.01\end{pmatrix}=\begin{pmatrix}2.02\\1.03\end{pmatrix}.\]</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(c) First Newton Step</div>
-              \(\det A = 4(2)-(-2)(1) = 10\).  \(A^{-1}=\tfrac{1}{10}\begin{pmatrix}2&2\\-1&4\end{pmatrix}.\)
-              \[A^{-1}F(2,1)=\tfrac{1}{10}\begin{pmatrix}2&2\\-1&4\end{pmatrix}\begin{pmatrix}2\\1\end{pmatrix}=\tfrac{1}{10}\begin{pmatrix}6\\2\end{pmatrix}=\begin{pmatrix}0.6\\0.2\end{pmatrix}.\]
-              <div class="key-result calc">\[\mathbf{x}_1=(2,1)-(0.6,0.2)=(1.4,\,0.8).\]</div>
-              Check: \(F(1.4,0.8)=\begin{pmatrix}1.96-1.6\\1.12-1\end{pmatrix}=\begin{pmatrix}0.36\\0.12\end{pmatrix}\). Much smaller than \(\begin{pmatrix}2\\1\end{pmatrix}\) ✓
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(d) Second Newton Step</div>
-              \([DF(1.4,0.8)]=\begin{pmatrix}2.8&-2\\0.8&1.4\end{pmatrix}\), \(\det=3.92+1.6=5.52\).
-              \[A^{-1}=\tfrac{1}{5.52}\begin{pmatrix}1.4&2\\-0.8&2.8\end{pmatrix},\quad A^{-1}F=\tfrac{1}{5.52}\begin{pmatrix}1.4(0.36)+2(0.12)\\-0.8(0.36)+2.8(0.12)\end{pmatrix}=\tfrac{1}{5.52}\begin{pmatrix}0.744\\0.048\end{pmatrix}.\]
-              <div class="key-result calc">\[\mathbf{x}_2\approx(1.4-0.1348,\;0.8-0.0087)\approx(1.265,\;0.791).\]</div>
-              <div class="note">True solution: \(x^2=2y\) and \(xy=1\) gives \(x^3=2\Rightarrow x=2^{1/3}\approx1.2599\). Newton's converging rapidly (quadratic convergence).</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problem C2 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num calc">C–2</span>
-        <span class="problem-title">3D System — Newton in \(\mathbb{R}^3\) <span class="hard-badge">HARD</span></span>
-        <span class="pts">10 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-calc">
-          We want to find a point on the intersection of a sphere and two planes. Define \(F:\mathbb{R}^3\to\mathbb{R}^3\):
-        </div>
-        <div class="define-block">
-          \[F(x,y,z)=\begin{pmatrix}x^2+y^2+z^2-3\\x+y-2\\y-z\end{pmatrix}.\]
-          Use initial guess \((x_0,y_0,z_0)=(1,1,1)\).
-        </div>
-        <ol class="parts">
-          <li><span class="part-label calc">(a)</span><span>Compute the \(3\times3\) Jacobian \([DF]\) and evaluate at \((1,1,1)\).</span><span class="pts">3 pts</span></li>
-          <li><span class="part-label calc">(b)</span><span>Evaluate \(F(1,1,1)\). Is \((1,1,1)\) already a solution?</span><span class="pts">1 pt</span></li>
-          <li><span class="part-label calc">(c)</span><span>Compute \([DF(1,1,1)]^{-1}\) using row reduction or the adjugate formula, then perform one Newton step to find \(\mathbf{x}_1\).</span><span class="pts">4 pts</span></li>
-          <li><span class="part-label calc">(d)</span><span>Verify that \(F(\mathbf{x}_1)\) is closer to \(\mathbf{0}\) than \(F(1,1,1)\). What are the exact solutions of \(F=\mathbf{0}\)?</span><span class="pts">2 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn calc" onclick="toggleAns('c2')">Show Answer</button>
-          <div class="answer" id="c2">
-            <div class="ans-part">
-              <div class="ans-label calc">(a) 3×3 Jacobian</div>
-              \[[DF(x,y,z)]=\begin{pmatrix}2x&2y&2z\\1&1&0\\0&1&-1\end{pmatrix},\qquad [DF(1,1,1)]=\begin{pmatrix}2&2&2\\1&1&0\\0&1&-1\end{pmatrix}.\]
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(b) Value at guess</div>
-              <div class="key-result calc">\[F(1,1,1)=\begin{pmatrix}1+1+1-3\\1+1-2\\1-1\end{pmatrix}=\begin{pmatrix}0\\0\\0\end{pmatrix}.\]</div>
-              Yes — \((1,1,1)\) is already an exact solution! Newton terminates in 0 steps.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(c) Newton Step (degenerate case)</div>
-              Since \(F(\mathbf{x}_0)=\mathbf{0}\), the update is \(\mathbf{x}_1 = (1,1,1) - [DF]^{-1}\mathbf{0} = (1,1,1)\). No change needed.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(d) All Solutions</div>
-              From \(y=z\) and \(x+y=2\), we have \(x=2-y, z=y\). Substituting into the sphere: \((2-y)^2+y^2+y^2=3\Rightarrow 3y^2-4y+1=0\Rightarrow (3y-1)(y-1)=0\).
-              <div class="key-result calc">Solutions: \((1,1,1)\) and \((\tfrac{5}{3},\tfrac{1}{3},\tfrac{1}{3})\).</div>
-              <div class="note">The initial guess happened to be one solution. Try \((2, 0, 0)\) as a starting point to converge to the second solution.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problem C3 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num calc">C–3</span>
-        <span class="problem-title">Inverse Function Theorem — When Does Newton Fail?</span>
-        <span class="pts">6 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-calc">
-          Consider \(F(x,y)=\begin{pmatrix}x^2+y^2\\2xy\end{pmatrix}\) with initial guess \((0,0)\).
-        </div>
-        <ol class="parts">
-          <li><span class="part-label calc">(a)</span><span>Compute \([DF(0,0)]\). Is it invertible? What does this mean for Newton's method at this point?</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label calc">(b)</span><span>Evaluate \(F(0,0)\). Even though the Jacobian is singular, is \((0,0)\) a solution to \(F=\mathbf{0}\)?</span><span class="pts">1 pt</span></li>
-          <li><span class="part-label calc">(c)</span><span>State the condition in the Inverse Function Theorem that guarantees \(F\) is locally invertible. Is it satisfied at \((0,0)\)? What about at \((1,1)\)?</span><span class="pts">3 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn calc" onclick="toggleAns('c3')">Show Answer</button>
-          <div class="answer" id="c3">
-            <div class="ans-part">
-              <div class="ans-label calc">(a)</div>
-              \([DF(x,y)]=\begin{pmatrix}2x&2y\\2y&2x\end{pmatrix}\), so \([DF(0,0)]=\begin{pmatrix}0&0\\0&0\end{pmatrix}\). \(\det=0\) — not invertible. Newton's method cannot proceed from \((0,0)\): the step \(-[DF]^{-1}F\) is undefined.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(b)</div>
-              \(F(0,0)=\begin{pmatrix}0\\0\end{pmatrix}\), so \((0,0)\) IS a solution — it's a degenerate case where Newton stalls but convergence is already achieved.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label calc">(c) IFT Condition</div>
-              The IFT requires \(\det[DF(\mathbf{x}_0)]\neq 0\). At \((0,0)\): \(\det=0\) — NOT satisfied. At \((1,1)\): \(\det[DF(1,1)]=\det\begin{pmatrix}2&2\\2&2\end{pmatrix}=0\) — also not satisfied! In fact \(\det[DF]=4x^2-4y^2\), which vanishes on \(|x|=|y|\).
-              <div class="note">Away from those lines (e.g. at \((2,1)\): \(\det=4(4-1)=12\neq0\)), the IFT applies and \(F\) is locally invertible.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div><!-- end subject-block -->
-
-  <!-- ══════════════════════════════════════════
-       SESSION 2 — LIN ALG: CHANGE OF BASIS
-  ══════════════════════════════════════════ -->
-  <div class="subject-block">
-    <div class="subject-header">
-      <div class="subject-dot dot-la"></div>
-      <div>
-        <div class="subject-label">P2 · 09:50 – 12:15 · Lin Alg Deep Work</div>
-        <div class="subject-title" style="color:var(--la)">Change of Basis &amp; Coordinate Maps · Ch.5.4</div>
-      </div>
-      <div class="subject-exam-date"><strong>Lin Alg Final</strong>25 June 2026</div>
-    </div>
-
-    <div class="formula-ref">
-      <div class="formula-ref-label">Key Tools</div>
-      <div style="font-size:0.85rem;color:var(--text2);line-height:2;">
-        Change-of-basis matrix from \(\mathcal{B}\) to \(\mathcal{C}\): \(\;P_{\mathcal{C}\leftarrow\mathcal{B}} = \bigl[[\mathbf{b}_1]_{\mathcal{C}}\;\;[\mathbf{b}_2]_{\mathcal{C}}\;\;\cdots\bigr]\) &nbsp;·&nbsp;
-        Coord map: \([\mathbf{v}]_{\mathcal{B}}\) satisfies \(\mathbf{v}=\sum c_i \mathbf{b}_i\) &nbsp;·&nbsp;
-        Inverse: \(P_{\mathcal{B}\leftarrow\mathcal{C}}=(P_{\mathcal{C}\leftarrow\mathcal{B}})^{-1}\)
-      </div>
-    </div>
-
-    <!-- Problem L1 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num la">L–1</span>
-        <span class="problem-title">Coordinate Vectors &amp; Change-of-Basis Matrix</span>
-        <span class="pts">10 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-la">
-          Let \(\mathcal{E}=\{e_1,e_2\}\) be the standard basis for \(\mathbb{R}^2\). Consider two new bases:
-        </div>
-        <div class="define-block">
-          \[\mathcal{B}=\left\{\begin{pmatrix}1\\1\end{pmatrix},\begin{pmatrix}1\\-1\end{pmatrix}\right\},\qquad \mathcal{C}=\left\{\begin{pmatrix}2\\1\end{pmatrix},\begin{pmatrix}1\\2\end{pmatrix}\right\}.\]
-        </div>
-        <ol class="parts">
-          <li><span class="part-label la">(a)</span><span>Find \([\mathbf{v}]_{\mathcal{B}}\) for \(\mathbf{v}=\begin{pmatrix}5\\1\end{pmatrix}\). (Express \(\mathbf{v}\) as a linear combination of \(\mathcal{B}\) vectors.)</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label la">(b)</span><span>Write down the change-of-basis matrix \(P_{\mathcal{E}\leftarrow\mathcal{B}}\) (columns = basis vectors in standard coords). Then find \(P_{\mathcal{B}\leftarrow\mathcal{E}}=(P_{\mathcal{E}\leftarrow\mathcal{B}})^{-1}\).</span><span class="pts">3 pts</span></li>
-          <li><span class="part-label la">(c)</span><span>Compute \(P_{\mathcal{E}\leftarrow\mathcal{C}}\) and \(P_{\mathcal{C}\leftarrow\mathcal{E}}\).</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label la">(d)</span><span>Find the change-of-basis matrix \(P_{\mathcal{C}\leftarrow\mathcal{B}}\) without re-doing all the work from scratch. (Hint: compose two maps you already have.)</span><span class="pts">3 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn la" onclick="toggleAns('l1')">Show Answer</button>
-          <div class="answer" id="l1">
-            <div class="ans-part">
-              <div class="ans-label la">(a) Coordinates in B</div>
-              Solve \(c_1\begin{pmatrix}1\\1\end{pmatrix}+c_2\begin{pmatrix}1\\-1\end{pmatrix}=\begin{pmatrix}5\\1\end{pmatrix}\): \(c_1+c_2=5,\;c_1-c_2=1\Rightarrow c_1=3,c_2=2\).
-              <div class="key-result la">\[[\mathbf{v}]_{\mathcal{B}}=\begin{pmatrix}3\\2\end{pmatrix}.\]</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(b) Change-of-basis P</div>
-              \(P_{\mathcal{E}\leftarrow\mathcal{B}}=\begin{pmatrix}1&1\\1&-1\end{pmatrix}\). Inverse: \(\det=-2\),
-              <div class="key-result la">\[P_{\mathcal{B}\leftarrow\mathcal{E}}=\tfrac{1}{-2}\begin{pmatrix}-1&-1\\-1&1\end{pmatrix}=\begin{pmatrix}1/2&1/2\\1/2&-1/2\end{pmatrix}.\]</div>
-              Check: \(P_{\mathcal{B}\leftarrow\mathcal{E}}\mathbf{v}=\begin{pmatrix}1/2&1/2\\1/2&-1/2\end{pmatrix}\begin{pmatrix}5\\1\end{pmatrix}=\begin{pmatrix}3\\2\end{pmatrix}\) ✓
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(c) P for basis C</div>
-              \(P_{\mathcal{E}\leftarrow\mathcal{C}}=\begin{pmatrix}2&1\\1&2\end{pmatrix}\), \(\det=3\).
-              <div class="key-result la">\[P_{\mathcal{C}\leftarrow\mathcal{E}}=\tfrac{1}{3}\begin{pmatrix}2&-1\\-1&2\end{pmatrix}.\]</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(d) Composed Change of Basis</div>
-              \(P_{\mathcal{C}\leftarrow\mathcal{B}}=P_{\mathcal{C}\leftarrow\mathcal{E}}\cdot P_{\mathcal{E}\leftarrow\mathcal{B}}\):
-              <div class="key-result la">\[P_{\mathcal{C}\leftarrow\mathcal{B}}=\tfrac{1}{3}\begin{pmatrix}2&-1\\-1&2\end{pmatrix}\begin{pmatrix}1&1\\1&-1\end{pmatrix}=\tfrac{1}{3}\begin{pmatrix}1&3\\1&-3\end{pmatrix}=\begin{pmatrix}1/3&1\\1/3&-1\end{pmatrix}.\]</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problem L2 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num la">L–2</span>
-        <span class="problem-title">Matrix of a Linear Map in Two Bases <span class="hard-badge">HARDER</span></span>
-        <span class="pts">12 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-la">
-          Let \(T:\mathbb{R}^2\to\mathbb{R}^2\) be the linear map \(T\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}3x-y\\x+y\end{pmatrix}\). Let \(\mathcal{B}=\left\{\begin{pmatrix}1\\1\end{pmatrix},\begin{pmatrix}1\\-1\end{pmatrix}\right\}\) from above.
-        </div>
-        <ol class="parts">
-          <li><span class="part-label la">(a)</span><span>Write the matrix \([T]_{\mathcal{E}}\) (the standard matrix of \(T\)).</span><span class="pts">1 pt</span></li>
-          <li><span class="part-label la">(b)</span><span>Compute \(T(\mathbf{b}_1)\) and \(T(\mathbf{b}_2)\) for the two basis vectors, then express each result in \(\mathcal{B}\)-coordinates. Write down \([T]_{\mathcal{B}}\).</span><span class="pts">5 pts</span></li>
-          <li><span class="part-label la">(c)</span><span>Verify the change-of-basis formula: \([T]_{\mathcal{B}}=P_{\mathcal{B}\leftarrow\mathcal{E}}\,[T]_{\mathcal{E}}\,P_{\mathcal{E}\leftarrow\mathcal{B}}\).</span><span class="pts">4 pts</span></li>
-          <li><span class="part-label la">(d)</span><span>For \(\mathbf{v}=\begin{pmatrix}5\\1\end{pmatrix}\), compute \([T(\mathbf{v})]_{\mathcal{B}}\) using \(\mathcal{B}\)-coordinates directly (i.e. using \([T]_{\mathcal{B}}\cdot[\mathbf{v}]_{\mathcal{B}}\)) and verify against \([T(\mathbf{v})]_{\mathcal{E}}\) converted to \(\mathcal{B}\).</span><span class="pts">2 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn la" onclick="toggleAns('l2')">Show Answer</button>
-          <div class="answer" id="l2">
-            <div class="ans-part">
-              <div class="ans-label la">(a) Standard Matrix</div>
-              <div class="key-result la">\[[T]_{\mathcal{E}}=\begin{pmatrix}3&-1\\1&1\end{pmatrix}.\]</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(b) Matrix in B</div>
-              \(T(\mathbf{b}_1)=T\begin{pmatrix}1\\1\end{pmatrix}=\begin{pmatrix}2\\2\end{pmatrix}=2\mathbf{b}_1+0\mathbf{b}_2\Rightarrow [T\mathbf{b}_1]_\mathcal{B}=\begin{pmatrix}2\\0\end{pmatrix}\).
-              \(T(\mathbf{b}_2)=T\begin{pmatrix}1\\-1\end{pmatrix}=\begin{pmatrix}4\\0\end{pmatrix}\). Solving: \(c_1+c_2=4,c_1-c_2=0\Rightarrow c_1=2,c_2=2\Rightarrow[T\mathbf{b}_2]_\mathcal{B}=\begin{pmatrix}2\\2\end{pmatrix}\).
-              <div class="key-result la">\[[T]_{\mathcal{B}}=\begin{pmatrix}2&2\\0&2\end{pmatrix}.\]</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(c) Verify Formula</div>
-              Using results from L–1: \(P_{\mathcal{B}\leftarrow\mathcal{E}}=\begin{pmatrix}1/2&1/2\\1/2&-1/2\end{pmatrix}\), \(P_{\mathcal{E}\leftarrow\mathcal{B}}=\begin{pmatrix}1&1\\1&-1\end{pmatrix}\).
-              \[P_{\mathcal{B}\leftarrow\mathcal{E}}[T]_\mathcal{E}P_{\mathcal{E}\leftarrow\mathcal{B}}=\begin{pmatrix}1/2&1/2\\1/2&-1/2\end{pmatrix}\begin{pmatrix}3&-1\\1&1\end{pmatrix}\begin{pmatrix}1&1\\1&-1\end{pmatrix}.\]
-              First product: \(\begin{pmatrix}2&0\\1&-1\end{pmatrix}\). Second: \(\begin{pmatrix}2&0\\1&-1\end{pmatrix}\begin{pmatrix}1&1\\1&-1\end{pmatrix}=\begin{pmatrix}2&2\\0&2\end{pmatrix}\) ✓
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(d) Apply in B-coords</div>
-              \([\mathbf{v}]_\mathcal{B}=\begin{pmatrix}3\\2\end{pmatrix}\) (from L-1a). \([T]_\mathcal{B}[\mathbf{v}]_\mathcal{B}=\begin{pmatrix}2&2\\0&2\end{pmatrix}\begin{pmatrix}3\\2\end{pmatrix}=\begin{pmatrix}10\\4\end{pmatrix}\).
-              Direct: \(T\mathbf{v}=\begin{pmatrix}3(5)-1\\5+1\end{pmatrix}=\begin{pmatrix}14\\6\end{pmatrix}\). Convert: \(P_{\mathcal{B}\leftarrow\mathcal{E}}\begin{pmatrix}14\\6\end{pmatrix}=\begin{pmatrix}10\\4\end{pmatrix}\) ✓
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problem L3 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num la">L–3</span>
-        <span class="problem-title">Polynomial Space — Change of Basis in \(\mathcal{P}_2\) <span class="hard-badge">HARD</span></span>
-        <span class="pts">10 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-la">
-          Work in \(\mathcal{P}_2\), the space of polynomials of degree \(\leq 2\). Consider two bases:
-        </div>
-        <div class="define-block">
-          \[\mathcal{S}=\{1,\,x,\,x^2\}\quad\text{(standard)},\qquad \mathcal{L}=\{1,\,x-1,\,(x-1)^2\}\quad\text{(shifted)}.\]
-        </div>
-        <ol class="parts">
-          <li><span class="part-label la">(a)</span><span>Express each vector in \(\mathcal{L}\) in terms of \(\mathcal{S}\)-coordinates. Write down \(P_{\mathcal{S}\leftarrow\mathcal{L}}\).</span><span class="pts">3 pts</span></li>
-          <li><span class="part-label la">(b)</span><span>Find \(P_{\mathcal{L}\leftarrow\mathcal{S}}=(P_{\mathcal{S}\leftarrow\mathcal{L}})^{-1}\) by row-reducing \([P_{\mathcal{S}\leftarrow\mathcal{L}}\;|\;I]\).</span><span class="pts">3 pts</span></li>
-          <li><span class="part-label la">(c)</span><span>Express \(p(x)=x^2+3x-2\) in \(\mathcal{L}\)-coordinates using \(P_{\mathcal{L}\leftarrow\mathcal{S}}\). Then verify by expanding.</span><span class="pts">4 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn la" onclick="toggleAns('l3')">Show Answer</button>
-          <div class="answer" id="l3">
-            <div class="ans-part">
-              <div class="ans-label la">(a)</div>
-              \(1=[1,0,0]_\mathcal{S}\), \(x-1=[-1,1,0]_\mathcal{S}\), \((x-1)^2=x^2-2x+1=[1,-2,1]_\mathcal{S}\).
-              <div class="key-result la">\[P_{\mathcal{S}\leftarrow\mathcal{L}}=\begin{pmatrix}1&-1&1\\0&1&-2\\0&0&1\end{pmatrix}.\]</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(b) Row reduction for inverse</div>
-              Row-reduce \([P|\,I]\): \(P\) is upper triangular with all 1s on diagonal — easily inverted by back substitution.
-              <div class="key-result la">\[P_{\mathcal{L}\leftarrow\mathcal{S}}=\begin{pmatrix}1&1&1\\0&1&2\\0&0&1\end{pmatrix}.\]</div>
-              (Verify: \(P_{\mathcal{S}\leftarrow\mathcal{L}}P_{\mathcal{L}\leftarrow\mathcal{S}}=I\) ✓)
-            </div>
-            <div class="ans-part">
-              <div class="ans-label la">(c) Express p(x) in L-coords</div>
-              \([p]_\mathcal{S}=\begin{pmatrix}-2\\3\\1\end{pmatrix}\). Then:
-              \[[p]_\mathcal{L}=P_{\mathcal{L}\leftarrow\mathcal{S}}\begin{pmatrix}-2\\3\\1\end{pmatrix}=\begin{pmatrix}1&1&1\\0&1&2\\0&0&1\end{pmatrix}\begin{pmatrix}-2\\3\\1\end{pmatrix}=\begin{pmatrix}2\\5\\1\end{pmatrix}.\]
-              <div class="key-result la">\[p(x)=2\cdot1+5\cdot(x-1)+1\cdot(x-1)^2.\]</div>
-              Verify: \(2+5(x-1)+(x-1)^2=2+5x-5+x^2-2x+1=x^2+3x-2\) ✓
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div><!-- end subject-block -->
-
-  <!-- ══════════════════════════════════════════
-       SESSION 3+4 — C++: POINTERS & MEMORY
-  ══════════════════════════════════════════ -->
-  <div class="subject-block">
-    <div class="subject-header">
-      <div class="subject-dot dot-cpp"></div>
-      <div>
-        <div class="subject-label">P3–P4 · 13:30 – 16:55 · C++ Deep Dive</div>
-        <div class="subject-title" style="color:var(--cpp)">Pointers &amp; Memory · Ch.8</div>
-      </div>
-      <div class="subject-exam-date"><strong>C++ Final</strong>10 June 2026</div>
-    </div>
-
-    <!-- Problem P1 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num cpp">P–1</span>
-        <span class="problem-title">Pointer Arithmetic &amp; Memory Diagrams</span>
-        <span class="pts">8 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-cpp">
-          Without running the code, trace through it carefully. Draw memory diagrams where asked.
-        </div>
-        <pre><span class="kw">int</span> <span class="fn">main</span>() {
-    <span class="kw">int</span> arr[<span class="num">5</span>] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};
-    <span class="kw">int</span>* p = arr;       <span class="cm">// p points to arr[0]</span>
-    <span class="kw">int</span>* q = arr + <span class="num">3</span>;   <span class="cm">// q points to arr[3]</span>
-
-    *(p + <span class="num">2</span>) += <span class="num">5</span>;
-    p++;
-    *q = *p + *(q - <span class="num">1</span>);
-
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++)
-        std::cout &lt;&lt; arr[i] &lt;&lt; <span class="str">" "</span>;
-}</pre>
-        <ol class="parts">
-          <li><span class="part-label cpp">(a)</span><span>What is the value of <code>*(p+2)</code> before the increment, and what does <code>*(p+2) += 5</code> modify? What is <code>arr[2]</code> after this line?</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label cpp">(b)</span><span>After <code>p++</code>, what element does <code>p</code> now point to? What is <code>*p</code>?</span><span class="pts">1 pt</span></li>
-          <li><span class="part-label cpp">(c)</span><span>What are <code>*q</code> and <code>*(q-1)</code> at that moment? What value is assigned to <code>*q</code> (i.e. <code>arr[3]</code>)?</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label cpp">(d)</span><span>Write the complete final output of the program.</span><span class="pts">3 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn cpp" onclick="toggleAns('p1')">Show Answer</button>
-          <div class="answer" id="p1">
-            <div class="ans-part">
-              <div class="ans-label cpp">(a)</div>
-              Before the increment, <code>p = arr</code> so <code>*(p+2) = arr[2] = 30</code>. The line modifies <code>arr[2]</code> to <code>30+5 = 35</code>.
-              <div class="key-result cpp">arr is now: {10, 20, 35, 40, 50}</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(b)</div>
-              After <code>p++</code>, <code>p</code> points to <code>arr[1]</code>. So <code>*p = 20</code>.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(c)</div>
-              <code>q = arr+3</code> still, so <code>*q = arr[3] = 40</code> and <code>*(q-1) = arr[2] = 35</code>. The assignment: <code>*q = *p + *(q-1) = 20 + 35 = 55</code>.
-              <div class="key-result cpp">arr[3] = 55</div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(d) Output</div>
-              <div class="key-result cpp">10 20 35 55 50</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problem P2 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num cpp">P–2</span>
-        <span class="problem-title">Dynamic Memory — Spot the Bugs <span class="hard-badge">HARDER</span></span>
-        <span class="pts">10 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-cpp">
-          The following code has multiple memory-related bugs. Identify every bug, name it, and write the corrected version.
-        </div>
-        <pre><span class="cm">// Intended: create array of n ints, double each element, print, free</span>
-<span class="kw">void</span> <span class="fn">processArray</span>(<span class="kw">int</span> n) {
-    <span class="kw">int</span>* arr = <span class="kw">new</span> <span class="kw">int</span>[n];
-
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt;= n; i++)   <span class="cm">// Bug?</span>
-        arr[i] = i * <span class="num">2</span>;
-
-    <span class="kw">int</span>* p = arr;
-    <span class="kw">delete</span> p;                         <span class="cm">// Bug?</span>
-    arr = <span class="kw">nullptr</span>;
-
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++)
-        std::cout &lt;&lt; arr[i] &lt;&lt; <span class="str">" "</span>;   <span class="cm">// Bug?</span>
-}
-
-<span class="kw">void</span> <span class="fn">leakyFunction</span>() {
-    <span class="kw">int</span>* x = <span class="kw">new</span> <span class="kw">int</span>(<span class="num">42</span>);
-    <span class="kw">int</span>* y = <span class="kw">new</span> <span class="kw">int</span>(<span class="num">100</span>);
-    x = y;                            <span class="cm">// Bug?</span>
-    <span class="kw">delete</span> x;
-}</pre>
-        <ol class="parts">
-          <li><span class="part-label cpp">(a)</span><span>In <code>processArray</code>: what is the bug on the loop condition line (<code>i &lt;= n</code>)? What type of error is it?</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label cpp">(b)</span><span>What is wrong with <code>delete p</code>? What should it be?</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label cpp">(c)</span><span>After <code>arr = nullptr</code>, the loop prints <code>arr[i]</code>. What is this bug called? What happens at runtime?</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label cpp">(d)</span><span>In <code>leakyFunction</code>: the line <code>x = y</code> causes a memory leak. Explain why, and write the corrected function that properly frees all memory.</span><span class="pts">4 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn cpp" onclick="toggleAns('p2')">Show Answer</button>
-          <div class="answer" id="p2">
-            <div class="ans-part">
-              <div class="ans-label cpp">(a) Off-by-one</div>
-              <code>i &lt;= n</code> allows <code>i = n</code>, writing to <code>arr[n]</code> which is out-of-bounds. This is a <strong>buffer overflow</strong> — undefined behaviour, possible crash or data corruption. Fix: <code>i &lt; n</code>.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(b) Wrong delete form</div>
-              <code>arr</code> was allocated with <code>new int[n]</code> (array form). Freeing with <code>delete p</code> (scalar form) is undefined behaviour — must use <code>delete[] p</code> or <code>delete[] arr</code>.
-              <div class="key-result cpp">Fix: <code>delete[] p;</code></div>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(c) Use-after-free / null dereference</div>
-              After <code>arr = nullptr</code>, dereferencing <code>arr[i]</code> is a <strong>null pointer dereference</strong> — undefined behaviour, usually a segfault. The print loop must happen BEFORE the delete and null assignment.
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(d) Memory leak fix</div>
-              When <code>x = y</code> runs, <code>x</code> no longer points to the original <code>new int(42)</code> allocation. That memory becomes unreachable — <strong>memory leak</strong>. Only one of the two allocations gets freed (<code>delete x</code> frees what <code>y</code> pointed to). Fix:
-<pre><span class="kw">void</span> <span class="fn">leakyFunction</span>() {
-    <span class="kw">int</span>* x = <span class="kw">new</span> <span class="kw">int</span>(<span class="num">42</span>);
-    <span class="kw">int</span>* y = <span class="kw">new</span> <span class="kw">int</span>(<span class="num">100</span>);
-    <span class="kw">delete</span> x;   <span class="cm">// free original x before overwriting pointer</span>
-    x = y;
-    <span class="kw">delete</span> x;   <span class="cm">// now frees what y pointed to</span>
-    <span class="cm">// y is now a dangling pointer — don't use it after this</span>
-}</pre>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problem P3 -->
-    <div class="problem">
-      <div class="problem-header">
-        <span class="problem-num cpp">P–3</span>
-        <span class="problem-title">Write from Memory — Dynamic 2D Array <span class="hard-badge">HARD</span></span>
-        <span class="pts">12 pts</span>
-      </div>
-      <div class="problem-body">
-        <div class="context-box context-cpp">
-          Without referencing any notes, write complete C++ code for each part below.
-        </div>
-        <ol class="parts">
-          <li><span class="part-label cpp">(a)</span><span>Write a function <code>int** createMatrix(int rows, int cols)</code> that allocates a 2D array of ints on the heap using pointer-to-pointer, initialises every element to 0, and returns the pointer.</span><span class="pts">4 pts</span></li>
-          <li><span class="part-label cpp">(b)</span><span>Write a corresponding function <code>void deleteMatrix(int** mat, int rows)</code> that correctly frees all allocated memory without leaks.</span><span class="pts">3 pts</span></li>
-          <li><span class="part-label cpp">(c)</span><span>Write a function <code>void fillDiagonal(int** mat, int n, int val)</code> that sets <code>mat[i][i] = val</code> for all <code>i</code> in an \(n\times n\) matrix.</span><span class="pts">2 pts</span></li>
-          <li><span class="part-label cpp">(d)</span><span>In <code>main</code>, use your three functions to create a \(4\times4\) matrix, fill its diagonal with 7, print the full matrix, then free it cleanly. The output should look like a grid.</span><span class="pts">3 pts</span></li>
-        </ol>
-        <div class="ans-toggle">
-          <button class="ans-btn cpp" onclick="toggleAns('p3')">Show Answer</button>
-          <div class="answer" id="p3">
-            <div class="ans-part">
-              <div class="ans-label cpp">(a) createMatrix</div>
-<pre><span class="kw">int</span>** <span class="fn">createMatrix</span>(<span class="kw">int</span> rows, <span class="kw">int</span> cols) {
-    <span class="kw">int</span>** mat = <span class="kw">new</span> <span class="kw">int</span>*[rows];
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; rows; i++) {
-        mat[i] = <span class="kw">new</span> <span class="kw">int</span>[cols];
-        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; cols; j++)
-            mat[i][j] = <span class="num">0</span>;
-    }
-    <span class="kw">return</span> mat;
-}</pre>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(b) deleteMatrix</div>
-<pre><span class="kw">void</span> <span class="fn">deleteMatrix</span>(<span class="kw">int</span>** mat, <span class="kw">int</span> rows) {
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; rows; i++)
-        <span class="kw">delete</span>[] mat[i];   <span class="cm">// free each row first</span>
-    <span class="kw">delete</span>[] mat;         <span class="cm">// then free the array of pointers</span>
-}</pre>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(c) fillDiagonal</div>
-<pre><span class="kw">void</span> <span class="fn">fillDiagonal</span>(<span class="kw">int</span>** mat, <span class="kw">int</span> n, <span class="kw">int</span> val) {
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++)
-        mat[i][i] = val;
-}</pre>
-            </div>
-            <div class="ans-part">
-              <div class="ans-label cpp">(d) main</div>
-<pre><span class="kw">int</span> <span class="fn">main</span>() {
-    <span class="kw">int</span> n = <span class="num">4</span>;
-    <span class="kw">int</span>** m = <span class="fn">createMatrix</span>(n, n);
-    <span class="fn">fillDiagonal</span>(m, n, <span class="num">7</span>);
-    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
-        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n; j++)
-            std::cout &lt;&lt; m[i][j] &lt;&lt; <span class="str">" "</span>;
-        std::cout &lt;&lt; <span class="str">"\n"</span>;
-    }
-    <span class="fn">deleteMatrix</span>(m, n);
-    <span class="kw">return</span> <span class="num">0</span>;
-}
-<span class="cm">// Expected output:
-// 7 0 0 0
-// 0 7 0 0
-// 0 0 7 0
-// 0 0 0 7</span></pre>
-              <div class="note">Remember: always delete inner arrays before the outer pointer array. Reversing the order leaves the inner allocations leaked.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div><!-- end subject-block -->
-
-  <div class="footer-note">
-    Saturday 30 May 2026 · Week 1 · Calc A2 Ch.13.4 · Lin Alg Ch.5.4 · C++ Ch.8 · Good luck Rafi ✦
+  <!-- ── Top bar ── -->
+  <div class="topbar">
+    <span class="topbar-title">Rafi's Study Hub</span>
+    <span class="topbar-sub">/ calc-a2 / newton's method</span>
+    <span class="topbar-date">SAT · 30 MAY 2026</span>
   </div>
-</div><!-- end .main -->
 
-<div class="timer-chip" id="timer"><span>elapsed</span>00:00</div>
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <h1>Newton's Method <em>in</em> ℝⁿ</h1>
+    <p class="hero-meta">
+      P1 · 08:00 – 09:35 · Ch.13.4 · Harder than last time.
+      Work each part fully before revealing the answer.
+    </p>
+    <div class="exam-pills">
+      <span class="pill pill-calc">∫ Calc A2</span>
+      <span class="pill pill-calc">Ch.13.4 Newton's Method</span>
+      <span class="pill pill-calc">Final · 23 June 2026</span>
+    </div>
+  </div>
 
-<script>
-  function toggleAns(id) {
-    const el = document.getElementById(id);
-    const btn = el.previousElementSibling;
-    el.classList.toggle('open');
-    btn.textContent = el.classList.contains('open') ? 'Hide Answer' : 'Show Answer';
-  }
+  <!-- ── Main content ── -->
+  <div class="main">
+    <div class="subject-block">
 
-  window.addEventListener('scroll', () => {
-    const p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-    document.getElementById('pbar').style.width = p + '%';
-  });
+      <div class="subject-header">
+        <div class="subject-dot dot-calc"></div>
+        <div>
+          <div class="subject-label">Self-Study · 1.5 h · Week 1</div>
+          <div class="subject-title" style="color:var(--calc)">Newton's Method · Ch.13.4</div>
+        </div>
+        <div class="subject-exam-date">
+          <strong>Calc A2 Final</strong>
+          23 June 2026
+        </div>
+      </div>
 
-  const start = Date.now();
-  setInterval(() => {
-    const s = Math.floor((Date.now() - start) / 1000);
-    const m = String(Math.floor(s / 60)).padStart(2,'0');
-    const sec = String(s % 60).padStart(2,'0');
-    document.getElementById('timer').innerHTML = `<span>elapsed</span>${m}:${sec}`;
-  }, 1000);
-</script>
+      <!-- Key formula reference -->
+      <div class="formula-ref">
+        <div class="formula-ref-label">Core Formula</div>
+        \[\mathbf{x}_{n+1} = \mathbf{x}_n - [DF(\mathbf{x}_n)]^{-1}\,F(\mathbf{x}_n)\]
+        <div class="formula-ref-sub">
+          2×2 inverse: \(\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1}=\dfrac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}\) &nbsp;·&nbsp;
+          Differentiable if all partial derivatives are continuous &nbsp;·&nbsp;
+          Linear approx: \(F(\mathbf{x}_0+\mathbf{h})\approx F(\mathbf{x}_0)+[DF(\mathbf{x}_0)]\mathbf{h}\)
+        </div>
+      </div>
+
+      <!-- ══ Problem 1 ══ -->
+      <div class="problem">
+        <div class="problem-header">
+          <span class="problem-num calc">Problem 1</span>
+          <span class="problem-title">Two-Step Iteration &amp; Convergence</span>
+          <span class="pts">12 pts</span>
+        </div>
+        <div class="problem-body">
+          <div class="context-box">
+            We want to solve \(F(x,y)=\mathbf{0}\) where
+          </div>
+          <div class="define-block">
+            \[F(x,y)=\begin{pmatrix}x^2 - 2y \\ xy - 1\end{pmatrix}, \qquad \mathbf{x}_0 = (2,\,1).\]
+          </div>
+          <ol class="parts">
+            <li>
+              <span class="part-label calc">(a)</span>
+              <span>Compute the Jacobian \([DF(x,y)]\) in general, then evaluate at \((2,1)\). Explain why \(F\) is differentiable everywhere. <span class="pts">3 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(b)</span>
+              <span>Evaluate \(F(2,1)\) and use linear approximation to estimate \(F(2.01,\,1.01)\). <span class="pts">2 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(c)</span>
+              <span>Perform one Newton step to find \(\mathbf{x}_1\). Compute \(F(\mathbf{x}_1)\) and confirm it is closer to \(\mathbf{0}\). <span class="pts">4 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(d)</span>
+              <span>Perform a second Newton step from \(\mathbf{x}_1\) to find \(\mathbf{x}_2\). The true solution satisfies \(x^3=2\). How close is \(\mathbf{x}_2\)? <span class="pts">3 pts</span></span>
+            </li>
+          </ol>
+          <div class="ans-toggle">
+            <button class="ans-btn" onclick="toggleAns('a1')">Show Answer</button>
+            <div class="answer" id="a1">
+              <div class="ans-part">
+                <div class="ans-part-label">(a) Jacobian</div>
+                \[[DF(x,y)]=\begin{pmatrix}2x & -2 \\ y & x\end{pmatrix}, \qquad [DF(2,1)]=\begin{pmatrix}4 & -2 \\ 1 & 2\end{pmatrix}.\]
+                All entries are polynomials — continuous everywhere — so \(F\) is differentiable everywhere.
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(b) Linear Approximation</div>
+                \(F(2,1)=\begin{pmatrix}4-2\\2-1\end{pmatrix}=\begin{pmatrix}2\\1\end{pmatrix}\). With \(\mathbf{h}=(0.01,0.01)^T\):
+                <div class="key-result">
+                  \[F(2.01,1.01)\approx\begin{pmatrix}2\\1\end{pmatrix}+\begin{pmatrix}4&-2\\1&2\end{pmatrix}\begin{pmatrix}0.01\\0.01\end{pmatrix}=\begin{pmatrix}2.02\\1.03\end{pmatrix}.\]
+                </div>
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(c) First Newton Step</div>
+                \(\det[DF(2,1)]=4\cdot2-(-2)\cdot1=10.\)
+                \[[DF(2,1)]^{-1}=\frac{1}{10}\begin{pmatrix}2&2\\-1&4\end{pmatrix}.\]
+                \[[DF]^{-1}F(2,1)=\frac{1}{10}\begin{pmatrix}2&2\\-1&4\end{pmatrix}\begin{pmatrix}2\\1\end{pmatrix}=\frac{1}{10}\begin{pmatrix}6\\2\end{pmatrix}=\begin{pmatrix}0.6\\0.2\end{pmatrix}.\]
+                <div class="key-result">
+                  \[\mathbf{x}_1=(2,1)-(0.6,0.2)=(1.4,\;0.8).\]
+                </div>
+                Check: \(F(1.4,0.8)=\begin{pmatrix}1.96-1.6\\1.12-1\end{pmatrix}=\begin{pmatrix}0.36\\0.12\end{pmatrix}\). Norm \(\approx0.38\), much smaller than \(\|(2,1)\|=\sqrt{5}\) ✓
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(d) Second Newton Step</div>
+                \([DF(1.4,0.8)]=\begin{pmatrix}2.8&-2\\0.8&1.4\end{pmatrix},\quad\det=3.92+1.6=5.52.\)
+                \[[DF]^{-1}=\frac{1}{5.52}\begin{pmatrix}1.4&2\\-0.8&2.8\end{pmatrix}.\]
+                Update vector: \(\frac{1}{5.52}\begin{pmatrix}1.4(0.36)+2(0.12)\\-0.8(0.36)+2.8(0.12)\end{pmatrix}=\frac{1}{5.52}\begin{pmatrix}0.744\\0.048\end{pmatrix}\approx\begin{pmatrix}0.1348\\0.0087\end{pmatrix}.\)
+                <div class="key-result">
+                  \[\mathbf{x}_2\approx(1.4-0.1348,\;0.8-0.0087)\approx(1.2652,\;0.7913).\]
+                </div>
+                <div class="ans-note">True solution: \(x=2^{1/3}\approx1.2599,\;y=1/x\approx0.7937\). The error at \(\mathbf{x}_2\) is already \(\approx0.005\) — Newton's method converges quadratically.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Problem 2 ══ -->
+      <div class="problem">
+        <div class="problem-header">
+          <span class="problem-num calc">Problem 2</span>
+          <span class="problem-title">3D System — Newton in \(\mathbb{R}^3\) <span class="badge-hard">HARD</span></span>
+          <span class="pts">11 pts</span>
+        </div>
+        <div class="problem-body">
+          <div class="context-box">
+            We want to find intersection points of a sphere and two planes. Define \(F:\mathbb{R}^3\to\mathbb{R}^3\):
+          </div>
+          <div class="define-block">
+            \[F(x,y,z)=\begin{pmatrix}x^2+y^2+z^2-3 \\ x+y-2 \\ y-z\end{pmatrix}, \qquad \mathbf{x}_0=(2,\,0,\,0).\]
+          </div>
+          <ol class="parts">
+            <li>
+              <span class="part-label calc">(a)</span>
+              <span>Compute the \(3\times3\) Jacobian \([DF(x,y,z)]\) in general, then evaluate at \((2,0,0)\). <span class="pts">3 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(b)</span>
+              <span>Evaluate \(F(2,0,0)\). Is \((2,0,0)\) already a solution? <span class="pts">1 pt</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(c)</span>
+              <span>Compute \([DF(2,0,0)]^{-1}\) by row-reducing \([A\,|\,I]\), then perform one Newton step to find \(\mathbf{x}_1\). <span class="pts">5 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(d)</span>
+              <span>Find all exact solutions of \(F=\mathbf{0}\). Which one is \(\mathbf{x}_1\) converging toward? <span class="pts">2 pts</span></span>
+            </li>
+          </ol>
+          <div class="ans-toggle">
+            <button class="ans-btn" onclick="toggleAns('a2')">Show Answer</button>
+            <div class="answer" id="a2">
+              <div class="ans-part">
+                <div class="ans-part-label">(a) 3×3 Jacobian</div>
+                \[[DF(x,y,z)]=\begin{pmatrix}2x&2y&2z\\1&1&0\\0&1&-1\end{pmatrix}, \qquad [DF(2,0,0)]=\begin{pmatrix}4&0&0\\1&1&0\\0&1&-1\end{pmatrix}.\]
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(b) Value at guess</div>
+                \[F(2,0,0)=\begin{pmatrix}4-3\\2-2\\0-0\end{pmatrix}=\begin{pmatrix}1\\0\\0\end{pmatrix}.\]
+                Not zero, so \((2,0,0)\) is not a solution. Newton must iterate.
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(c) Inverse + Newton Step</div>
+                Row-reduce \([A\,|\,I]\) with \(A=[DF(2,0,0)]\). Since \(A\) is lower triangular with \(\det=4\cdot1\cdot(-1)=-4\):
+                \[A^{-1}=\frac{1}{-4}\begin{pmatrix}-1&0&0\\1&-4&0\\1&-4&4\end{pmatrix}=\begin{pmatrix}1/4&0&0\\-1/4&1&0\\-1/4&1&-1\end{pmatrix}.\]
+                Update: \(A^{-1}F(2,0,0)=\begin{pmatrix}1/4&0&0\\-1/4&1&0\\-1/4&1&-1\end{pmatrix}\begin{pmatrix}1\\0\\0\end{pmatrix}=\begin{pmatrix}1/4\\-1/4\\-1/4\end{pmatrix}.\)
+                <div class="key-result">
+                  \[\mathbf{x}_1=(2,0,0)-(1/4,-1/4,-1/4)=(7/4,\;1/4,\;1/4).\]
+                </div>
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(d) All Exact Solutions</div>
+                From \(y=z\) and \(x=2-y\): substitute into sphere: \((2-y)^2+2y^2=3\Rightarrow 3y^2-4y+1=0\Rightarrow(3y-1)(y-1)=0\).
+                <div class="key-result">
+                  Solutions: \(\bigl(\tfrac{5}{3},\,\tfrac{1}{3},\,\tfrac{1}{3}\bigr)\) and \((1,1,1)\).
+                </div>
+                \(\mathbf{x}_1=(1.75, 0.25, 0.25)\) is closer to \((\tfrac53, \tfrac13, \tfrac13)\approx(1.667, 0.333, 0.333)\) — converging there ✓
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Problem 3 ══ -->
+      <div class="problem">
+        <div class="problem-header">
+          <span class="problem-num calc">Problem 3</span>
+          <span class="problem-title">Linear Approximation &amp; IFT — When Newton Fails</span>
+          <span class="pts">7 pts</span>
+        </div>
+        <div class="problem-body">
+          <div class="context-box">
+            Consider \(F(x,y)=\begin{pmatrix}x^2+y^2 \\ 2xy\end{pmatrix}\). We test Newton's method at two starting points.
+          </div>
+          <ol class="parts">
+            <li>
+              <span class="part-label calc">(a)</span>
+              <span>Compute \([DF(x,y)]\) in general. Is \([DF(0,0)]\) invertible? What goes wrong if we try Newton's method at \((0,0)\)? <span class="pts">2 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(b)</span>
+              <span>State the condition from the Inverse Function Theorem that guarantees local invertibility of \(F\). Find all points where it fails for this \(F\). <span class="pts">3 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(c)</span>
+              <span>At \(\mathbf{x}_0=(2,1)\) compute one Newton step toward solving \(F(x,y)=\begin{pmatrix}5\\4\end{pmatrix}\). (Hint: reformulate as \(G(x,y)=F(x,y)-\begin{pmatrix}5\\4\end{pmatrix}=\mathbf{0}\).) <span class="pts">2 pts</span></span>
+            </li>
+          </ol>
+          <div class="ans-toggle">
+            <button class="ans-btn" onclick="toggleAns('a3')">Show Answer</button>
+            <div class="answer" id="a3">
+              <div class="ans-part">
+                <div class="ans-part-label">(a) Jacobian &amp; Failure at (0,0)</div>
+                \[[DF(x,y)]=\begin{pmatrix}2x&2y\\2y&2x\end{pmatrix}, \qquad [DF(0,0)]=\begin{pmatrix}0&0\\0&0\end{pmatrix}.\]
+                \(\det[DF(0,0)]=0\) — not invertible. Newton's step \(-[DF]^{-1}F\) is undefined (division by zero). Method cannot proceed from \((0,0)\).
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(b) IFT Condition</div>
+                The IFT requires \(\det[DF(\mathbf{x}_0)]\neq0\) — i.e., the Jacobian must be invertible.
+                Here \(\det[DF(x,y)]=4x^2-4y^2=4(x-y)(x+y)\). This vanishes on the lines \(x=y\) and \(x=-y\).
+                <div class="key-result">
+                  IFT fails (and Newton may fail) at all \((x,y)\) with \(|x|=|y|\).
+                </div>
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(c) Newton Step at (2,1)</div>
+                \(G(x,y)=F(x,y)-\begin{pmatrix}5\\4\end{pmatrix}\), so \([DG]=[DF]\) (constant shift doesn't affect Jacobian).
+                \(G(2,1)=\begin{pmatrix}5-5\\4-4\end{pmatrix}=\begin{pmatrix}0\\0\end{pmatrix}\).
+                <div class="key-result">
+                  \(G(2,1)=\mathbf{0}\), so \((2,1)\) is already the exact solution — Newton terminates immediately.
+                </div>
+                <div class="ans-note">Verify: \(F(2,1)=\begin{pmatrix}4+1\\4\end{pmatrix}=\begin{pmatrix}5\\4\end{pmatrix}\) ✓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Problem 4 ══ -->
+      <div class="problem">
+        <div class="problem-header">
+          <span class="problem-num calc">Problem 4</span>
+          <span class="problem-title">Polar Coordinates &amp; Two-Step Iteration <span class="badge-hard">HARD</span></span>
+          <span class="pts">13 pts</span>
+        </div>
+        <div class="problem-body">
+          <div class="context-box">
+            Suppose we want to find the intersection of a spiral and a circle. Define
+          </div>
+          <div class="define-block">
+            \[F(x,y)=\begin{pmatrix}x^2+y^2-4 \\ x - y^2 + 1\end{pmatrix}, \qquad \mathbf{x}_0=(1,\,1).\]
+          </div>
+          <ol class="parts">
+            <li>
+              <span class="part-label calc">(a)</span>
+              <span>Compute \([DF(1,1)]\) and explain why \(F\) is differentiable at \((1,1)\). <span class="pts">3 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(b)</span>
+              <span>Use linear approximation to estimate \(F(1.02,\,0.99)\). <span class="pts">2 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(c)</span>
+              <span>Express \(F\) in polar coordinates \(x=r\cos\theta,\,y=r\sin\theta\). Compute \(D_rF\) and \(D_\theta F\) at the point \((r,\theta)=(\sqrt{2}, \pi/4)\) (which corresponds to \((1,1)\)). <span class="pts">4 pts</span></span>
+            </li>
+            <li>
+              <span class="part-label calc">(d)</span>
+              <span>Perform one Newton step from \((1,1)\) to find \(\mathbf{x}_1\). Then perform a second step from \(\mathbf{x}_1\) to find \(\mathbf{x}_2\). Is \(F(\mathbf{x}_2)\approx\mathbf{0}\)? <span class="pts">4 pts</span></span>
+            </li>
+          </ol>
+          <div class="ans-toggle">
+            <button class="ans-btn" onclick="toggleAns('a4')">Show Answer</button>
+            <div class="answer" id="a4">
+              <div class="ans-part">
+                <div class="ans-part-label">(a) Jacobian at (1,1)</div>
+                \[[DF(x,y)]=\begin{pmatrix}2x&2y\\1&-2y\end{pmatrix}, \qquad [DF(1,1)]=\begin{pmatrix}2&2\\1&-2\end{pmatrix}.\]
+                All partial derivatives are polynomials — continuous everywhere — so \(F\) is differentiable at \((1,1)\).
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(b) Linear Approximation</div>
+                \(F(1,1)=\begin{pmatrix}1+1-4\\1-1+1\end{pmatrix}=\begin{pmatrix}-2\\1\end{pmatrix}\). With \(\mathbf{h}=(0.02,-0.01)^T\):
+                \[\begin{pmatrix}2&2\\1&-2\end{pmatrix}\begin{pmatrix}0.02\\-0.01\end{pmatrix}=\begin{pmatrix}0.02\\0.04\end{pmatrix}.\]
+                <div class="key-result">
+                  \[F(1.02,0.99)\approx\begin{pmatrix}-2\\1\end{pmatrix}+\begin{pmatrix}0.02\\0.04\end{pmatrix}=\begin{pmatrix}-1.98\\1.04\end{pmatrix}.\]
+                </div>
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(c) Polar Derivatives</div>
+                Substitute \(x=r\cos\theta,y=r\sin\theta\):
+                \[F=\begin{pmatrix}r^2-4 \\ r\cos\theta - r^2\sin^2\theta + 1\end{pmatrix}.\]
+                \[D_rF=\begin{pmatrix}2r\\\cos\theta-2r\sin^2\theta\end{pmatrix}, \qquad D_\theta F=\begin{pmatrix}0\\-r\sin\theta-2r^2\sin\theta\cos\theta\end{pmatrix}.\]
+                At \((r,\theta)=(\sqrt{2},\pi/4)\): \(\cos(\pi/4)=\sin(\pi/4)=1/\sqrt{2}\).
+                <div class="key-result">
+                  \[D_rF=\begin{pmatrix}2\sqrt{2}\\1/\sqrt{2}-2\sqrt{2}\cdot\tfrac{1}{2}\end{pmatrix}=\begin{pmatrix}2\sqrt{2}\\1/\sqrt{2}-\sqrt{2}\end{pmatrix}=\begin{pmatrix}2\sqrt{2}\\-1/\sqrt{2}\end{pmatrix},\]
+                  \[D_\theta F=\begin{pmatrix}0\\-\sqrt{2}/\sqrt{2}-2\cdot2\cdot\tfrac{1}{2}\end{pmatrix}=\begin{pmatrix}0\\-1-2\end{pmatrix}=\begin{pmatrix}0\\-3\end{pmatrix}.\]
+                </div>
+              </div>
+              <div class="ans-part">
+                <div class="ans-part-label">(d) Two Newton Steps</div>
+                <strong>Step 1:</strong> \(\det[DF(1,1)]=2(-2)-2(1)=-6.\)
+                \[[DF(1,1)]^{-1}=\frac{1}{-6}\begin{pmatrix}-2&-2\\-1&2\end{pmatrix}=\begin{pmatrix}1/3&1/3\\1/6&-1/3\end{pmatrix}.\]
+                \[[DF]^{-1}F(1,1)=\begin{pmatrix}1/3&1/3\\1/6&-1/3\end{pmatrix}\begin{pmatrix}-2\\1\end{pmatrix}=\begin{pmatrix}-1/3\\-2/3\end{pmatrix}.\]
+                <div class="key-result">
+                  \[\mathbf{x}_1=(1,1)-(-1/3,-2/3)=(4/3,\;5/3)\approx(1.333,\;1.667).\]
+                </div>
+                <strong>Step 2:</strong> \(F(4/3,5/3)=\begin{pmatrix}16/9+25/9-4\\4/3-25/9+1\end{pmatrix}=\begin{pmatrix}41/9-36/9\\12/9-25/9+9/9\end{pmatrix}=\begin{pmatrix}5/9\\-4/9\end{pmatrix}.\)
+                \([DF(4/3,5/3)]=\begin{pmatrix}8/3&10/3\\1&-10/3\end{pmatrix}\), \(\det=-80/9-10/3=-110/9.\)
+                \([DF]^{-1}F\approx\frac{9}{-110}\begin{pmatrix}-10/3&-10/3\\-1&8/3\end{pmatrix}\begin{pmatrix}5/9\\-4/9\end{pmatrix}=\frac{9}{-110}\begin{pmatrix}-50/27+40/27\\-5/9-32/27\end{pmatrix}\)
+                \(=\frac{9}{-110}\begin{pmatrix}-10/27\\-47/27\end{pmatrix}\approx\begin{pmatrix}0.034\\0.143\end{pmatrix}.\)
+                <div class="key-result">
+                  \[\mathbf{x}_2\approx(1.333-0.034,\;1.667-0.143)\approx(1.299,\;1.524).\]
+                </div>
+                Check: \(F(1.299,1.524)\approx\begin{pmatrix}1.687+2.323-4\\1.299-2.323+1\end{pmatrix}\approx\begin{pmatrix}0.01\\-0.02\end{pmatrix}\approx\mathbf{0}\) ✓ Converging to a solution on the circle \(x^2+y^2=4\).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end subject-block -->
+
+    <div class="footer-note">
+      Calc A2 · Newton's Method · Ch.13.4 · Saturday 30 May 2026 · Week 1 · Good luck Rafi ✦
+    </div>
+  </div><!-- end .main -->
+
+  <!-- ── Timer chip ── -->
+  <div class="timer-chip" id="timerChip">
+    <span class="timer-label">elapsed</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+  </div>
+
+  <script>
+    // Answer toggle
+    function toggleAns(id) {
+      const el = document.getElementById(id);
+      const btn = el.previousElementSibling;
+      el.classList.toggle('open');
+      btn.textContent = el.classList.contains('open') ? 'Hide Answer' : 'Show Answer';
+    }
+
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      document.getElementById('pbar').style.width = pct + '%';
+    });
+
+    // Session timer — 50 min session (P1 is 08:00–09:35 = 95 min, but practice slot ~50 min)
+    const SESSION_SECONDS = 50 * 60;
+    const start = Date.now();
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    setInterval(() => {
+      const elapsed = Math.floor((Date.now() - start) / 1000);
+      const m = Math.floor(elapsed / 60);
+      const s = elapsed % 60;
+      document.getElementById('timerDisplay').textContent = pad(m) + ':' + pad(s);
+
+      const chip = document.getElementById('timerChip');
+      chip.classList.remove('warn', 'urgent');
+      if (elapsed >= SESSION_SECONDS * 0.85) chip.classList.add('urgent');
+      else if (elapsed >= SESSION_SECONDS * 0.65) chip.classList.add('warn');
+    }, 1000);
+  </script>
+
 </body>
 </html>
