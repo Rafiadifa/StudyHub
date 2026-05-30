@@ -6,7 +6,269 @@
 <title>Practice — Saturday 30 May</title>
 <link rel="stylesheet" href="../style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  /* ── Page-specific additions ── */
+  .hero::before {
+    background: radial-gradient(circle, rgba(244,114,182,0.07) 0%, transparent 70%);
+  }
 
+  /* ── Problem container ── */
+  .problem {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .problem-header {
+    padding: 14px 20px 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .problem-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .problem-num.calc { color: var(--calc); }
+  .problem-num.la   { color: var(--la); }
+  .problem-num.cpp  { color: var(--cpp); }
+  .problem-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .pts {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+
+  .problem-body { padding: 18px 20px; }
+
+  .context-box {
+    background: var(--bg);
+    border-left: 3px solid var(--border);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    color: var(--text2);
+    font-size: 0.92rem;
+    font-style: italic;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .define-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  /* context-box accent per subject */
+  .context-calc { border-left-color: rgba(96,165,250,0.4); }
+  .context-la   { border-left-color: rgba(244,114,182,0.4); }
+  .context-cpp  { border-left-color: rgba(74,222,128,0.4); }
+
+  ol.parts { list-style: none; padding: 0; }
+  ol.parts li {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(42,42,51,0.8);
+    font-size: 0.92rem;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  ol.parts li:last-child { border-bottom: none; }
+  .part-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    min-width: 26px;
+    flex-shrink: 0;
+  }
+  .part-label.calc { color: var(--calc); }
+  .part-label.la   { color: var(--la); }
+  .part-label.cpp  { color: var(--cpp); }
+
+  /* ── Code blocks ── */
+  pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text2);
+    overflow-x: auto;
+    margin: 10px 0;
+    line-height: 1.7;
+  }
+  .kw  { color: #c792ea; }
+  .ty  { color: #82aaff; }
+  .cm  { color: var(--text3); font-style: italic; }
+  .fn  { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .op  { color: var(--text2); }
+
+  /* ── Answer toggle ── */
+  .ans-toggle {
+    margin-top: 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+  .ans-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .ans-btn:hover { color: var(--text2); border-color: var(--text3); }
+  .ans-btn.calc:hover { color: var(--calc); border-color: rgba(96,165,250,0.5); }
+  .ans-btn.la:hover   { color: var(--la);   border-color: rgba(244,114,182,0.5); }
+  .ans-btn.cpp:hover  { color: var(--cpp);  border-color: rgba(74,222,128,0.5); }
+
+  .answer {
+    display: none;
+    margin-top: 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-size: 0.88rem;
+    color: var(--text2);
+    line-height: 1.75;
+  }
+  .answer.open { display: block; }
+
+  .ans-part { margin: 10px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .ans-part:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .ans-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .ans-label.calc { color: var(--calc); }
+  .ans-label.la   { color: var(--la); }
+  .ans-label.cpp  { color: var(--cpp); }
+
+  .key-result {
+    background: var(--bg2);
+    border-left: 3px solid var(--border);
+    padding: 8px 14px;
+    margin: 8px 0;
+    border-radius: 0 5px 5px 0;
+    font-size: 0.9rem;
+  }
+  .key-result.calc { border-left-color: rgba(96,165,250,0.5); }
+  .key-result.la   { border-left-color: rgba(244,114,182,0.5); }
+  .key-result.cpp  { border-left-color: rgba(74,222,128,0.5); }
+
+  .note {
+    font-style: italic;
+    color: var(--text3);
+    font-size: 0.82rem;
+    margin-top: 6px;
+  }
+
+  /* ── Concept chip ── */
+  .concept-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0 16px;
+  }
+  .concept-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--text3);
+    background: var(--bg);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Formula reference box ── */
+  .formula-ref {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+  .formula-ref-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  /* ── Timer ── */
+  .timer-chip {
+    position: fixed;
+    bottom: 24px; right: 28px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    padding: 7px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    z-index: 20;
+  }
+  .timer-chip span { color: var(--text3); font-size: 0.6rem; display: block; text-align: center; margin-bottom: 2px; }
+
+  /* ── Progress ── */
+  .progress-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .progress-bar { height: 2px; background: var(--la); width: 0%; transition: width 0.2s; }
+
+  /* ── Warning badge ── */
+  .hard-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #f87171;
+    letter-spacing: 0.06em;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+</style>
 </head>
 <body>
 
