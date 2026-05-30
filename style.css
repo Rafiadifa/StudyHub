@@ -333,6 +333,41 @@ body {
 }
 .placeholder-back:hover { color: var(--text2); }
 
+/* ── Timer chip ── */
+.timer-chip {
+  position: fixed;
+  bottom: 28px;
+  right: 32px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 20px 6px;
+  font-family: 'DM Mono', monospace;
+  color: var(--text2);
+  letter-spacing: 0.08em;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: border-color 0.3s;
+}
+.timer-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.timer-display {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.timer-chip.warn   { border-color: rgba(251,146,60,0.5); }
+.timer-chip.warn   .timer-display { color: var(--dt); }
+.timer-chip.urgent { border-color: rgba(239,68,68,0.5); }
+.timer-chip.urgent .timer-display { color: #f87171; }
+
 /* ── Animation ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
