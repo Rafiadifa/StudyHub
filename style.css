@@ -9,30 +9,30 @@
 
 /* ── Variables ── */
 :root {
-  --bg:    #0f0f11;
-  --bg2:   #16161a;
-  --bg3:   #1e1e24;
-  --border:#2a2a33;
-  --text:  #e8e8f0;
-  --text2: #8888a0;
-  --text3: #55556a;
-  --cpp:   #4ade80;
-  --calc:  #60a5fa;
-  --la:    #f472b6;
-  --dt:    #fb923c;
-  --mgmt:  #a78bfa;
+  --bg:    #faf9f7;
+  --bg2:   #ffffff;
+  --bg3:   #f1efe9;
+  --border:#e2ded5;
+  --text:  #23211c;
+  --text2: #6b6760;
+  --text3: #9c978d;
+  --cpp:   #15803d;
+  --calc:  #1d4ed8;
+  --la:    #be185d;
+  --dt:    #c2570c;
+  --mgmt:  #6d28d9;
 
   /* Per-page accent. Pages set body.subject-X to switch. Default = calc. */
   --accent:     var(--calc);
-  --accent-08:  rgba(96,165,250,0.08);
-  --accent-25:  rgba(96,165,250,0.25);
-  --accent-40:  rgba(96,165,250,0.4);
+  --accent-08:  rgba(29,78,216,0.07);
+  --accent-25:  rgba(29,78,216,0.22);
+  --accent-40:  rgba(29,78,216,0.4);
 }
-body.subject-calc { --accent: var(--calc); --accent-08: rgba(96,165,250,0.08); --accent-25: rgba(96,165,250,0.25); --accent-40: rgba(96,165,250,0.4); }
-body.subject-la   { --accent: var(--la);   --accent-08: rgba(244,114,182,0.08); --accent-25: rgba(244,114,182,0.25); --accent-40: rgba(244,114,182,0.4); }
-body.subject-cpp  { --accent: var(--cpp);  --accent-08: rgba(74,222,128,0.08);  --accent-25: rgba(74,222,128,0.25);  --accent-40: rgba(74,222,128,0.4); }
-body.subject-dt   { --accent: var(--dt);   --accent-08: rgba(251,146,60,0.08);  --accent-25: rgba(251,146,60,0.25);  --accent-40: rgba(251,146,60,0.4); }
-body.subject-mgmt { --accent: var(--mgmt); --accent-08: rgba(167,139,250,0.08); --accent-25: rgba(167,139,250,0.25); --accent-40: rgba(167,139,250,0.4); }
+body.subject-calc { --accent: var(--calc); --accent-08: rgba(29,78,216,0.07); --accent-25: rgba(29,78,216,0.22); --accent-40: rgba(29,78,216,0.4); }
+body.subject-la   { --accent: var(--la);   --accent-08: rgba(190,24,93,0.07); --accent-25: rgba(190,24,93,0.22); --accent-40: rgba(190,24,93,0.4); }
+body.subject-cpp  { --accent: var(--cpp);  --accent-08: rgba(21,128,61,0.07);  --accent-25: rgba(21,128,61,0.22);  --accent-40: rgba(21,128,61,0.4); }
+body.subject-dt   { --accent: var(--dt);   --accent-08: rgba(194,87,12,0.07);  --accent-25: rgba(194,87,12,0.22);  --accent-40: rgba(194,87,12,0.4); }
+body.subject-mgmt { --accent: var(--mgmt); --accent-08: rgba(109,40,217,0.07); --accent-25: rgba(109,40,217,0.22); --accent-40: rgba(109,40,217,0.4); }
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,7 +54,7 @@ body {
   gap: 16px;
   position: sticky;
   top: 0;
-  background: rgba(15,15,17,0.92);
+  background: rgba(250,249,247,0.9);
   backdrop-filter: blur(12px);
   z-index: 10;
 }
@@ -145,7 +145,7 @@ body {
   color: var(--text2); letter-spacing: 0.08em;
   z-index: 100;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 16px rgba(40,36,28,0.1);
   transition: border-color 0.3s;
 }
 .timer-label   { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); }
@@ -326,7 +326,7 @@ details.flash::before {
 details.flash:hover {
   border-color: var(--flash-color);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 20px rgba(40,36,28,0.1);
 }
 details.flash:hover::before { opacity: 1; }
 details.flash[open] {
@@ -441,3 +441,46 @@ details.flash[open] .flash-hint::after { transform: rotate(180deg); }
   .parts > li         { flex-direction: column; gap: 4px; }
   .part-label         { padding-top: 0; }
 }
+
+/* ─────────────────────────────────────────
+   COMPLETION TRACKING (index hub)
+───────────────────────────────────────── */
+/* Card becomes a positioning context for the check button */
+.card { position: relative; }
+
+/* Tappable check circle in the top-right of each card */
+.card-check {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  z-index: 3;
+  flex-shrink: 0;
+  padding: 0;
+}
+.card-check:hover { border-color: var(--accent-40); transform: scale(1.12); }
+.card-check::after {
+  content: "✓";
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+/* Done state */
+.card[data-done="true"] { opacity: 0.55; }
+.card[data-done="true"] .card-check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.card[data-done="true"] .card-check::after { opacity: 1; }
+.card[data-done="true"] > :not(.card-check) { text-decoration: line-through; text-decoration-color: var(--text3); }
+
+/* Give cards room so the long titles don't run under the check circle */
+.card { padding-right: 42px; }
