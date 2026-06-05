@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lin Alg · Computational Summary · Ch. 3–8</title>
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
+</head>
+<body class="subject-la">
+
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+
+<header class="topbar">
+  <span class="topbar-title">Rafi's Study Hub</span>
+  <span class="topbar-sub">/ lin-alg / computational summary</span>
+  <span class="topbar-date">FINAL · 25 JUN 2026</span>
+</header>
+
+<section class="hero">
+  <h1>Computational Summary <em>· Ch. 3–8</em></h1>
+  <p class="hero-meta">
+    Step-by-step recipes for every algorithm on the final. Includes the professor's specific
+    procedures — especially the column-shearing way of building \(R\) from Gram-Schmidt. Tap any
+    card to reveal the numbered steps. Pair this with the Theory Summary for the proofs and
+    intuitions behind each method.
+  </p>
+  <div class="exam-pills">
+    <a href="#ch3" class="pill pill-la" style="text-decoration:none">Ch.3</a>
+    <a href="#ch4" class="pill pill-la" style="text-decoration:none">Ch.4</a>
+    <a href="#ch5" class="pill pill-la" style="text-decoration:none">Ch.5</a>
+    <a href="#ch6" class="pill pill-la" style="text-decoration:none">Ch.6</a>
+    <a href="#ch7" class="pill pill-la" style="text-decoration:none">Ch.7</a>
+    <a href="#ch8" class="pill pill-la" style="text-decoration:none">Ch.8</a>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- ════════════ CH. 3 ════════════ -->
+  <div class="subject-block" id="ch3">
+    <div class="subject-header">
+      <span class="subject-dot dot-la"></span>
+      <div>
+        <div class="subject-label">Chapter 3 · Computational</div>
+        <h2 class="subject-title text-la">Gaussian Elimination Recipes</h2>
+      </div>
+      <div class="subject-exam-date"><strong>Time</strong>2–4 min per 3×3</div>
+    </div>
+
+    <div class="flash-grid">
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Row-reduce a matrix to RREF</span>
+      </summary><div class="flash-a">
+        <strong>1.</strong> Find the leftmost non-zero column. If the top entry is zero, swap rows.
+        <strong>2.</strong> Scale that row so the pivot is \(1\).
+        <strong>3.</strong> Use row 3 ops to clear <em>every</em> other entry in that column (both above and below).
+        <strong>4.</strong> Cover the pivot row, recurse on the submatrix below-and-right.
+        <strong>5.</strong> Stop when the submatrix is all zeros.<br>
+        <em>Cross-check:</em> count pivots — that's the rank.
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Read off solutions to \(A\mathbf x=\mathbf b\)</span>
+      </summary><div class="flash-a">
+        Augment to \([A\,|\,\mathbf b]\) and reduce.
+        <strong>1.</strong> If any row reads \([0\cdots0\,|\,c\ne0]\): <strong>inconsistent</strong>, no solution.
+        <strong>2.</strong> Otherwise set free variables to \(0\) → read off the <strong>particular solution</strong> \(\mathbf x_p\) directly from the pivots.
+        <strong>3.</strong> For each free variable in turn, set it to 1 (others to 0) → gives a basis vector of \(\operatorname{Null}(A)\).
+        <strong>4.</strong> Full solution: \(\mathbf x_p+\operatorname{span}\{\text{null-space basis}\}\).
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 03</span>
+        <span class="flash-q">Test invertibility of a square \(A\)</span>
+      </summary><div class="flash-a">
+        Reduce \(A\) to RREF. Invertible \(\iff\) RREF \(=I\) \(\iff\) \(n\) pivots \(\iff\) \(\det(A)\ne0\) \(\iff\) \(\operatorname{Null}(A)=\{0\}\).
+        To compute \(A^{-1}\) directly: row-reduce \([A\,|\,I]\) to \([I\,|\,A^{-1}]\).
+      </div></details>
+
+    </div>
+  </div>
+
+  <!-- ════════════ CH. 4 ════════════ -->
+  <div class="subject-block" id="ch4">
+    <div class="subject-header">
+      <span class="subject-dot dot-la"></span>
+      <div>
+        <div class="subject-label">Chapter 4 · Computational</div>
+        <h2 class="subject-title text-la">Matrix Algebra &amp; LU</h2>
+      </div>
+      <div class="subject-exam-date"><strong>Time</strong>5–8 min for a 3×3 LU</div>
+    </div>
+
+    <div class="flash-grid">
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">LU decomposition by hand (no pivoting)</span>
+      </summary><div class="flash-a">
+        <strong>1.</strong> Run elimination using only "\(R_i\to R_i-\ell_{ij}R_j\)" (no swaps, no scaling).
+        <strong>2.</strong> Track every multiplier \(\ell_{ij}\); place it in row \(i\), col \(j\) of \(L\).
+        <strong>3.</strong> The resulting echelon matrix is \(U\); fill \(L\)'s diagonal with \(1\)s.
+        <strong>4.</strong> Verify: \(LU=A\).<br>
+        <em>If any pivot lands on zero,</em> a swap is required → see PLU below.
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">PLU when pivoting is needed</span>
+      </summary><div class="flash-a">
+        <strong>1.</strong> Whenever a pivot is zero, swap with a lower row whose entry is non-zero.
+        <strong>2.</strong> Record the swap as a permutation matrix \(P\) (each swap left-multiplies the previous \(P\)).
+        <strong>3.</strong> Continue elimination; the multipliers fill \(L\) <em>using the post-swap row indices</em>.
+        <strong>4.</strong> Result: \(PA=LU\). Verify by computing both sides.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 03</span>
+        <span class="flash-q">Solve \(A\mathbf x=\mathbf b\) via LU</span>
+      </summary><div class="flash-a">
+        Once \(A=LU\) (or \(PA=LU\)) is cached, every new \(\mathbf b\) costs only \(\sim 2n^2\) work:
+        <strong>1.</strong> (If using \(P\): replace \(\mathbf b\) with \(P\mathbf b\).)
+        <strong>2.</strong> <strong>Forward substitution</strong>: solve \(L\mathbf y=\mathbf b\) top-down.
+        <strong>3.</strong> <strong>Back substitution</strong>: solve \(U\mathbf x=\mathbf y\) bottom-up.
+        <strong>4.</strong> Verify: \(A\mathbf x=\mathbf b\).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 04</span>
+        <span class="flash-q">Block matrix multiplication</span>
+      </summary><div class="flash-a">
+        Partition \(A=\begin{psmallmatrix}A_{11}&amp;A_{12}\\A_{21}&amp;A_{22}\end{psmallmatrix}\), \(B=\begin{psmallmatrix}B_{11}&amp;B_{12}\\B_{21}&amp;B_{22}\end{psmallmatrix}\)
+        <em>with compatible block sizes</em>. Then \(AB\)'s blocks are computed by the usual matrix-product formula <em>treating the blocks as scalars</em>:
+        \((AB)_{11}=A_{11}B_{11}+A_{12}B_{21}\), and so on.<br>
+        <em>Trick:</em> If \(A\) is block upper triangular and \(B\) is block lower triangular, many blocks vanish.
+      </div></details>
+
+    </div>
+  </div>
+
+  <!-- ════════════ CH. 5 ════════════ -->
+  <div class="subject-block" id="ch5">
+    <div class="subject-header">
+      <span class="subject-dot dot-la"></span>
+      <div>
+        <div class="subject-label">Chapter 5 · Computational</div>
+        <h2 class="subject-title text-la">Bases, Coordinates, Rank</h2>
+      </div>
+      <div class="subject-exam-date"><strong>Time</strong>5–10 min per problem</div>
+    </div>
+
+    <div class="flash-grid">
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Find a basis for a span</span>
+      </summary><div class="flash-a">
+        Given vectors \(v_1,\dots,v_k\):
+        <strong>1.</strong> Place them as <em>rows</em> of a matrix \(M\).
+        <strong>2.</strong> Row-reduce \(M\) to RREF.
+        <strong>3.</strong> The <strong>non-zero rows</strong> of RREF form a basis of \(\operatorname{span}\{v_i\}\). The number of non-zero rows is the dimension.<br>
+        <em>Alternative (column method):</em> place as columns, reduce, and take the <strong>original columns</strong> in the pivot positions.
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Compute the coordinate vector \([v]_{\mathcal B}\)</span>
+      </summary><div class="flash-a">
+        Given a basis \(\mathcal B=(b_1,\dots,b_n)\) and a vector \(v\):
+        <strong>1.</strong> Set up \(v=c_1b_1+\cdots+c_nb_n\) as a linear system \(Bc=v\), where \(B\) has the \(b_j\) as columns.
+        <strong>2.</strong> Solve via Gaussian elimination (or, if \(B\) is invertible, use \(c=B^{-1}v\)).
+        <strong>3.</strong> \([v]_{\mathcal B}=(c_1,\dots,c_n)^T\).<br>
+        <em>For abstract spaces:</em> first convert to a standard basis representation (e.g. for \(P_2\), use \((1,x,x^2)\)).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 03</span>
+        <span class="flash-q">Build the change-of-basis matrix \(I_{\mathcal C\leftarrow\mathcal B}\)</span>
+      </summary><div class="flash-a">
+        <strong>Columns of \(I_{\mathcal C\leftarrow\mathcal B}\) are the \(\mathcal B\)-basis vectors written in \(\mathcal C\)-coordinates.</strong><br>
+        <strong>1.</strong> For each \(b_j\), solve \(b_j=\sum_i [b_j]_{\mathcal C,i}\,c_i\) to find the \(\mathcal C\)-coordinates.
+        <strong>2.</strong> Stack these as columns.<br>
+        <strong>Sanity check:</strong> \(I_{\mathcal C\leftarrow\mathcal B}\cdot I_{\mathcal B\leftarrow\mathcal C}=I\). One direction is often easier than the other — compute the easier one, invert for the other.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 04</span>
+        <span class="flash-q">Change the matrix of a linear map</span>
+      </summary><div class="flash-a">
+        Given \(T:V\to V\) and \([T]_{\mathcal B}\), to get \([T]_{\mathcal C}\):
+        <strong>1.</strong> Compute \(P=I_{\mathcal C\leftarrow\mathcal B}\) and \(P^{-1}=I_{\mathcal B\leftarrow\mathcal C}\).
+        <strong>2.</strong> \([T]_{\mathcal C}=P\,[T]_{\mathcal B}\,P^{-1}\).
+        <strong>3.</strong> <em>Cross-check directly:</em> the \(j\)-th column of \([T]_{\mathcal C}\) is \([T(c_j)]_{\mathcal C}\).<br>
+        <em>Invariants check:</em> trace, determinant, eigenvalues, and characteristic polynomial must agree between \([T]_{\mathcal B}\) and \([T]_{\mathcal C}\).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 05</span>
+        <span class="flash-q">Find the four fundamental subspaces</span>
+      </summary><div class="flash-a">
+        Reduce \(A\) to RREF. Then:
+        <strong>Col(A):</strong> original columns of \(A\) in the pivot positions.
+        <strong>Row(A):</strong> non-zero rows of RREF.
+        <strong>Null(A):</strong> set free variables to standard basis vectors, back-substitute for pivots.
+        <strong>LeftNull(A):</strong> reduce \(A^T\) and apply Null procedure (or: find row dependencies in original \(A\)).
+        Dimensions: rank \(=\dim\operatorname{Col}=\dim\operatorname{Row}\); nullity \(=n-r\); leftnullity \(=m-r\).
+      </div></details>
+
+    </div>
+  </div>
+
+  <!-- ════════════ CH. 6 ════════════ -->
+  <div class="subject-block" id="ch6">
+    <div class="subject-header">
+      <span class="subject-dot dot-la"></span>
+      <div>
+        <div class="subject-label">Chapter 6 · Computational</div>
+        <h2 class="subject-title text-la">Inner Products, Cholesky, Gram-Schmidt, Projections</h2>
+      </div>
+      <div class="subject-exam-date"><strong>Time</strong>10–15 min for full QR</div>
+    </div>
+
+    <div class="formula-ref">
+      <strong>This is the chapter the professor emphasises most.</strong> Yang's specific column-shearing perspective of Gram-Schmidt
+      (the "dot product with itself and with every other column" procedure) is below in Recipe 03 — the one you asked about.
+    </div>
+
+    <div class="flash-grid">
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Gram matrix and positive-definiteness check</span>
+      </summary><div class="flash-a">
+        Given \(A\), compute \(G=A^TA\). Then \(G_{ij}=\mathbf a_i\cdot\mathbf a_j\) (dot product of columns of \(A\)).
+        Always symmetric PSD. <strong>Test PD:</strong> compute its leading principal minors — all must be positive (Sylvester's criterion), or equivalently all eigenvalues \(>0\), or Cholesky succeeds.
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Cholesky decomposition \(G=LL^T\)</span>
+      </summary><div class="flash-a">
+        For a positive definite \(G\), compute \(L\) lower triangular with positive diagonal:
+        <strong>1.</strong> \(l_{11}=\sqrt{G_{11}}\).
+        <strong>2.</strong> \(l_{i1}=G_{i1}/l_{11}\) for \(i>1\) (first column of \(L\)).
+        <strong>3.</strong> For \(j=2,\dots,n\): \(l_{jj}=\sqrt{G_{jj}-\sum_{k<j}l_{jk}^2}\); then \(l_{ij}=(G_{ij}-\sum_{k<j}l_{ik}l_{jk})/l_{jj}\) for \(i>j\).
+        <strong>4.</strong> If any \(l_{jj}^2\le0\), \(G\) is <em>not</em> positive definite — Cholesky has detected non-PDness.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">★ Apply · 03</span>
+        <span class="flash-q">Gram-Schmidt via column-shearing (Prof. Yang's procedure → QR)</span>
+      </summary><div class="flash-a">
+        <strong>This is the "dot product with itself and other columns" recipe from §6.9.2.</strong> Given \(A\) with independent columns \([\mathbf a_1\,|\,\mathbf a_2\,|\,\cdots\,|\,\mathbf a_n]\):
+        <br>
+        <strong>1.</strong> Compute \(\mathbf a_1\cdot\mathbf a_1\) (= \(\|\mathbf a_1\|^2\)) and the dot products \(\mathbf a_1\cdot\mathbf a_j\) for every \(j>1\).
+        <strong>2.</strong> The <em>ratios</em> \(r_{1j}=\dfrac{\mathbf a_1\cdot\mathbf a_j}{\mathbf a_1\cdot\mathbf a_1}\) are the shearing coefficients. <strong>They become row 1 of an upper triangular matrix \(U\) to the right.</strong>
+        <strong>3.</strong> Shear: replace \(\mathbf a_j\to\mathbf a_j-r_{1j}\mathbf a_1\) for each \(j>1\). Now all columns \(j>1\) are orthogonal to column 1.
+        <strong>4.</strong> Move on to column 2 and repeat steps 1–3 with the second column on columns 3 onward — these ratios become row 2 of \(U\).
+        <strong>5.</strong> Continue until you've used every column. You now have an orthogonal matrix \(W=[\mathbf w_1\,|\,\cdots\,|\,\mathbf w_n]\) and \(A=WU\).
+        <strong>6.</strong> <em>Normalise:</em> let \(D=\operatorname{diag}(\|\mathbf w_i\|)\), then \(Q=WD^{-1}\) is orthonormal and \(R=DU\) is upper triangular with positive diagonal.
+        <strong>7.</strong> Final QR: \(A=QR\).
+        <br><br><em>Why this works:</em> each shearing is a column operation \(\mathbf a_j\to\mathbf a_j-r_{ij}\mathbf a_i\), which is exactly right-multiplication by an elementary upper-triangular matrix.
+        Compose them all and you get the upper-triangular \(U\); normalise to get \(R\).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 04</span>
+        <span class="flash-q">Express a vector in an ONB</span>
+      </summary><div class="flash-a">
+        Given an ONB \((q_1,\dots,q_n)\): the coordinates of \(v\) are just inner products:
+        \[ [v]_i = \langle v,q_i\rangle,\qquad v=\sum_i \langle v,q_i\rangle\,q_i.\]
+        No system to solve — orthonormality means \(Q^TQ=I\), so \(Q^{-1}=Q^T\).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 05</span>
+        <span class="flash-q">Orthogonal projection &amp; least squares</span>
+      </summary><div class="flash-a">
+        Project a vector \(\mathbf b\) onto \(\operatorname{Col}(A)\):
+        <strong>1.</strong> Form the projection matrix \(P=A(A^TA)^{-1}A^T\). Check \(P^2=P\) and \(P^T=P\).
+        <strong>2.</strong> Projection of \(\mathbf b\) is \(\hat{\mathbf b}=P\mathbf b\).
+        <strong>3.</strong> Residual: \(\mathbf r=\mathbf b-\hat{\mathbf b}\); verify \(\mathbf r\perp\operatorname{Col}(A)\) (i.e., \(A^T\mathbf r=\mathbf 0\)).
+        <br><strong>Least squares</strong> to (possibly inconsistent) \(A\mathbf x=\mathbf b\): solve the normal equations \(A^TA\mathbf x=A^T\mathbf b\).
+        With \(A=QR\): just solve \(R\mathbf x=Q^T\mathbf b\) by back-substitution — far more efficient.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 06</span>
+        <span class="flash-q">Line / plane / polynomial fitting</span>
+      </summary><div class="flash-a">
+        Fit \(y=mx+c\) to data \((x_i,y_i)\): set \(A=\begin{psmallmatrix}x_1&1\\x_2&1\\\vdots&\vdots\end{psmallmatrix}\), \(\mathbf b=(y_1,y_2,\ldots)^T\); solve \(A^TA(m,c)^T=A^T\mathbf b\).
+        For a degree-\(d\) polynomial fit: same idea with \(A_{ij}=x_i^{j-1}\) (Vandermonde-style).
+      </div></details>
+
+    </div>
+  </div>
+
+  <!-- ════════════ CH. 7 ════════════ -->
+  <div class="subject-block" id="ch7">
+    <div class="subject-header">
+      <span class="subject-dot dot-la"></span>
+      <div>
+        <div class="subject-label">Chapter 7 · Computational</div>
+        <h2 class="subject-title text-la">Determinants</h2>
+      </div>
+      <div class="subject-exam-date"><strong>Time</strong>1–3 min for 3×3</div>
+    </div>
+
+    <div class="flash-grid">
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Cofactor expansion (\(n\times n\))</span>
+      </summary><div class="flash-a">
+        Pick a row or column with many zeros. For each non-zero entry \(a_{ij}\):
+        <strong>1.</strong> Delete row \(i\) and column \(j\) — leaves a \((n-1)\times(n-1)\) minor \(M_{ij}\).
+        <strong>2.</strong> Sign: \((-1)^{i+j}\) (checkerboard).
+        <strong>3.</strong> \(\det(A)=\sum_{j}(-1)^{i+j}a_{ij}\det(M_{ij})\).
+        <strong>4.</strong> Recurse until you hit \(2\times2\): \(\det\!\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}=ad-bc\).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Determinant via row reduction</span>
+      </summary><div class="flash-a">
+        Faster for large matrices. Row-reduce \(A\) to upper triangular \(U\), tracking:
+        <strong>Swaps:</strong> each one multiplies the determinant by \(-1\).
+        <strong>Scaling row by \(c\):</strong> divides the determinant by \(c\) (so the new matrix has \(c\) times the original \(\det\)).
+        <strong>"Add multiple of one row to another":</strong> doesn't change \(\det\).
+        <strong>End:</strong> \(\det(A)=\pm\prod\) diagonal entries of \(U\), with sign from the number of swaps.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 03</span>
+        <span class="flash-q">Cramer's rule &amp; properties</span>
+      </summary><div class="flash-a">
+        For invertible \(A\), solve \(A\mathbf x=\mathbf b\) by \(x_i=\det(A_i)/\det(A)\), where \(A_i\) is \(A\) with column \(i\) replaced by \(\mathbf b\).
+        Mostly for theory — slow in practice.<br>
+        <strong>Key properties to spot-check:</strong> \(\det(I)=1\); \(\det(AB)=\det(A)\det(B)\); \(\det(A^T)=\det(A)\); \(\det(A^{-1})=1/\det(A)\); \(\det(cA)=c^n\det(A)\).
+      </div></details>
+
+    </div>
+  </div>
+
+  <!-- ════════════ CH. 8 ════════════ -->
+  <div class="subject-block" id="ch8">
+    <div class="subject-header">
+      <span class="subject-dot dot-la"></span>
+      <div>
+        <div class="subject-label">Chapter 8 · Computational</div>
+        <h2 class="subject-title text-la">Eigenstuff, Spectral, SVD</h2>
+      </div>
+      <div class="subject-exam-date"><strong>Time</strong>15–25 min for full SVD</div>
+    </div>
+
+    <div class="flash-grid">
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Find eigenvalues &amp; eigenvectors</span>
+      </summary><div class="flash-a">
+        <strong>1.</strong> Compute \(p_A(\lambda)=\det(\lambda I-A)\) — the characteristic polynomial.
+        <strong>2.</strong> Factor \(p_A\) to find the eigenvalues \(\lambda_i\) (over \(\mathbb C\) if needed).
+        <strong>3.</strong> For each \(\lambda_i\): solve \((A-\lambda_iI)\mathbf v=\mathbf 0\) by row reduction → basis vectors of the eigenspace \(E_{\lambda_i}\).
+        <strong>4.</strong> The dimension of each \(E_{\lambda_i}\) is the <strong>geometric multiplicity</strong>; the multiplicity of \(\lambda_i\) as a root is the <strong>algebraic multiplicity</strong>.
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Diagonalise: \(A=PDP^{-1}\)</span>
+      </summary><div class="flash-a">
+        Requires \(n\) independent eigenvectors (i.e., every algebraic multiplicity equals geometric).
+        <strong>1.</strong> Find eigenvalues \(\lambda_1,\dots,\lambda_n\) (with multiplicity) and eigenvectors \(\mathbf v_1,\dots,\mathbf v_n\).
+        <strong>2.</strong> Set \(P=[\mathbf v_1\,|\,\cdots\,|\,\mathbf v_n]\) and \(D=\operatorname{diag}(\lambda_1,\dots,\lambda_n)\) <em>in the same column order</em>.
+        <strong>3.</strong> Then \(A=PDP^{-1}\), \(A^k=PD^kP^{-1}\), \(e^A=Pe^DP^{-1}\) etc.<br>
+        <em>If not diagonalisable:</em> sketch the Schur form \(A=QTQ^*\) (upper triangular) instead.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 03</span>
+        <span class="flash-q">\(A^k\), Markov chains, linear ODEs</span>
+      </summary><div class="flash-a">
+        Once \(A=PDP^{-1}\): \(A^k=PD^kP^{-1}\) is just raising diagonal entries to the \(k\). Computes powers in \(O(n^3)\) regardless of \(k\).
+        <strong>Markov chain steady state:</strong> the eigenvector for \(\lambda=1\), normalised so its entries sum to \(1\); all other eigenvalues have \(|\lambda|<1\) so their contributions decay.
+        <strong>Linear ODE \(\mathbf x'=A\mathbf x\):</strong> solution is \(\mathbf x(t)=Pe^{Dt}P^{-1}\mathbf x_0\), where \(e^{Dt}=\operatorname{diag}(e^{\lambda_i t})\). Stability classified by signs of \(\operatorname{Re}(\lambda_i)\).
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 04</span>
+        <span class="flash-q">Spectral decomposition (symmetric matrices)</span>
+      </summary><div class="flash-a">
+        For symmetric \(A=A^T\):
+        <strong>1.</strong> Find eigenvalues — guaranteed all real.
+        <strong>2.</strong> Find eigenvectors for each.
+        <strong>3.</strong> Eigenvectors from distinct eigenvalues are automatically orthogonal. Within a repeated eigenvalue, apply Gram-Schmidt to the eigenspace basis.
+        <strong>4.</strong> Normalise — assemble \(Q\), an orthogonal matrix. Set \(\Lambda=\operatorname{diag}(\lambda_i)\).
+        <strong>5.</strong> Then \(A=Q\Lambda Q^T\); since \(Q\) is orthogonal, \(Q^{-1}=Q^T\) — no inversion needed.
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">★ Apply · 05</span>
+        <span class="flash-q">Singular Value Decomposition step-by-step</span>
+      </summary><div class="flash-a">
+        For any \(m\times n\) matrix \(A\), compute \(A=U\Sigma V^T\):
+        <strong>1.</strong> Form \(A^TA\) (\(n\times n\), symmetric PSD).
+        <strong>2.</strong> Find its eigenvalues \(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_n\ge 0\). The <strong>singular values</strong> are \(\sigma_i=\sqrt{\lambda_i}\) (only the non-zero ones count toward rank).
+        <strong>3.</strong> Find orthonormal eigenvectors of \(A^TA\) — these become the columns of \(V\), in the same order as the \(\sigma_i\).
+        <strong>4.</strong> For each \(\sigma_i>0\): set \(\mathbf u_i=A\mathbf v_i/\sigma_i\) — these are orthonormal columns of \(U\).
+        <strong>5.</strong> If \(m>r=\operatorname{rank}(A)\): extend \(\{\mathbf u_1,\dots,\mathbf u_r\}\) to an ONB of \(\mathbb R^m\) (Gram-Schmidt on any basis of the complement).
+        <strong>6.</strong> Assemble \(\Sigma\) as an \(m\times n\) matrix with the \(\sigma_i\) on the diagonal and zeros elsewhere.
+        <strong>7.</strong> Verify: \(U\Sigma V^T=A\).<br>
+        <em>Why the procedure works:</em> \(A^TA = V\Sigma^TU^TU\Sigma V^T = V\Sigma^T\Sigma V^T\), and \(\Sigma^T\Sigma\) is diagonal with the \(\sigma_i^2\) on the diagonal — exactly the spectral decomposition of \(A^TA\).
+      </div></details>
+
+      <details class="flash cat-apply"><summary>
+        <span class="flash-tag">Apply · 06</span>
+        <span class="flash-q">Low-rank approximation via SVD</span>
+      </summary><div class="flash-a">
+        Given \(A=U\Sigma V^T\) with singular values \(\sigma_1\ge\cdots\ge\sigma_r>0\), the best rank-\(k\) approximation is
+        \[ A_k = \sum_{i=1}^k \sigma_i\,\mathbf u_i\,\mathbf v_i^T \]
+        — keep the top \(k\) terms of the outer-product expansion.
+        Error in Frobenius norm: \(\|A-A_k\|_F=\sqrt{\sum_{i>k}\sigma_i^2}\). Used in PCA, image compression, recommender systems.
+      </div></details>
+
+      <details class="flash cat-compute"><summary>
+        <span class="flash-tag">Recipe · 07</span>
+        <span class="flash-q">Classify a quadratic form</span>
+      </summary><div class="flash-a">
+        Given \(q(\mathbf x)=\mathbf x^TA\mathbf x\) (symmetrise \(A\) if needed: \(A\leftarrow(A+A^T)/2\)):
+        <strong>1.</strong> Compute the eigenvalues of \(A\).
+        <strong>2.</strong> Classify by sign pattern:
+        all \(>0\) → <strong>positive definite</strong> (ellipsoid);
+        all \(<0\) → <strong>negative definite</strong>;
+        mix of \(\pm\) → <strong>indefinite</strong> (saddle / hyperboloid);
+        some zero → degenerate (paraboloid, cylinder, …).
+        <strong>3.</strong> For sketching the surface: diagonalise via the spectral theorem to find principal axes.<br>
+        <em>Quick test (Sylvester):</em> PD \(\iff\) all leading principal minors \(>0\).
+      </div></details>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer-note">
+  RAFI'S STUDY HUB · LINEAR ALGEBRA · COMPUTATIONAL SUMMARY · CH. 3–8
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 || 0;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+</script>
+
+</body>
+</html>
