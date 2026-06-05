@@ -278,7 +278,7 @@
     
     <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — 2×2 inverse</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(\left[\begin{array}{cc|cc}2&1&1&0\\1&1&0&1\end{array}\right]\). Swap to get a 1 pivot, or scale \(R_1\) by \(\tfrac12\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Use \(R_1\) to clear below, then \(R_2\) to clear above. After reduction the left block is \(I\).</div></div>
-<div class="step hidden"><span class="step-n">3</span><div class="step-body">Right block: \(A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}\). Verify \(AA^{-1}=I\). \(\checkmark\)</div></div></div><div class="ex-note">For 2×2 you can also use the shortcut \(A^{-1}=\tfrac1{\det A}\begin{psmallmatrix}d&-b\\-c&a\end{psmallmatrix}\) — here \(\det A=1\).</div></div>
+<div class="step hidden"><span class="step-n">3</span><div class="step-body">Right block: \(A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}\). Verify \(AA^{-1}=I\). \(\checkmark\)</div></div></div><div class="ex-note">For 2×2 you can also use the shortcut \(A^{-1}=\tfrac1{\det A}\left(\begin{smallmatrix}d&-b\\-c&a\end{smallmatrix}\right)\) — here \(\det A=1\).</div></div>
   </div>
 
   <div class="method-section limits">
@@ -370,7 +370,7 @@
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
     <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — zero second pivot</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\begin{pmatrix}1&2&1\\2&4&3\\3&7&8\end{pmatrix}\). Eliminate col 1: \(R_2-2R_1=(0,0,1)\), \(R_3-3R_1=(0,1,5)\).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">Row 2 now has a zero in the pivot (col 2) but row 3 doesn't — swap rows 2 and 3. Encode in \(P=\begin{psmallmatrix}1&0&0\\0&0&1\\0&1&0\end{psmallmatrix}\).</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">Row 2 now has a zero in the pivot (col 2) but row 3 doesn't — swap rows 2 and 3. Encode in \(P=\left(\begin{smallmatrix}1&0&0\\0&0&1\\0&1&0\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">Work with \(PA=\begin{pmatrix}1&2&1\\3&7&8\\2&4&3\end{pmatrix}\): \(\ell_{21}=3,\;\ell_{31}=2\); column 2 already clear.</div></div>
 <div class="step hidden"><span class="step-n">4</span><div class="step-body">\(L=\begin{pmatrix}1&0&0\\3&1&0\\2&0&1\end{pmatrix},\;U=\begin{pmatrix}1&2&1\\0&1&5\\0&0&1\end{pmatrix}\), and \(PA=LU\). \(\checkmark\)</div></div></div></div>
   </div>
@@ -401,7 +401,7 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — reuse one factorisation twice</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Using \(L=\begin{psmallmatrix}1&0&0\\2&1&0\\3&2&1\end{psmallmatrix},U=\begin{psmallmatrix}1&2&3\\0&1&2\\0&0&1\end{psmallmatrix}\) (so \(A=\begin{psmallmatrix}1&2&3\\2&5&8\\3&8&14\end{psmallmatrix}\)) and \(\mathbf b=(6,17,31)\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — reuse one factorisation twice</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Using \(L=\left(\begin{smallmatrix}1&0&0\\2&1&0\\3&2&1\end{smallmatrix}\right),U=\left(\begin{smallmatrix}1&2&3\\0&1&2\\0&0&1\end{smallmatrix}\right)\) (so \(A=\left(\begin{smallmatrix}1&2&3\\2&5&8\\3&8&14\end{smallmatrix}\right)\)) and \(\mathbf b=(6,17,31)\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Forward \(L\mathbf y=\mathbf b\): \(y_1=6;\;2y_1+y_2=17\Rightarrow y_2=5;\;3y_1+2y_2+y_3=31\Rightarrow y_3=3\).</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">Back \(U\mathbf x=\mathbf y\): \(x_3=3;\;x_2+2x_3=5\Rightarrow x_2=-1;\;x_1+2x_2+3x_3=6\Rightarrow x_1=-1\). So \(\mathbf x=(-1,-1,3)\).</div></div>
 <div class="step hidden"><span class="step-n">4</span><div class="step-body">For a new \(\mathbf b'=(3,9,17)\), reuse the same \(L,U\): \(\mathbf y=(3,3,2)\Rightarrow\mathbf x=(-1,-1,2)\) — no re-elimination.</div></div></div></div>
@@ -433,7 +433,7 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — block upper-triangular inverse</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">For \(M=\begin{psmallmatrix}A&B\\0&D\end{psmallmatrix}\) with \(A,D\) invertible, the inverse is \(\begin{psmallmatrix}A^{-1}&-A^{-1}BD^{-1}\\0&D^{-1}\end{psmallmatrix}\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — block upper-triangular inverse</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">For \(M=\left(\begin{smallmatrix}A&B\\0&D\end{smallmatrix}\right)\) with \(A,D\) invertible, the inverse is \(\left(\begin{smallmatrix}A^{-1}&-A^{-1}BD^{-1}\\0&D^{-1}\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Check by multiplying: the \((1,1)\) block \(=AA^{-1}=I\); the \((1,2)\) block \(=A(-A^{-1}BD^{-1})+BD^{-1}=-BD^{-1}+BD^{-1}=0\). \(\checkmark\)</div></div></div></div>
   </div>
 
@@ -444,7 +444,7 @@
 
   <div class="method-section exam">
     <div class="method-label">How it's asked on the exam</div>
-    <p>Appears in proof-style problems ('show that \(\det\begin{psmallmatrix}A&B\\0&D\end{psmallmatrix}=\det A\det D\)') and in LU when matrices are naturally partitioned.</p>
+    <p>Appears in proof-style problems ('show that \(\det\left(\begin{smallmatrix}A&B\\0&D\end{smallmatrix}\right)=\det A\det D\)') and in LU when matrices are naturally partitioned.</p>
   </div>
 </section>
 <section class="topic-panel" data-ch="5" data-topic="spanbasis">
@@ -526,8 +526,8 @@
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
     <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — ℝ³ standard to a layered basis</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(\mathcal C=(c_1,c_2,c_3)\) with \(c_1=(1,1,1),c_2=(1,1,0),c_3=(1,0,0)\); \(\mathcal B\) standard.</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(I_{\mathcal B\leftarrow\mathcal C}\) has the \(c_j\) as columns: \(\begin{psmallmatrix}1&1&1\\1&1&0\\1&0&0\end{psmallmatrix}\) (easy direction).</div></div>
-<div class="step hidden"><span class="step-n">3</span><div class="step-body">Invert to get \(I_{\mathcal C\leftarrow\mathcal B}=\begin{psmallmatrix}0&0&1\\0&1&-1\\1&-1&0\end{psmallmatrix}\); check the product is \(I\). \(\checkmark\)</div></div></div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(I_{\mathcal B\leftarrow\mathcal C}\) has the \(c_j\) as columns: \(\left(\begin{smallmatrix}1&1&1\\1&1&0\\1&0&0\end{smallmatrix}\right)\) (easy direction).</div></div>
+<div class="step hidden"><span class="step-n">3</span><div class="step-body">Invert to get \(I_{\mathcal C\leftarrow\mathcal B}=\left(\begin{smallmatrix}0&0&1\\0&1&-1\\1&-1&0\end{smallmatrix}\right)\); check the product is \(I\). \(\checkmark\)</div></div></div></div>
   </div>
 
   <div class="method-section limits">
@@ -556,8 +556,8 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — verify via invariants</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Swap map \(T(x,y,z)=(z,y,x)\): in the standard basis \([T]_{\mathcal B}=\begin{psmallmatrix}0&0&1\\0&1&0\\1&0&0\end{psmallmatrix}\).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">After a change of basis \([T]_{\mathcal C}=\begin{psmallmatrix}1&1&1\\0&0&-1\\0&-1&0\end{psmallmatrix}\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — verify via invariants</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Swap map \(T(x,y,z)=(z,y,x)\): in the standard basis \([T]_{\mathcal B}=\left(\begin{smallmatrix}0&0&1\\0&1&0\\1&0&0\end{smallmatrix}\right)\).</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">After a change of basis \([T]_{\mathcal C}=\left(\begin{smallmatrix}1&1&1\\0&0&-1\\0&-1&0\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">Check invariants: \(\operatorname{tr}=1\) both; \(\det=-1\) both; eigenvalues \(\{1,1,-1\}\) both. \(\checkmark\)</div></div></div></div>
   </div>
 
@@ -618,7 +618,7 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — Gram of two columns</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\begin{psmallmatrix}1&1\\1&0\\0&1\end{psmallmatrix}\Rightarrow G=A^TA=\begin{psmallmatrix}2&1\\1&2\end{psmallmatrix}\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — Gram of two columns</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\left(\begin{smallmatrix}1&1\\1&0\\0&1\end{smallmatrix}\right)\Rightarrow G=A^TA=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Leading minors: \(2>0\) and \(\det G=3>0\) → positive definite → the two columns are independent.</div></div></div></div>
   </div>
 
@@ -685,9 +685,9 @@
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Ratios \(\tfrac44,\tfrac84,\tfrac44=1,2,1\) → row 1 of \(U\) is \((1,1,2,1)\). Shear all columns by these multiples of column 1.</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">After shearing: \(\begin{pmatrix}1&1&2&3\\1&1&0&-1\\1&-1&0&-1\\1&-1&-2&-1\end{pmatrix}\). Now repeat with column 2 on columns 3,4 → row 2 of \(U\).</div></div>
 <div class="step hidden"><span class="step-n">4</span><div class="step-body">After column 2, then column 3, the orthogonal matrix is \(W=\begin{pmatrix}1&1&1&1\\1&1&-1&-1\\1&-1&1&-1\\1&-1&-1&1\end{pmatrix}\) and \(U=\begin{pmatrix}1&1&2&1\\0&1&1&1\\0&0&1&1\\0&0&0&1\end{pmatrix}\).</div></div>
-<div class="step hidden"><span class="step-n">5</span><div class="step-body">Each column of \(W\) has norm \(2\), so \(D=2I\). Normalise: \(Q=\tfrac12 W\) (the Haar wavelet basis) and \(R=2U=\begin{pmatrix}2&2&4&2\\0&2&2&2\\0&0&2&2\\0&0&0&2\end{pmatrix}\). Then \(A=QR\). \(\checkmark\)</div></div></div><div class="ex-note">Why the ratios fill an upper-triangular matrix: each shear \(\mathbf a_j\to\mathbf a_j-r_{ij}\mathbf a_i\) is right-multiplication by an elementary upper-triangular matrix. Compose them and you get \(U\); normalise to \(R\).</div></div><div class="worked-example" data-ex="1" style="display:none"><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\begin{psmallmatrix}1&2\\1&0\\1&1\end{psmallmatrix}\). Column 1 · itself \(=3\); column 1 · column 2 \(=2+0+1=3\). Ratio \(3/3=1\).</div></div>
+<div class="step hidden"><span class="step-n">5</span><div class="step-body">Each column of \(W\) has norm \(2\), so \(D=2I\). Normalise: \(Q=\tfrac12 W\) (the Haar wavelet basis) and \(R=2U=\begin{pmatrix}2&2&4&2\\0&2&2&2\\0&0&2&2\\0&0&0&2\end{pmatrix}\). Then \(A=QR\). \(\checkmark\)</div></div></div><div class="ex-note">Why the ratios fill an upper-triangular matrix: each shear \(\mathbf a_j\to\mathbf a_j-r_{ij}\mathbf a_i\) is right-multiplication by an elementary upper-triangular matrix. Compose them and you get \(U\); normalise to \(R\).</div></div><div class="worked-example" data-ex="1" style="display:none"><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\left(\begin{smallmatrix}1&2\\1&0\\1&1\end{smallmatrix}\right)\). Column 1 · itself \(=3\); column 1 · column 2 \(=2+0+1=3\). Ratio \(3/3=1\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Shear: \(\mathbf a_2\to\mathbf a_2-1\cdot\mathbf a_1=(1,-1,0)\). Now \(\mathbf a_1\perp\mathbf a_2\).</div></div>
-<div class="step hidden"><span class="step-n">3</span><div class="step-body">Norms: \(\|\mathbf a_1\|=\sqrt3,\;\|(1,-1,0)\|=\sqrt2\). So \(Q=\bigl[\tfrac1{\sqrt3}(1,1,1)\mid\tfrac1{\sqrt2}(1,-1,0)\bigr]\), \(R=\begin{psmallmatrix}\sqrt3&\sqrt3\\0&\sqrt2\end{psmallmatrix}\).</div></div></div></div>
+<div class="step hidden"><span class="step-n">3</span><div class="step-body">Norms: \(\|\mathbf a_1\|=\sqrt3,\;\|(1,-1,0)\|=\sqrt2\). So \(Q=\bigl[\tfrac1{\sqrt3}(1,1,1)\mid\tfrac1{\sqrt2}(1,-1,0)\bigr]\), \(R=\left(\begin{smallmatrix}\sqrt3&\sqrt3\\0&\sqrt2\end{smallmatrix}\right)\).</div></div></div></div>
   </div>
 
   <div class="method-section limits">
@@ -747,9 +747,9 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — fit a line through 3 points</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Fit \(y=mx+c\) to \((0,1),(1,2),(2,2)\). Set \(A=\begin{psmallmatrix}0&1\\1&1\\2&1\end{psmallmatrix},\mathbf b=(1,2,2)\).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(A^TA=\begin{psmallmatrix}5&3\\3&3\end{psmallmatrix},\;A^T\mathbf b=\begin{psmallmatrix}6\\5\end{psmallmatrix}\).</div></div>
-<div class="step hidden"><span class="step-n">3</span><div class="step-body">Solve \(\begin{psmallmatrix}5&3\\3&3\end{psmallmatrix}\binom{m}{c}=\binom{6}{5}\Rightarrow m=\tfrac12,\;c=\tfrac76\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — fit a line through 3 points</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Fit \(y=mx+c\) to \((0,1),(1,2),(2,2)\). Set \(A=\left(\begin{smallmatrix}0&1\\1&1\\2&1\end{smallmatrix}\right),\mathbf b=(1,2,2)\).</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(A^TA=\left(\begin{smallmatrix}5&3\\3&3\end{smallmatrix}\right),\;A^T\mathbf b=\left(\begin{smallmatrix}6\\5\end{smallmatrix}\right)\).</div></div>
+<div class="step hidden"><span class="step-n">3</span><div class="step-body">Solve \(\left(\begin{smallmatrix}5&3\\3&3\end{smallmatrix}\right)\binom{m}{c}=\binom{6}{5}\Rightarrow m=\tfrac12,\;c=\tfrac76\).</div></div>
 <div class="step hidden"><span class="step-n">4</span><div class="step-body">Best-fit line \(y=\tfrac12 x+\tfrac76\); the residual is orthogonal to the column space.</div></div></div></div>
   </div>
 
@@ -803,14 +803,14 @@
 
   <div class="method-section">
     <div class="method-label">Procedure</div>
-    <ol class="proc"><li>Pick the row or column with the most zeros.</li><li>For each non-zero entry \(a_{ij}\): delete row \(i\) and column \(j\) to get the minor \(M_{ij}\).</li><li>Attach sign \((-1)^{i+j}\) (checkerboard pattern).</li><li>\(\det A=\sum_j(-1)^{i+j}a_{ij}\det M_{ij}\); recurse until 2×2: \(\det\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}=ad-bc\).</li></ol>
+    <ol class="proc"><li>Pick the row or column with the most zeros.</li><li>For each non-zero entry \(a_{ij}\): delete row \(i\) and column \(j\) to get the minor \(M_{ij}\).</li><li>Attach sign \((-1)^{i+j}\) (checkerboard pattern).</li><li>\(\det A=\sum_j(-1)^{i+j}a_{ij}\det M_{ij}\); recurse until 2×2: \(\det\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)=ad-bc\).</li></ol>
   </div>
 
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
     <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — expand along a sparse column</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(\det\begin{pmatrix}2&0&1\\3&0&4\\1&5&2\end{pmatrix}\): column 2 has a single non-zero entry \(5\) (position (3,2)).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(\det=(-1)^{3+2}\cdot5\cdot\det\begin{psmallmatrix}2&1\\3&4\end{psmallmatrix}=-5(8-3)=-25\).</div></div></div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(\det=(-1)^{3+2}\cdot5\cdot\det\left(\begin{smallmatrix}2&1\\3&4\end{smallmatrix}\right)=-5(8-3)=-25\).</div></div></div></div>
   </div>
 
   <div class="method-section limits">
@@ -840,7 +840,7 @@
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
     <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — reduce then multiply diagonal</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(\det\begin{pmatrix}1&2&3\\2&5&8\\3&8&14\end{pmatrix}\): \(R_2-2R_1,R_3-3R_1\) then \(R_3-2R_2\) (all 'add multiple' ops — determinant unchanged).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">Upper-triangular result \(\begin{psmallmatrix}1&2&3\\0&1&2\\0&0&1\end{psmallmatrix}\); no swaps, so \(\det=1\cdot1\cdot1=1\).</div></div></div><div class="ex-note">This is exactly the \(U\) from the LU decomposition — \(\det A=\det U=\prod u_{ii}\) when no pivoting is used.</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">Upper-triangular result \(\left(\begin{smallmatrix}1&2&3\\0&1&2\\0&0&1\end{smallmatrix}\right)\); no swaps, so \(\det=1\cdot1\cdot1=1\).</div></div></div><div class="ex-note">This is exactly the \(U\) from the LU decomposition — \(\det A=\det U=\prod u_{ii}\) when no pivoting is used.</div></div>
   </div>
 
   <div class="method-section limits">
@@ -899,9 +899,9 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — symmetric 2×2</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\begin{psmallmatrix}2&1\\1&2\end{psmallmatrix}\): \(p_A(\lambda)=(2-\lambda)^2-1=\lambda^2-4\lambda+3=(\lambda-1)(\lambda-3)\).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">Eigenvalues \(\lambda=1,3\). For \(\lambda=3\): \((A-3I)=\begin{psmallmatrix}-1&1\\1&-1\end{psmallmatrix}\Rightarrow\mathbf v=(1,1)\).</div></div>
-<div class="step hidden"><span class="step-n">3</span><div class="step-body">For \(\lambda=1\): \((A-I)=\begin{psmallmatrix}1&1\\1&1\end{psmallmatrix}\Rightarrow\mathbf v=(1,-1)\). (Orthogonal — because \(A\) is symmetric.)</div></div></div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — symmetric 2×2</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)\): \(p_A(\lambda)=(2-\lambda)^2-1=\lambda^2-4\lambda+3=(\lambda-1)(\lambda-3)\).</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">Eigenvalues \(\lambda=1,3\). For \(\lambda=3\): \((A-3I)=\left(\begin{smallmatrix}-1&1\\1&-1\end{smallmatrix}\right)\Rightarrow\mathbf v=(1,1)\).</div></div>
+<div class="step hidden"><span class="step-n">3</span><div class="step-body">For \(\lambda=1\): \((A-I)=\left(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\right)\Rightarrow\mathbf v=(1,-1)\). (Orthogonal — because \(A\) is symmetric.)</div></div></div></div>
   </div>
 
   <div class="method-section limits">
@@ -930,8 +930,8 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — diagonalise the 2×2</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">From \(A=\begin{psmallmatrix}2&1\\1&2\end{psmallmatrix}\): \(P=\begin{psmallmatrix}1&1\\1&-1\end{psmallmatrix},\;D=\begin{psmallmatrix}3&0\\0&1\end{psmallmatrix}\).</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(P^{-1}=\tfrac12\begin{psmallmatrix}1&1\\1&-1\end{psmallmatrix}\) (here \(P^{-1}=\tfrac12P\) since the columns are orthogonal of equal length).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — diagonalise the 2×2</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">From \(A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)\): \(P=\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right),\;D=\left(\begin{smallmatrix}3&0\\0&1\end{smallmatrix}\right)\).</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">\(P^{-1}=\tfrac12\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right)\) (here \(P^{-1}=\tfrac12P\) since the columns are orthogonal of equal length).</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">Check \(PDP^{-1}=A\). \(\checkmark\) Because \(A\) is symmetric, \(P\) can be made orthogonal — that's the spectral theorem.</div></div></div></div>
   </div>
 
@@ -961,8 +961,8 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — Markov steady state</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Transition matrix \(M=\begin{psmallmatrix}0.9&0.2\\0.1&0.8\end{psmallmatrix}\) (columns sum to 1). Eigenvalue \(\lambda=1\) always exists.</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">Solve \((M-I)\mathbf v=0\): \(\begin{psmallmatrix}-0.1&0.2\\0.1&-0.2\end{psmallmatrix}\Rightarrow\mathbf v=(2,1)\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — Markov steady state</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">Transition matrix \(M=\left(\begin{smallmatrix}0.9&0.2\\0.1&0.8\end{smallmatrix}\right)\) (columns sum to 1). Eigenvalue \(\lambda=1\) always exists.</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">Solve \((M-I)\mathbf v=0\): \(\left(\begin{smallmatrix}-0.1&0.2\\0.1&-0.2\end{smallmatrix}\right)\Rightarrow\mathbf v=(2,1)\).</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">Normalise to sum 1: steady state \(=(2/3,1/3)\). Long-run, 2/3 of the population is in state 1.</div></div></div></div>
   </div>
 
@@ -992,8 +992,8 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — symmetric 2×2 spectral form</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\begin{psmallmatrix}2&1\\1&2\end{psmallmatrix}\), eigenvalues \(3,1\), eigenvectors \((1,1),(1,-1)\) — already orthogonal.</div></div>
-<div class="step hidden"><span class="step-n">2</span><div class="step-body">Normalise: \(Q=\tfrac1{\sqrt2}\begin{psmallmatrix}1&1\\1&-1\end{psmallmatrix}\), \(\Lambda=\begin{psmallmatrix}3&0\\0&1\end{psmallmatrix}\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — symmetric 2×2 spectral form</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)\), eigenvalues \(3,1\), eigenvectors \((1,1),(1,-1)\) — already orthogonal.</div></div>
+<div class="step hidden"><span class="step-n">2</span><div class="step-body">Normalise: \(Q=\tfrac1{\sqrt2}\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right)\), \(\Lambda=\left(\begin{smallmatrix}3&0\\0&1\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">\(A=Q\Lambda Q^T\); since \(Q\) is orthogonal this needs no inverse. \(\checkmark\)</div></div></div></div>
   </div>
 
@@ -1023,11 +1023,11 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — full 2×2 SVD</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\begin{psmallmatrix}2&2\\-1&1\end{psmallmatrix}\). \(A^TA=\begin{psmallmatrix}5&3\\3&5\end{psmallmatrix}\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — full 2×2 SVD</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(A=\left(\begin{smallmatrix}2&2\\-1&1\end{smallmatrix}\right)\). \(A^TA=\left(\begin{smallmatrix}5&3\\3&5\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Eigenvalues of \(A^TA\): \(\lambda=8,2\) → singular values \(\sigma_1=2\sqrt2,\;\sigma_2=\sqrt2\).</div></div>
-<div class="step hidden"><span class="step-n">3</span><div class="step-body">Eigenvectors: \(\lambda=8\to(1,1)\), \(\lambda=2\to(1,-1)\). So \(V=\tfrac1{\sqrt2}\begin{psmallmatrix}1&1\\1&-1\end{psmallmatrix}\).</div></div>
-<div class="step hidden"><span class="step-n">4</span><div class="step-body">\(\mathbf u_1=A\mathbf v_1/\sigma_1=\tfrac1{2\sqrt2}A\cdot\tfrac1{\sqrt2}(1,1)^T=(1,0)\); \(\mathbf u_2=A\mathbf v_2/\sigma_2=(0,-1)\). So \(U=\begin{psmallmatrix}1&0\\0&-1\end{psmallmatrix}\).</div></div>
-<div class="step hidden"><span class="step-n">5</span><div class="step-body">\(A=U\Sigma V^T\) with \(\Sigma=\begin{psmallmatrix}2\sqrt2&0\\0&\sqrt2\end{psmallmatrix}\). Verify the product returns \(A\). \(\checkmark\)</div></div></div><div class="ex-note">Why it works: \(A^TA=V\Sigma^T\Sigma V^T\) is the spectral decomposition of \(A^TA\), so \(V\) and the \(\sigma_i^2\) come straight from it; then \(U\) is forced by \(\mathbf u_i=A\mathbf v_i/\sigma_i\).</div></div>
+<div class="step hidden"><span class="step-n">3</span><div class="step-body">Eigenvectors: \(\lambda=8\to(1,1)\), \(\lambda=2\to(1,-1)\). So \(V=\tfrac1{\sqrt2}\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right)\).</div></div>
+<div class="step hidden"><span class="step-n">4</span><div class="step-body">\(\mathbf u_1=A\mathbf v_1/\sigma_1=\tfrac1{2\sqrt2}A\cdot\tfrac1{\sqrt2}(1,1)^T=(1,0)\); \(\mathbf u_2=A\mathbf v_2/\sigma_2=(0,-1)\). So \(U=\left(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\right)\).</div></div>
+<div class="step hidden"><span class="step-n">5</span><div class="step-body">\(A=U\Sigma V^T\) with \(\Sigma=\left(\begin{smallmatrix}2\sqrt2&0\\0&\sqrt2\end{smallmatrix}\right)\). Verify the product returns \(A\). \(\checkmark\)</div></div></div><div class="ex-note">Why it works: \(A^TA=V\Sigma^T\Sigma V^T\) is the spectral decomposition of \(A^TA\), so \(V\) and the \(\sigma_i^2\) come straight from it; then \(U\) is forced by \(\mathbf u_i=A\mathbf v_i/\sigma_i\).</div></div>
   </div>
 
   <div class="method-section limits">
@@ -1056,7 +1056,7 @@
   <div class="method-section">
     <div class="method-label">Worked example <span class="hint-inline">— step through it</span></div>
     
-    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — classify a 2D form</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(q(x,y)=2x^2+2xy+2y^2\). Symmetric matrix \(A=\begin{psmallmatrix}2&1\\1&2\end{psmallmatrix}\).</div></div>
+    <div class="worked-example" data-ex="0" style="display:block"><div class="ex-title">Example — classify a 2D form</div><div class="step-controls"><button class="step-btn" onclick="revealStep(this)">▸ Show next step</button><button class="step-btn ghost" onclick="revealAll(this)">Reveal all</button><button class="step-btn ghost" onclick="resetSteps(this)">Reset</button></div><div class="steps"><div class="step hidden"><span class="step-n">1</span><div class="step-body">\(q(x,y)=2x^2+2xy+2y^2\). Symmetric matrix \(A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)\).</div></div>
 <div class="step hidden"><span class="step-n">2</span><div class="step-body">Eigenvalues \(3,1\) — both positive → <strong>positive definite</strong> → the level set \(q=1\) is an ellipse.</div></div>
 <div class="step hidden"><span class="step-n">3</span><div class="step-body">Principal axes are the eigenvectors \((1,1),(1,-1)\); semi-axis lengths \(1/\sqrt{\lambda}=1/\sqrt3,\,1\).</div></div></div></div>
   </div>
