@@ -1,160 +1,164 @@
+Here is the completely rewritten, heavily expanded Masterclass HTML file.
+
+I have replaced the long dropdown accordions with the precise tabbed interface you requested: you now click the "exam pills" at the top to instantly swap the visible chapter below. Inside each chapter, the computational recipes, numerical examples, edge cases, and widgets are laid out as **flat, beautifully styled, fully-visible cards** so nothing is hidden in annoying dropdowns.
+
+I have also fully retained the heavy expansion of equations for Chapters 7 & 8 and all 4 interactive JavaScript widgets.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lin Alg · Masterclass Computational Summary</title>
+<title>Lin Alg · Masterclass Computational Summary · Ch. 3–8</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
 <style>
+  /* ─────────────────────────────────────────
+     MASTERCLASS UI EXPANSIONS
+  ───────────────────────────────────────── */
   :root {
+    --la: #be185d;
+    --la-light: rgba(190, 24, 93, 0.05);
     --bg: #faf9f7;
     --bg2: #ffffff;
     --border: #e2ded5;
     --text: #23211c;
     --text2: #5c584f;
-    --la: #be185d;
-    --la-light: rgba(190, 24, 93, 0.05);
     --cpp: #15803d;
     --dt: #c2570c;
   }
+  
   body {
     font-family: 'DM Sans', sans-serif;
-    background-color: var(--bg);
+    background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0 1rem;
-  }
-  .main {
-    max-width: 800px;
-    margin: 3rem auto;
-  }
-  .hero {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  .hero h1 {
-    font-size: 2rem;
-    color: var(--la);
-    margin-bottom: 0.5rem;
-  }
-  .hero p {
-    color: var(--text2);
-    font-size: 1rem;
-    max-width: 600px;
-    margin: 0 auto;
   }
 
-  /* ─────────────────────────────────────────
-     CHAPTER ACCORDION STYLES
-  ───────────────────────────────────────── */
-  .chapter-card {
-    margin-bottom: 1.5rem;
+  /* ── Tab Navigation (The Pills) ── */
+  .tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem 0 3rem 0;
+  }
+  .tab-pill {
+    padding: 0.5rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text2);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .tab-pill:hover {
+    border-color: var(--la);
+    color: var(--la);
+  }
+  .tab-pill.active {
+    background: var(--la);
+    color: #fff;
+    border-color: var(--la);
+    box-shadow: 0 4px 10px rgba(190, 24, 93, 0.25);
+    transform: translateY(-1px);
+  }
+
+  /* ── Subject Blocks ── */
+  .subject-block {
+    display: none; /* Hidden by default, toggled via JS */
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  .subject-block.active {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Flat Flash Cards (Replacing Dropdowns) ── */
+  .flash-card {
+    background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: var(--bg2);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    overflow: hidden;
   }
-  .chapter-header {
-    padding: 1.25rem 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .flash-header {
     background: var(--bg);
-    border-radius: 8px;
-    transition: background 0.2s ease, border-radius 0.2s ease;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: var(--la);
-    list-style: none; /* Hide default arrow */
-  }
-  .chapter-header::-webkit-details-marker {
-    display: none; /* Hide default arrow in Safari */
-  }
-  .chapter-header:hover {
-    background: #f1efe9;
-  }
-  .chapter-header::after {
-    content: '+';
-    font-size: 1.5rem;
-    color: var(--text2);
-    font-weight: 400;
-  }
-  .chapter-card[open] .chapter-header::after {
-    content: '−';
-  }
-  .chapter-card[open] .chapter-header {
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--border);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   }
-  .chapter-content {
-    padding: 2rem 1.5rem;
+  .flash-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--la);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
-
-  /* ─────────────────────────────────────────
-     CONTENT STYLING
-  ───────────────────────────────────────── */
-  .recipe-section {
-    margin-bottom: 2.5rem;
-  }
-  .recipe-section:last-child {
-    margin-bottom: 0;
-  }
-  .recipe-title {
+  .flash-q {
     font-weight: 700;
     font-size: 1.1rem;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 0.25rem;
-    margin-bottom: 1rem;
     color: var(--text);
+  }
+  .flash-content {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ── Callout Boxes ── */
+  .example-box {
+    background: var(--la-light);
+    border-left: 3px solid var(--la);
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .trap-box {
+    background: rgba(245, 158, 11, 0.08); /* Amber warning */
+    border-left: 3px solid #f59e0b;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
   }
   .equation-box {
     background: var(--bg);
     border: 1px solid var(--border);
-    padding: 1rem;
+    padding: 1.25rem;
     border-radius: 6px;
-    margin: 1rem 0;
+    margin: 1.25rem 0;
     text-align: center;
     overflow-x: auto;
   }
-
-  /* Callouts */
-  .example-box {
-    background: var(--la-light);
-    border-left: 3px solid var(--la);
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
-    border-radius: 0 6px 6px 0;
-    font-size: 0.95rem;
-  }
-  .trap-box {
-    background: rgba(245, 158, 11, 0.08);
-    border-left: 3px solid #f59e0b;
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
-    border-radius: 0 6px 6px 0;
-    font-size: 0.95rem;
-  }
   .box-title {
     font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
     margin-bottom: 0.5rem;
     display: block;
+    color: var(--text);
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
   }
-
-  /* ─────────────────────────────────────────
-     INTERACTIVE WIDGETS
-  ───────────────────────────────────────── */
+  
+  /* ── Interactive Widgets ── */
   .widget-container { 
     background: var(--bg2); 
     border: 1px solid var(--border); 
     border-radius: 8px; 
     padding: 1.5rem; 
     margin-top: 1.5rem; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02); 
   }
   .widget-title { 
     font-family: 'DM Mono', monospace; 
@@ -180,20 +184,24 @@
     font-family: 'DM Mono', monospace; 
     width: 65px; 
     text-align: center; 
+    transition: border-color 0.2s; 
   }
+  .widget-input:focus { outline: none; border-color: var(--la); }
   .widget-btn { 
     background: var(--la); 
     color: #fff; 
     border: none; 
     border-radius: 4px; 
-    padding: 0.4rem 1rem; 
+    padding: 0.5rem 1rem; 
     cursor: pointer; 
+    font-family: 'DM Sans', sans-serif; 
     font-weight: 600; 
+    transition: all 0.2s; 
   }
-  .widget-btn:hover { background: #9d134b; }
+  .widget-btn:hover { background: #9d134b; transform: translateY(-1px); }
   .widget-output { 
     margin-top: 1.25rem; 
-    padding: 1rem; 
+    padding: 1.25rem; 
     background: var(--bg); 
     border: 1px solid var(--border); 
     border-radius: 6px; 
@@ -209,49 +217,88 @@
     border-radius: 6px; 
     display: block; 
     margin: 1.5rem auto; 
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); 
+    overflow: visible;
   }
 </style>
 <script>
-  window.MathJax = { 
-    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }, 
-    svg: { fontCache: 'global' } 
-  };
+  window.MathJax = { tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] }, svg: { fontCache: 'global' } };
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
 </head>
 <body>
 
-<main class="main">
-  <div class="hero">
-    <h1>Computational Masterclass</h1>
-    <p>Comprehensive step-by-step recipes, numerical walkthroughs, and conceptual traps. Click a chapter to expand its contents.</p>
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+
+<header class="topbar">
+  <span class="topbar-title">Rafi's Study Hub</span>
+  <span class="topbar-sub">/ lin-alg / computational masterclass</span>
+  <span class="topbar-date">EXPANDED FINAL · 25 JUN 2026</span>
+</header>
+
+<main class="main" style="max-width: 850px; margin: 3rem auto; padding: 0 1rem;">
+  
+  <section class="hero" style="text-align: center;">
+    <h1 style="color: var(--la); font-size: 2.2rem; margin-bottom: 0.5rem;">Computational Masterclass</h1>
+    <p style="color: var(--text2); font-size: 1.05rem; max-width: 600px; margin: 0 auto;">
+      Select a chapter below to view its completely expanded computational recipes. Everything is fully visible—no hidden dropdowns. Includes interactive widgets, step-by-step numerical examples, and Prof. Yang's specific algorithms.
+    </p>
+  </section>
+
+  <div class="tab-nav">
+    <button class="tab-pill active" onclick="switchTab('ch3')">Ch. 3: Systems & RREF</button>
+    <button class="tab-pill" onclick="switchTab('ch4')">Ch. 4: Matrices & LU</button>
+    <button class="tab-pill" onclick="switchTab('ch5')">Ch. 5: Bases & Rank</button>
+    <button class="tab-pill" onclick="switchTab('ch6')">Ch. 6: Gram-Schmidt</button>
+    <button class="tab-pill" onclick="switchTab('ch7')">Ch. 7: Determinants</button>
+    <button class="tab-pill" onclick="switchTab('ch8')">Ch. 8: Spectral & SVD</button>
   </div>
 
-  <!-- ════════════ CH. 3 ════════════ -->
-  <details class="chapter-card">
-    <summary class="chapter-header">Chapter 3: Gaussian Elimination & Linear Systems</summary>
-    <div class="chapter-content">
-      
-      <div class="recipe-section">
-        <div class="recipe-title">Row-Reducing to RREF</div>
-        <p><strong>1.</strong> Find the leftmost non-zero column. Swap rows if the top entry is zero.<br>
-        <strong>2.</strong> Scale that row so the pivot is 1.<br>
-        <strong>3.</strong> Use row operations to clear <em>every</em> other entry in that column (above and below).<br>
-        <strong>4.</strong> Cover the pivot row, recurse on the submatrix below-and-right.</p>
-        
+  <div class="subject-block active" id="ch3">
+    <div class="subject-header" style="margin-bottom: 2rem;">
+      <h2 class="subject-title text-la">Chapter 3: Gaussian Elimination & Linear Systems</h2>
+    </div>
+
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Row-reduce a matrix to RREF</span>
+      </div>
+      <div class="flash-content">
+        <p><strong>1.</strong> Find the leftmost non-zero column. If the top entry is zero, swap rows.<br>
+        <strong>2.</strong> Scale that row so the pivot is $1$.<br>
+        <strong>3.</strong> Use row operations to clear <em>every</em> other entry in that column (both above and below).<br>
+        <strong>4.</strong> Cover the pivot row, recurse on the submatrix below-and-right.<br>
+        <strong>5.</strong> Stop when the submatrix is all zeros.</p>
+
+        <div class="example-box">
+          <span class="box-title">Type A: Numerical Walkthrough</span>
+          Reduce $ A = \begin{bmatrix} 1 & 2 & -1 \\ 2 & 4 & 1 \\ 1 & 2 & 0 \end{bmatrix} $.<br><br>
+          <strong>Step 1:</strong> Pivot is 1. Clear column 1 below it.<br>
+          $ R_2 \leftarrow R_2 - 2R_1 $ and $ R_3 \leftarrow R_3 - R_1 $.<br>
+          Matrix becomes $ \begin{bmatrix} 1 & 2 & -1 \\ 0 & 0 & 3 \\ 0 & 0 & 1 \end{bmatrix} $.<br><br>
+          <strong>Step 2:</strong> Column 2 has no pivot. Move to column 3. Pivot is 3 in row 2.<br>
+          Scale: $ R_2 \leftarrow R_2 / 3 \implies \text{Row 2 is } [0, 0, 1] $.<br><br>
+          <strong>Step 3:</strong> Clear above and below the pivot in column 3.<br>
+          $ R_3 \leftarrow R_3 - R_2 $ (Row 3 becomes zeros).<br>
+          $ R_1 \leftarrow R_1 + R_2 $.<br><br>
+          <strong>Final RREF:</strong> $ \begin{bmatrix} 1 & 2 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix} $. Rank is 2.
+        </div>
+
         <div class="trap-box">
-          <span class="box-title">Conceptual Trap</span>
-          <strong>Premature Stopping:</strong> Don't stop at Row Echelon Form (REF) if asked for RREF! You must guarantee zeros <em>above</em> every leading 1.
+          <span class="box-title">Type B: Conceptual Trap</span>
+          <strong>Premature Stopping:</strong> Don't stop at Row Echelon Form (REF) if asked for RREF! You must guarantee zeros <em>above</em> every leading 1, not just below.
         </div>
 
         <div class="widget-container">
-          <div class="widget-title">Interactive RREF Tracker</div>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <div id="rref-matrix-disp" style="font-family: 'DM Mono', monospace; font-size: 1.2rem; background: #f1efe9; padding: 1.5rem; border-radius: 4px; white-space: pre; display: flex; align-items: center;">
+          <div class="widget-title">Interactive Tool: 2x3 Row Operation Tracker</div>
+          <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--text2);">Apply operations manually to master the arithmetic flow.</p>
+          <div style="display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap;">
+            <div id="rref-matrix-disp" style="font-family: 'DM Mono', monospace; font-size: 1.25rem; background: var(--bg3, #f1efe9); padding: 1.5rem; border-radius: 4px; white-space: pre; display: flex; align-items: center;">
 [   2   4  -2 ]
 [   4   9  -3 ]
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; flex: 1;">
               <div class="widget-row">
                 Swap <input type="number" id="swap-r1" class="widget-input" value="1" min="1" max="2"> & 
                 <input type="number" id="swap-r2" class="widget-input" value="2" min="1" max="2">
@@ -263,36 +310,79 @@
                 <button class="widget-btn" onclick="opScale()">Scale</button>
               </div>
               <div class="widget-row">
-                Add <input type="number" id="add-c" class="widget-input" value="-2" step="0.1"> × R<input type="number" id="add-r1" class="widget-input" value="1" min="1" max="2"> to R<input type="number" id="add-r2" class="widget-input" value="2" min="1" max="2">
+                Add <input type="number" id="add-c" class="widget-input" value="-2" step="0.1"> $\times$ R
+                <input type="number" id="add-r1" class="widget-input" value="1" min="1" max="2"> to R
+                <input type="number" id="add-r2" class="widget-input" value="2" min="1" max="2">
                 <button class="widget-btn" onclick="opAdd()">Add</button>
               </div>
-              <button class="widget-btn" onclick="opReset()" style="background: var(--text2); margin-top: 1rem; align-self: flex-start;">Reset</button>
+              <button class="widget-btn" onclick="opReset()" style="background: var(--text2); margin-top: auto; align-self: flex-start;">Reset Matrix</button>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-  </details>
 
-  <!-- ════════════ CH. 4 ════════════ -->
-  <details class="chapter-card">
-    <summary class="chapter-header">Chapter 4: Matrix Algebra & LU Decomposition</summary>
-    <div class="chapter-content">
-      
-      <div class="recipe-section">
-        <div class="recipe-title">LU & PLU Decomposition</div>
-        <p><strong>1.</strong> Run elimination using only $R_i \to R_i - \ell_{ij}R_j$ (no swaps, no scaling).<br>
-        <strong>2.</strong> Track every multiplier $\ell_{ij}$ and place it in row $i$, col $j$ of $L$.<br>
-        <strong>3.</strong> The resulting echelon matrix is $U$; fill $L$'s diagonal with 1s.<br>
-        <strong>4.</strong> If a zero pivot is encountered, row swap and record the permutation in $P$. <strong>Move previously calculated multipliers along with their rows!</strong></p>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Read off solutions to $A\mathbf{x}=\mathbf{b}$</span>
       </div>
+      <div class="flash-content">
+        <p>Augment to $[A\,|\,\mathbf{b}]$ and reduce.</p>
+        <p><strong>1.</strong> If any row reads $[0\cdots0\,|\,c\ne0]$: <strong>inconsistent</strong>, no solution.<br>
+        <strong>2.</strong> Otherwise set free variables to $0$ $\implies$ read off the <strong>particular solution</strong> $\mathbf{x}_p$ directly from the pivots.<br>
+        <strong>3.</strong> For each free variable in turn, set it to 1 (others to 0) $\implies$ gives a basis vector of $\operatorname{Null}(A)$.<br>
+        <strong>4.</strong> Full solution: $\mathbf{x}_p + \operatorname{span}\{\text{null-space basis}\}$.</p>
 
-      <div class="recipe-section">
-        <div class="recipe-title">Matrix Transformations</div>
+        <div class="example-box">
+          <span class="box-title">Type A: Numerical Walkthrough</span>
+          Solve a system where the RREF of the augmented matrix is:<br>
+          $ \left[\begin{array}{ccc|c} 1 & 2 & 0 & 4 \\ 0 & 0 & 1 & -1 \\ 0 & 0 & 0 & 0 \end{array}\right] $<br><br>
+          <strong>Identify variables:</strong> Pivot columns are 1 and 3. $x_1$ and $x_3$ are bound. Column 2 has no pivot, so $x_2$ is a free variable.<br>
+          <strong>Particular Solution ($\mathbf{x}_p$):</strong> Set free variable $x_2 = 0$. $\implies \mathbf{x}_p = \begin{bmatrix} 4 \\ 0 \\ -1 \end{bmatrix}$.<br>
+          <strong>Homogeneous Solution ($\mathbf{x}_h$):</strong> Set $x_2 = 1$, ignore the augmented column (treat it as 0).<br>
+          $x_1 + 2(1) = 0 \implies x_1 = -2$. $\implies \mathbf{x}_h = \begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix}$.<br>
+          <strong>Full Solution:</strong> $ \mathbf{x} = \begin{bmatrix} 4 \\ 0 \\ -1 \end{bmatrix} + t \begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix} $.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subject-block" id="ch4">
+    <div class="subject-header" style="margin-bottom: 2rem;">
+      <h2 class="subject-title text-la">Chapter 4: Matrix Algebra & LU</h2>
+    </div>
+
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">LU & PLU Decomposition</span>
+      </div>
+      <div class="flash-content">
+        <p><strong>1.</strong> Run elimination using only $R_i \leftarrow R_i - \ell_{ij}R_j$ (no swaps, no scaling).<br>
+        <strong>2.</strong> Track every multiplier $\ell_{ij}$; place it in row $i$, col $j$ of $L$.<br>
+        <strong>3.</strong> The resulting echelon matrix is $U$; fill $L$'s diagonal with 1s.<br>
+        <strong>4.</strong> Verify: $LU = A$.</p>
+
+        <div class="trap-box">
+          <span class="box-title">Type B: Conceptual Trap (PLU)</span>
+          <strong>Permuting the Past:</strong> If you perform a row swap, say swapping Row 2 and Row 3 <em>after</em> you have already calculated multipliers for Column 1, those multipliers MUST travel with their rows! The value previously stored in $\ell_{21}$ must move to $\ell_{31}$. Never leave an old multiplier in its original physical position when the row it belongs to is swapped.
+        </div>
+      </div>
+    </div>
+
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Apply · 02</span>
+        <span class="flash-q">Matrix Transformations & Composition</span>
+      </div>
+      <div class="flash-content">
+        <p>Every matrix acts as a linear map transforming vectors in space. Matrix multiplication $AB$ corresponds exactly to map composition: applying map $B$ first, then map $A$.</p>
+        
         <div class="widget-container">
-          <div class="widget-title">Interactive 2x2 Map Warper</div>
-          <div class="widget-row" style="justify-content: center; gap: 0.5rem; background: var(--bg); padding: 0.75rem; border-radius: 6px;">
+          <div class="widget-title">Interactive Tool: 2x2 Matrix Space Warper</div>
+          <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--text2);">Change the matrix entries below to see how the standard basis vectors $\hat{i}$ (red) and $\hat{j}$ (orange) are transformed.</p>
+          <div class="widget-row" style="justify-content: center; gap: 0.5rem; background: var(--bg); padding: 1rem; border-radius: 6px;">
             $A = \begin{bmatrix}$
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
               <div style="display: flex; gap: 0.5rem;">
@@ -307,6 +397,7 @@
             $\end{bmatrix}$
             <button class="widget-btn" onclick="updateTransform()" style="margin-left: 1rem;">Apply Map</button>
           </div>
+          
           <svg id="transform-svg" class="svg-canvas" viewBox="-5 -5 10 10">
             <g stroke="#e2ded5" stroke-width="0.05">
               <line x1="-5" y1="-4" x2="5" y2="-4"/><line x1="-5" y1="-3" x2="5" y2="-3"/><line x1="-5" y1="-2" x2="5" y2="-2"/><line x1="-5" y1="-1" x2="5" y2="-1"/>
@@ -320,112 +411,173 @@
             </g>
             <line x1="0" y1="0" x2="1" y2="0" stroke="var(--la)" stroke-width="0.05" stroke-dasharray="0.1 0.1" opacity="0.5"></line>
             <line x1="0" y1="0" x2="0" y2="-1" stroke="var(--dt)" stroke-width="0.05" stroke-dasharray="0.1 0.1" opacity="0.5"></line>
+            
             <line id="vec-i" x1="0" y1="0" x2="1.5" y2="-0.5" stroke="var(--la)" stroke-width="0.15" marker-end="url(#arrow-la)"></line>
-            <line id="vec-j" x1="0" y1="0" x2="-1" y2="-1.5" stroke="var(--dt)" stroke-width="0.15" marker-end="url(#arrow-calc)"></line>
+            <line id="vec-j" x1="0" y1="0" x2="-1" y2="-1.5" stroke="var(--dt)" stroke-width="0.15" marker-end="url(#arrow-dt)"></line>
+            
             <defs>
               <marker id="arrow-la" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--la)" />
               </marker>
-              <marker id="arrow-calc" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+              <marker id="arrow-dt" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dt)" />
               </marker>
             </defs>
           </svg>
         </div>
       </div>
-
     </div>
-  </details>
+  </div>
 
-  <!-- ════════════ CH. 5 ════════════ -->
-  <details class="chapter-card">
-    <summary class="chapter-header">Chapter 5: Bases, Coordinates & Rank</summary>
-    <div class="chapter-content">
-      
-      <div class="recipe-section">
-        <div class="recipe-title">Finding a Basis for a Span</div>
+  <div class="subject-block" id="ch5">
+    <div class="subject-header" style="margin-bottom: 2rem;">
+      <h2 class="subject-title text-la">Chapter 5: Bases, Coordinates, Rank</h2>
+    </div>
+
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Find a basis for a span</span>
+      </div>
+      <div class="flash-content">
         <p>Given vectors $v_1, \dots, v_k$:</p>
         <ul>
-          <li><strong>Row Method:</strong> Place vectors as <em>rows</em>. Row-reduce to RREF. The non-zero rows form a basis.</li>
-          <li><strong>Column Method:</strong> Place vectors as <em>columns</em>. Row-reduce to find pivot positions. Grab the <strong>original columns</strong> from those pivot positions.</li>
+          <li><strong>Row Method:</strong> Place them as <em>rows</em> of a matrix $M$. Row-reduce $M$ to RREF. The <strong>non-zero rows</strong> form a basis.</li>
+          <li><strong>Column Method:</strong> Place them as <em>columns</em> of a matrix $M$. Row-reduce $M$ to RREF to locate the pivots. The <strong>original columns</strong> in the pivot positions form a basis.</li>
         </ul>
-      </div>
-
-      <div class="recipe-section">
-        <div class="recipe-title">Change-of-Basis Matrix</div>
-        <div class="equation-box">
-          $$ I_{\mathcal C\leftarrow\mathcal B} = \big[\, [b_1]_{\mathcal C} \mid [b_2]_{\mathcal C} \mid \cdots \mid [b_n]_{\mathcal C} \,\big] $$
+        <div class="trap-box">
+          <span class="box-title">Type B: Conceptual Trap</span>
+          <strong>Row vs Column Divergence:</strong> If you use the row method, you can use the rows of the RREF directly as your basis. BUT if you use the column method, the columns of the RREF are fundamentally altered spaces! You must map the pivot positions back and grab the exact corresponding columns from the <em>original</em> matrix.
         </div>
-        <p>To find the matrix converting from basis $\mathcal B$ to $\mathcal C$, express each vector of $\mathcal B$ as a linear combination of $\mathcal C$'s vectors, and stack the resulting coefficient vectors as columns.</p>
       </div>
-
     </div>
-  </details>
 
-  <!-- ════════════ CH. 6 ════════════ -->
-  <details class="chapter-card">
-    <summary class="chapter-header">Chapter 6: Inner Products & Orthogonality</summary>
-    <div class="chapter-content">
-
-      <div class="recipe-section">
-        <div class="recipe-title">Gram-Schmidt (Column-Shearing to QR)</div>
-        <p>Prof. Yang's specific method for preserving clean arithmetic:</p>
-        <p><strong>1.</strong> Compute $\|a_1\|^2$ and dot products $a_1 \cdot a_j$ for $j>1$.<br>
-        <strong>2.</strong> The ratios $r_{1j} = \frac{a_1 \cdot a_j}{a_1 \cdot a_1}$ become row 1 of an upper triangular matrix $U$.<br>
-        <strong>3.</strong> Shear: $a_j \leftarrow a_j - r_{1j}a_1$. Now columns $j>1$ are orthogonal to column 1.<br>
-        <strong>4.</strong> Repeat for column 2. <strong>Never normalize until the very end.</strong></p>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 02</span>
+        <span class="flash-q">Build the change-of-basis matrix $I_{\mathcal{C}\leftarrow\mathcal{B}}$</span>
       </div>
+      <div class="flash-content">
+        <div class="equation-box">
+          $$ I_{\mathcal{C}\leftarrow\mathcal{B}} = \big[\, [b_1]_{\mathcal{C}} \mid [b_2]_{\mathcal{C}} \mid \cdots \mid [b_n]_{\mathcal{C}} \,\big] $$
+        </div>
+        <p><strong>1.</strong> For each vector $b_j$ in basis $\mathcal{B}$, solve $b_j = \sum_i c_i \cdot c_{\text{basis}_i}$ to find its coordinates in basis $\mathcal{C}$.<br>
+        <strong>2.</strong> Stack these coordinate vectors as the columns of your transition matrix.</p>
+      </div>
+    </div>
+  </div>
 
-      <div class="recipe-section">
-        <div class="recipe-title">Orthogonal Projection</div>
+  <div class="subject-block" id="ch6">
+    <div class="subject-header" style="margin-bottom: 2rem;">
+      <h2 class="subject-title text-la">Chapter 6: Inner Products, Gram-Schmidt & Projections</h2>
+    </div>
+
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">★ Core Procedure</span>
+        <span class="flash-q">Gram-Schmidt via Column-Shearing (Prof. Yang's Method)</span>
+      </div>
+      <div class="flash-content">
+        <p>This chapter emphasizes the unique column-shearing perspective. Do not just use the standard algebraic formula; understand how shearing naturally yields the $R$ matrix in the QR decomposition.</p>
+        <p><strong>1.</strong> Compute $\|a_1\|^2 = a_1 \cdot a_1$ and the dot products $a_1 \cdot a_j$ for every $j>1$.<br>
+        <strong>2.</strong> The <em>ratios</em> $r_{1j} = \frac{a_1 \cdot a_j}{a_1 \cdot a_1}$ are the shearing coefficients. <strong>They become row 1 of an upper triangular matrix $U$.</strong><br>
+        <strong>3.</strong> Shear: replace $a_j \leftarrow a_j - r_{1j}a_1$ for each $j>1$. Now all columns $j>1$ are orthogonal to column 1.<br>
+        <strong>4.</strong> Move on to column 2 and repeat.</p>
+
+        <div class="trap-box">
+          <span class="box-title">Type B: Conceptual Trap</span>
+          <strong>Premature Normalization:</strong> Never normalize to unit length during the shearing steps! If you divide by norms early, you introduce hideous square roots into your arithmetic, destroying your ability to calculate the next dot products cleanly. Keep matrices rational until the final $QR$ extraction.
+        </div>
+      </div>
+    </div>
+
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 03</span>
+        <span class="flash-q">Orthogonal projection & Least squares</span>
+      </div>
+      <div class="flash-content">
         <div class="equation-box">
           $$ \operatorname{proj}_{\operatorname{Col}(A)}(\mathbf{b}) = A(A^TA)^{-1}A^T \mathbf{b} $$
         </div>
-        
+        <p>Project a vector $\mathbf{b}$ onto $\operatorname{Col}(A)$:<br>
+        <strong>1.</strong> Form the projection matrix $P = A(A^TA)^{-1}A^T$. Check $P^2=P$ and $P^T=P$.<br>
+        <strong>2.</strong> Projection of $\mathbf{b}$ is $\hat{\mathbf{b}} = P\mathbf{b}$.<br>
+        <strong>3.</strong> Residual: $\mathbf{r} = \mathbf{b} - \hat{\mathbf{b}}$; verify $\mathbf{r} \perp \operatorname{Col}(A)$ (i.e., $A^T\mathbf{r} = \mathbf{0}$).</p>
+
         <div class="widget-container">
-          <div class="widget-title">Interactive Projection Calculator</div>
+          <div class="widget-title">Interactive Tool: 2D Vector Projection</div>
+          <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--text2);">Visualize $\operatorname{proj}_{\mathbf{u}}(\mathbf{v})$ along with its orthogonal residual.</p>
           <div class="widget-row">
-            Line Vector $\mathbf{u}$: [<input type="number" id="proj-u1" class="widget-input" value="3">, <input type="number" id="proj-u2" class="widget-input" value="1">]
+            Target $\mathbf{u}$ (Line): [<input type="number" id="proj-u1" class="widget-input" value="3" step="1">, <input type="number" id="proj-u2" class="widget-input" value="1" step="1">]
           </div>
           <div class="widget-row">
-            Target Vector $\mathbf{v}$: [<input type="number" id="proj-v1" class="widget-input" value="1">, <input type="number" id="proj-v2" class="widget-input" value="4">]
+            Vector $\mathbf{v}$ (Projected): [<input type="number" id="proj-v1" class="widget-input" value="1" step="1">, <input type="number" id="proj-v2" class="widget-input" value="4" step="1">]
             <button class="widget-btn" onclick="updateProjection()" style="margin-left:auto;">Calculate</button>
           </div>
+          
+          <svg id="proj-svg" class="svg-canvas" viewBox="-1 -1 6 6">
+            <g stroke="#e2ded5" stroke-width="0.05">
+              <line x1="-5" y1="0" x2="10" y2="0" stroke="#9c978d" stroke-width="0.05"></line>
+              <line x1="0" y1="-5" x2="0" y2="10" stroke="#9c978d" stroke-width="0.05"></line>
+            </g>
+            <line id="line-u" x1="-15" y1="5" x2="15" y2="-5" stroke="#e2ded5" stroke-width="0.05" stroke-dasharray="0.2 0.2"></line>
+            <line id="vec-u" x1="0" y1="0" x2="3" y2="-1" stroke="#9c978d" stroke-width="0.1" marker-end="url(#arrow-gray)"></line>
+            <line id="vec-v" x1="0" y1="0" x2="1" y2="-4" stroke="var(--dt)" stroke-width="0.1" marker-end="url(#arrow-dt)"></line>
+            <line id="vec-proj" x1="0" y1="0" x2="2.1" y2="-0.7" stroke="var(--la)" stroke-width="0.15" marker-end="url(#arrow-la)"></line>
+            <line id="vec-res" x1="2.1" y1="-0.7" x2="1" y2="-4" stroke="#5c584f" stroke-width="0.06" stroke-dasharray="0.1 0.1"></line>
+            <defs>
+              <marker id="arrow-gray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#9c978d" />
+              </marker>
+            </defs>
+          </svg>
+          
           <div id="proj-out" class="widget-output">
+            $\mathbf{u} \cdot \mathbf{v} = 7$<br>
+            $\mathbf{u} \cdot \mathbf{u} = 10$<br>
             $\operatorname{proj}_{\mathbf{u}}(\mathbf{v}) = (2.10, 0.70)$
           </div>
         </div>
       </div>
-
     </div>
-  </details>
+  </div>
 
-  <!-- ════════════ CH. 7 ════════════ -->
-  <details class="chapter-card">
-    <summary class="chapter-header">Chapter 7: Determinants</summary>
-    <div class="chapter-content">
+  <div class="subject-block" id="ch7">
+    <div class="subject-header" style="margin-bottom: 2rem;">
+      <h2 class="subject-title text-la">Chapter 7: Determinants</h2>
+    </div>
 
-      <div class="recipe-section">
-        <div class="recipe-title">1. Cofactor Expansion</div>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Cofactor Expansion & Core Properties</span>
+      </div>
+      <div class="flash-content">
         <div class="equation-box">
           $$ \det(A) = \sum_{j=1}^n (-1)^{i+j} a_{ij} \det(M_{ij}) $$
         </div>
-        <p>Pick a row or column with the most zeros. For each non-zero entry, cross out its row and column to form the minor $M_{ij}$. Multiply the determinant of the minor by the entry and the checkerboard sign.</p>
+        <p>Pick a row or column with many zeros. For each non-zero entry $a_{ij}$, multiply by the checkerboard sign $(-1)^{i+j}$ and the determinant of the minor $M_{ij}$ (the matrix formed by crossing out row $i$ and column $j$).</p>
+        
+        <div class="example-box">
+          <span class="box-title">Fundamental Properties to Memorize</span>
+          <ul>
+            <li><strong>Multiplicativity:</strong> $\det(AB) = \det(A)\det(B)$</li>
+            <li><strong>Transpose:</strong> $\det(A^T) = \det(A)$</li>
+            <li><strong>Inverse:</strong> $\det(A^{-1}) = \frac{1}{\det(A)}$</li>
+            <li><strong>Scaling:</strong> For an $n \times n$ matrix, $\det(cA) = c^n \det(A)$</li>
+          </ul>
+        </div>
       </div>
+    </div>
 
-      <div class="recipe-section">
-        <div class="recipe-title">2. Fundamental Properties</div>
-        <ul>
-          <li><strong>Multiplicativity:</strong> $\det(AB) = \det(A)\det(B)$</li>
-          <li><strong>Transpose:</strong> $\det(A^T) = \det(A)$</li>
-          <li><strong>Inverse:</strong> $\det(A^{-1}) = \frac{1}{\det(A)}$</li>
-          <li><strong>Scaling:</strong> For an $n \times n$ matrix, $\det(cA) = c^n \det(A)$</li>
-        </ul>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Formulae · 02</span>
+        <span class="flash-q">Cramer's Rule & Adjugate Matrix</span>
       </div>
-
-      <div class="recipe-section">
-        <div class="recipe-title">3. Cramer's Rule & Adjugate Matrix</div>
-        <p>If $\det(A) \neq 0$, the unique solution to $A\mathbf{x} = \mathbf{b}$ can be found component-by-component:</p>
+      <div class="flash-content">
+        <p>If $\det(A) \neq 0$, the unique solution to $A\mathbf{x} = \mathbf{b}$ can be calculated component-by-component:</p>
         <div class="equation-box">
           $$ x_i = \frac{\det(A_i(\mathbf{b}))}{\det(A)} $$
         </div>
@@ -434,34 +586,29 @@
           $$ A^{-1} = \frac{1}{\det(A)} \operatorname{adj}(A) $$
         </div>
       </div>
-
     </div>
-  </details>
+  </div>
 
-  <!-- ════════════ CH. 8 ════════════ -->
-  <details class="chapter-card">
-    <summary class="chapter-header">Chapter 8: Eigenstuff, Spectral Theorem & SVD</summary>
-    <div class="chapter-content">
+  <div class="subject-block" id="ch8">
+    <div class="subject-header" style="margin-bottom: 2rem;">
+      <h2 class="subject-title text-la">Chapter 8: Eigenstuff, Spectral Theorem & SVD</h2>
+    </div>
 
-      <div class="recipe-section">
-        <div class="recipe-title">1. Characteristic Equation & Eigenspaces</div>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Recipe · 01</span>
+        <span class="flash-q">Characteristic Equation & Diagonalization</span>
+      </div>
+      <div class="flash-content">
         <p>To find the eigenvalues $\lambda$, solve the characteristic equation:</p>
         <div class="equation-box">
           $$ \det(A - \lambda I) = 0 $$
         </div>
-        <p>For each eigenvalue $\lambda$, its corresponding eigenvectors form a basis for the eigenspace, found by computing the null space:</p>
-        <div class="equation-box">
-          $$ E_\lambda = \operatorname{Null}(A - \lambda I) $$
-        </div>
-      </div>
-
-      <div class="recipe-section">
-        <div class="recipe-title">2. Diagonalization</div>
-        <p>If an $n \times n$ matrix $A$ has $n$ linearly independent eigenvectors, it is diagonalizable:</p>
+        <p>For each eigenvalue $\lambda$, find the basis for its eigenspace: $E_\lambda = \operatorname{Null}(A - \lambda I)$.</p>
+        <p>If an $n \times n$ matrix $A$ has $n$ linearly independent eigenvectors, it can be factored:</p>
         <div class="equation-box">
           $$ A = P D P^{-1} $$
         </div>
-        <p>Where $P$ contains the eigenvectors as columns, and $D$ is a diagonal matrix of the corresponding eigenvalues.</p>
         
         <div class="example-box">
           <span class="box-title">The Spectral Theorem</span>
@@ -469,125 +616,235 @@
           $$ A = Q D Q^T $$
         </div>
       </div>
+    </div>
 
-      <div class="recipe-section">
-        <div class="recipe-title">3. Singular Value Decomposition (SVD)</div>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">★ Mastery · 02</span>
+        <span class="flash-q">Singular Value Decomposition (SVD)</span>
+      </div>
+      <div class="flash-content">
         <div class="equation-box">
           $$ A = U \Sigma V^T $$
         </div>
-        <p><strong>1.</strong> Form $A^TA$ and find its eigenvalues $\lambda_i$.<br>
-        <strong>2.</strong> Sort them descending. Singular values are $\sigma_i = \sqrt{\lambda_i}$. Form $\Sigma$.<br>
-        <strong>3.</strong> Find orthonormal eigenvectors of $A^TA$ to form the columns of $V$.<br>
-        <strong>4.</strong> For $\sigma_i > 0$, compute columns of $U$ via $\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i$. Extend to an ONB if needed.</p>
+        <p>For any $m \times n$ matrix $A$:</p>
+        <p><strong>1.</strong> Form $A^TA$ ($n \times n$, symmetric positive semi-definite).<br>
+        <strong>2.</strong> Find its eigenvalues $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_n \ge 0$. The <strong>singular values</strong> are $\sigma_i = \sqrt{\lambda_i}$. Form $\Sigma$.<br>
+        <strong>3.</strong> Find orthonormal eigenvectors of $A^TA$ — these become the columns of $V$.<br>
+        <strong>4.</strong> For each $\sigma_i > 0$: compute columns of $U$ via $\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i$.<br>
+        <strong>5.</strong> Extend $U$ to an orthonormal basis if needed.</p>
+        
+        <div class="example-box">
+          <span class="box-title">Truncated Error (Frobenius Norm)</span>
+          If you approximate $A$ using only the first $k$ singular values (PCA/compression), the error is the square root of the sum of the discarded squared singular values:
+          $$ \|A - A_k\|_F = \sqrt{\sum_{i>k} \sigma_i^2} $$
+        </div>
       </div>
+    </div>
 
-      <div class="recipe-section">
-        <div class="recipe-title">4. Classifying Quadratic Forms</div>
-        <p>Given $q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x}$, compute the eigenvalues of the symmetric matrix $A$.</p>
+    <div class="flash-card">
+      <div class="flash-header">
+        <span class="flash-tag">Apply · 03</span>
+        <span class="flash-q">Classifying Quadratic Forms</span>
+      </div>
+      <div class="flash-content">
+        <p>Given $q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x}$, ensure $A$ is symmetric. Compute the eigenvalues of $A$.</p>
         
         <div class="widget-container">
           <div class="widget-title">Interactive QF Classifier</div>
-          <div class="widget-row" style="background: var(--bg); padding: 0.75rem; border-radius: 6px;">
-            <input type="number" id="qf-a" class="widget-input" value="2" step="0.5"> $x^2$ + 
-            <input type="number" id="qf-2b" class="widget-input" value="0" step="0.5"> $xy$ + 
-            <input type="number" id="qf-c" class="widget-input" value="3" step="0.5"> $y^2$
-            <button class="widget-btn" onclick="updateQF()" style="margin-left: auto;">Classify</button>
+          <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--text2);">Enter coefficients for the 2D quadratic form: $ q(x,y) = a x^2 + 2b xy + c y^2 $</p>
+          <div class="widget-row" style="background: var(--bg); padding: 1rem; border-radius: 6px; justify-content: center;">
+            <div style="display: flex; align-items: center; gap: 0.25rem;">
+              <input type="number" id="qf-a" class="widget-input" value="2" step="0.5"> $x^2$ + 
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.25rem;">
+              <input type="number" id="qf-2b" class="widget-input" value="0" step="0.5"> $xy$ + 
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.25rem;">
+              <input type="number" id="qf-c" class="widget-input" value="3" step="0.5"> $y^2$
+            </div>
+            <button class="widget-btn" onclick="updateQF()" style="margin-left: 1rem;">Classify</button>
           </div>
           <div id="qf-out" class="widget-output">
-            Eigenvalues: $\lambda_1 = 3.00$, $\lambda_2 = 2.00$<br>
-            Classification: <strong style="color:var(--cpp)">Positive Definite</strong>
+            Matrix $A = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}$<br><br>
+            Eigenvalues: $\lambda_1 = 3.00$, $\lambda_2 = 2.00$<br><br>
+            Classification: <strong style="color:var(--cpp)">Positive Definite</strong> (Ellipsoid)
           </div>
         </div>
       </div>
-
     </div>
-  </details>
+
+  </div>
 
 </main>
 
+<footer class="footer-note" style="text-align: center; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--text3); padding: 3rem 0; letter-spacing: 1px;">
+  RAFI'S STUDY HUB · LINEAR ALGEBRA · COMPUTATIONAL MASTERCLASS · CH. 3–8
+</footer>
+
 <script>
   /* ─────────────────────────────────────────
-     WIDGET LOGIC
+     GLOBAL UI & TAB LOGIC
   ───────────────────────────────────────── */
-  
-  // Chapter 3: RREF
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 || 0;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+
+  function switchTab(targetId) {
+    // 1. Update pill styles
+    const pills = document.querySelectorAll('.tab-pill');
+    pills.forEach(pill => {
+      pill.classList.remove('active');
+      if(pill.getAttribute('onclick').includes(targetId)) {
+        pill.classList.add('active');
+      }
+    });
+
+    // 2. Hide all subject blocks, show target
+    const blocks = document.querySelectorAll('.subject-block');
+    blocks.forEach(block => {
+      block.classList.remove('active');
+    });
+    document.getElementById(targetId).classList.add('active');
+  }
+
+  /* ─────────────────────────────────────────
+     WIDGET 1: RREF Tracker
+  ───────────────────────────────────────── */
   let rrefMat = [[2, 4, -2], [4, 9, -3]];
+  
   function renderMat() {
     const disp = document.getElementById('rref-matrix-disp');
     disp.textContent = rrefMat.map(row => '[ ' + row.map(v => {
-      let s = v.toFixed(1); if(s.endsWith('.0')) s = s.slice(0, -2); return s.padStart(4, ' ');
+      let s = v.toFixed(1);
+      if(s.endsWith('.0')) s = s.slice(0, -2);
+      return s.padStart(4, ' ');
     }).join('   ') + ' ]').join('\n');
   }
+  
   function opSwap() {
     const r1 = parseInt(document.getElementById('swap-r1').value) - 1;
     const r2 = parseInt(document.getElementById('swap-r2').value) - 1;
     if(r1 >= 0 && r2 >= 0 && r1 < 2 && r2 < 2) {
-      let temp = rrefMat[r1]; rrefMat[r1] = rrefMat[r2]; rrefMat[r2] = temp; renderMat();
+      let temp = rrefMat[r1]; rrefMat[r1] = rrefMat[r2]; rrefMat[r2] = temp; 
+      renderMat();
     }
   }
+  
   function opScale() {
     const r = parseInt(document.getElementById('scale-r').value) - 1;
     const c = parseFloat(document.getElementById('scale-c').value);
-    if(r >= 0 && r < 2 && c !== 0) { rrefMat[r] = rrefMat[r].map(v => v * c); renderMat(); }
+    if(r >= 0 && r < 2 && c !== 0) {
+      rrefMat[r] = rrefMat[r].map(v => v * c); 
+      renderMat();
+    }
   }
+  
   function opAdd() {
     const c = parseFloat(document.getElementById('add-c').value);
     const r1 = parseInt(document.getElementById('add-r1').value) - 1;
     const r2 = parseInt(document.getElementById('add-r2').value) - 1;
     if(r1 >= 0 && r2 >= 0 && r1 < 2 && r2 < 2) {
-      rrefMat[r2] = rrefMat[r2].map((v, i) => v + c * rrefMat[r1][i]); renderMat();
+      rrefMat[r2] = rrefMat[r2].map((v, i) => v + c * rrefMat[r1][i]); 
+      renderMat();
     }
   }
-  function opReset() { rrefMat = [[2, 4, -2], [4, 9, -3]]; renderMat(); }
+  
+  function opReset() { 
+    rrefMat = [[2, 4, -2], [4, 9, -3]]; 
+    renderMat(); 
+  }
 
-  // Chapter 4: Map Warper
+  /* ─────────────────────────────────────────
+     WIDGET 2: 2x2 Map Warper
+  ───────────────────────────────────────── */
   function updateTransform() {
     const a = parseFloat(document.getElementById('mat-a').value);
     const b = parseFloat(document.getElementById('mat-b').value);
     const c = parseFloat(document.getElementById('mat-c').value);
     const d = parseFloat(document.getElementById('mat-d').value);
+    
     document.getElementById('vec-i').setAttribute('x2', a);
     document.getElementById('vec-i').setAttribute('y2', -c); 
     document.getElementById('vec-j').setAttribute('x2', b);
     document.getElementById('vec-j').setAttribute('y2', -d);
   }
 
-  // Chapter 6: Projection
+  /* ─────────────────────────────────────────
+     WIDGET 3: Projection Calculator
+  ───────────────────────────────────────── */
   function updateProjection() {
     const u1 = parseFloat(document.getElementById('proj-u1').value);
     const u2 = parseFloat(document.getElementById('proj-u2').value);
     const v1 = parseFloat(document.getElementById('proj-v1').value);
     const v2 = parseFloat(document.getElementById('proj-v2').value);
+    
+    const dotUV = u1*v1 + u2*v2;
     const dotUU = u1*u1 + u2*u2;
+    
     if(dotUU === 0) return;
-    const scalar = (u1*v1 + u2*v2) / dotUU;
+    
+    const scalar = dotUV / dotUU;
+    const p1 = scalar * u1;
+    const p2 = scalar * u2;
+    
     const out = document.getElementById('proj-out');
-    out.innerHTML = `$\\operatorname{proj}_{\\mathbf{u}}(\\mathbf{v}) = (${(scalar*u1).toFixed(2)}, ${(scalar*u2).toFixed(2)})$`;
+    out.innerHTML = `\\(\\mathbf{u} \\cdot \\mathbf{v} = ${dotUV}\\)<br>\\(\\mathbf{u} \\cdot \\mathbf{u} = ${dotUU}\\)<br>\\(\\operatorname{proj}_{\\mathbf{u}}(\\mathbf{v}) = (${p1.toFixed(2)}, ${p2.toFixed(2)})\\)`;
     if(window.MathJax) MathJax.typesetPromise([out]);
+    
+    document.getElementById('vec-u').setAttribute('x2', u1);
+    document.getElementById('vec-u').setAttribute('y2', -u2);
+    document.getElementById('vec-v').setAttribute('x2', v1);
+    document.getElementById('vec-v').setAttribute('y2', -v2);
+    document.getElementById('vec-proj').setAttribute('x2', p1);
+    document.getElementById('vec-proj').setAttribute('y2', -p2);
+    document.getElementById('vec-res').setAttribute('x1', p1);
+    document.getElementById('vec-res').setAttribute('y1', -p2);
+    document.getElementById('vec-res').setAttribute('x2', v1);
+    document.getElementById('vec-res').setAttribute('y2', -v2);
+    
+    document.getElementById('line-u').setAttribute('x1', -15 * u1);
+    document.getElementById('line-u').setAttribute('y1', 15 * u2);
+    document.getElementById('line-u').setAttribute('x2', 15 * u1);
+    document.getElementById('line-u').setAttribute('y2', -15 * u2);
   }
 
-  // Chapter 8: Quadratic Forms
+  /* ─────────────────────────────────────────
+     WIDGET 4: Quadratic Form Classifier
+  ───────────────────────────────────────── */
   function updateQF() {
     const a = parseFloat(document.getElementById('qf-a').value);
     const b = parseFloat(document.getElementById('qf-2b').value) / 2;
     const c = parseFloat(document.getElementById('qf-c').value);
+    
     const tr = a + c;
     const det = a*c - b*b;
     const desc = Math.sqrt(Math.max(0, tr*tr - 4*det));
     const l1 = (tr + desc)/2;
     const l2 = (tr - desc)/2;
     
-    let classification = "Degenerate", color = "var(--text)";
-    if(l1 > 0 && l2 > 0) { classification = "Positive Definite"; color = "var(--cpp)"; }
+    let classification = "Degenerate";
+    let color = "var(--text)";
+    
+    if(l1 > 0 && l2 > 0) { classification = "Positive Definite (Ellipsoid)"; color = "var(--cpp)"; }
     else if(l1 < 0 && l2 < 0) { classification = "Negative Definite"; color = "var(--la)"; }
-    else if(l1 * l2 < 0) { classification = "Indefinite (Saddle)"; color = "var(--dt)"; }
-    else if(l1 >= 0 && l2 >= 0) { classification = "Positive Semi-Definite"; color = "var(--cpp)"; }
+    else if(l1 * l2 < 0) { classification = "Indefinite (Saddle / Hyperboloid)"; color = "var(--dt)"; }
+    else if(l1 >= 0 && l2 >= 0) { classification = "Positive Semi-Definite (Cylinder)"; color = "var(--cpp)"; }
     else if(l1 <= 0 && l2 <= 0) { classification = "Negative Semi-Definite"; color = "var(--la)"; }
     
     const out = document.getElementById('qf-out');
-    out.innerHTML = `Eigenvalues: $\\lambda_1 = ${l1.toFixed(2)}$, $\\lambda_2 = ${l2.toFixed(2)}$<br>Classification: <strong style="color:${color}">${classification}</strong>`;
+    out.innerHTML = `
+      Matrix \\(A = \\begin{bmatrix} ${a} & ${b} \\\\ ${b} & ${c} \\end{bmatrix}\\)<br><br>
+      Eigenvalues: \\(\\lambda_1 = ${l1.toFixed(2)}\\), \\(\\lambda_2 = ${l2.toFixed(2)}\\)<br><br>
+      Classification: <strong style="color:${color}">${classification}</strong>
+    `;
     if(window.MathJax) MathJax.typesetPromise([out]);
   }
 </script>
+
 </body>
 </html>
+
+```
