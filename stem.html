@@ -62,14 +62,19 @@
     .card { position: relative; }
     .card[data-done="true"] { opacity: .45; }
     .card[data-done="true"]:hover { opacity: .7; }
-    .card[data-done="true"] .card-check { background: var(--subj-color,var(--calc)); border-color: var(--subj-color,var(--calc)); color: #fff; }
     .card-check {
-      position: absolute; top: 10px; right: 10px; width: 22px; height: 22px;
+      position: absolute; top: 10px; right: 10px; width: 20px; height: 20px;
       border-radius: 50%; background: transparent; border: 1.5px solid var(--border);
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: .7rem; color: var(--text3); transition: .15s; flex-shrink: 0;
+      font-size: 0; padding: 0; color: transparent; transition: .15s; flex-shrink: 0;
     }
-    .card-check:hover { border-color: var(--subj-color,var(--calc)); color: var(--subj-color,var(--calc)); }
+    .card-check:hover { border-color: var(--subj-color,var(--calc)); background: var(--bg3); }
+    .card[data-done="true"] .card-check {
+      background: var(--subj-color,var(--calc)); border-color: var(--subj-color,var(--calc));
+    }
+    .card[data-done="true"] .card-check::after {
+      content: '✓'; font-size: .65rem; color: #fff; line-height: 1;
+    }
 
     /* ── SR rating + notes popup ── */
     .sr-popup {
@@ -227,6 +232,19 @@
         <button class="fpill fpill-due" data-filter="due">⭐ Due for Review</button>
       </div>
 
+      <div class="subsection-wrap" data-section="review">
+        <div class="subsection-label">Review Notes</div>
+        <div class="card-grid">
+          <a href="C++/code.html" class="card acc-cpp" data-id="cpp-code" data-nocheck="true">Review Code <span class="card-sub">All code</span></a>
+          <a href="C++/Week2_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w2" data-nocheck="true">Week 2 <span class="card-sub">Data types</span></a>
+          <a href="C++/Week3_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w3" data-nocheck="true">Week 3 <span class="card-sub">Control flow</span></a>
+          <a href="C++/Week4_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w4" data-nocheck="true">Week 4 <span class="card-sub">Operators</span></a>
+          <a href="C++/Week5_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w5" data-nocheck="true">Week 5 <span class="card-sub">Classes &amp; objects</span></a>
+          <a href="C++/Week6_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w6" data-nocheck="true">Week 6 <span class="card-sub">Lifetimes</span></a>
+          <a href="C++/Week7_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w7" data-nocheck="true">Week 7 <span class="card-sub">Inheritance</span></a>
+        </div>
+      </div>
+
       <div class="subsection-wrap" data-section="daily">
         <div class="subsection-label">Daily Practice</div>
         <div class="card-grid">
@@ -245,19 +263,6 @@
           <a href="placeholder.html" class="card acc-cpp" data-id="cpp-shape">Inheritance — Shape→Circle <span class="card-sub">Jun 6 Sat · P3</span></a>
           <a href="placeholder.html" class="card acc-cpp" data-id="cpp-oj35">OJ Platform — Prob #3–5 <span class="card-sub">Jun 6 Sat · P4</span></a>
           <a href="placeholder.html" class="card acc-cpp" data-id="cpp-finalrev">Light Final Review <span class="card-sub">Jun 8 Mon · P1 · no new material</span></a>
-        </div>
-      </div>
-
-      <div class="subsection-wrap" data-section="review">
-        <div class="subsection-label">Review Notes</div>
-        <div class="card-grid">
-          <a href="C++/code.html" class="card acc-cpp" data-id="cpp-code">Review Code <span class="card-sub">All code</span></a>
-          <a href="C++/Week2_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w2">Week 2 <span class="card-sub">Data types</span></a>
-          <a href="C++/Week3_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w3">Week 3 <span class="card-sub">Control flow</span></a>
-          <a href="C++/Week4_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w4">Week 4 <span class="card-sub">Operators</span></a>
-          <a href="C++/Week5_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w5">Week 5 <span class="card-sub">Classes &amp; objects</span></a>
-          <a href="C++/Week6_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w6">Week 6 <span class="card-sub">Lifetimes</span></a>
-          <a href="C++/Week7_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w7">Week 7 <span class="card-sub">Inheritance</span></a>
         </div>
       </div>
 
@@ -290,6 +295,14 @@
         <button class="fpill" data-filter="review">Review Notes</button>
         <button class="fpill" data-filter="exams">Exams &amp; Mocks</button>
         <button class="fpill fpill-due" data-filter="due">⭐ Due for Review</button>
+      </div>
+
+      <div class="subsection-wrap" data-section="review">
+        <div class="subsection-label">Review Notes</div>
+        <div class="card-grid">
+          <a href="Calc/theory.html" class="card acc-calc card-wide" data-id="calc-theory" data-nocheck="true">Theory Reference <span class="card-badge badge-new">NEW</span><span class="card-sub">Ch. 12–18 · definitions, theorems, proof intuitions</span></a>
+          <a href="Calc/computational.html" class="card acc-calc card-wide" data-id="calc-compute" data-nocheck="true">Computational Reference <span class="card-badge badge-new">NEW</span><span class="card-sub">Ch. 12–18 · step-by-step method recipes</span></a>
+        </div>
       </div>
 
       <div class="subsection-wrap" data-section="daily">
@@ -328,14 +341,6 @@
         </div>
       </div>
 
-      <div class="subsection-wrap" data-section="review">
-        <div class="subsection-label">Review Notes</div>
-        <div class="card-grid">
-          <a href="Calc/theory.html" class="card acc-calc card-wide" data-id="calc-theory">Theory Reference <span class="card-badge badge-new">NEW</span><span class="card-sub">Ch. 12–18 · definitions, theorems, proof intuitions</span></a>
-          <a href="Calc/computational.html" class="card acc-calc card-wide" data-id="calc-compute">Computational Reference <span class="card-badge badge-new">NEW</span><span class="card-sub">Ch. 12–18 · step-by-step method recipes</span></a>
-        </div>
-      </div>
-
       <div class="subsection-wrap" data-section="exams">
         <div class="subsection-label">Exams &amp; Mocks</div>
         <div class="card-grid">
@@ -364,6 +369,14 @@
         <button class="fpill" data-filter="review">Review Notes</button>
         <button class="fpill" data-filter="exams">Exams &amp; Mocks</button>
         <button class="fpill fpill-due" data-filter="due">⭐ Due for Review</button>
+      </div>
+
+      <div class="subsection-wrap" data-section="review">
+        <div class="subsection-label">Review Notes</div>
+        <div class="card-grid">
+          <a href="LA/theory.html" class="card acc-la card-wide" data-id="la-theory" data-nocheck="true"><span class="card-badge badge-new">NEW</span> Theory Summary · Ch. 3–8 <span class="card-sub">Definitions, theorems, proof sketches</span></a>
+          <a href="LA/computation.html" class="card acc-la card-wide" data-id="la-compute" data-nocheck="true"><span class="card-badge badge-new">NEW</span> Computational Summary · Ch. 3–8 <span class="card-sub">Step-by-step recipes incl. QR procedure</span></a>
+        </div>
       </div>
 
       <div class="subsection-wrap" data-section="daily">
@@ -408,14 +421,6 @@
           <a href="placeholder.html" class="card acc-la" data-id="la-svd"><span class="card-badge badge-new">NEW</span> Singular Value Decomposition <span class="card-sub">Jun 18 Thu · P4 · A=UΣV<sup>T</sup></span></a>
           <a href="placeholder.html" class="card acc-la" data-id="la-quadforms"><span class="card-badge badge-new">NEW</span> Quadratic Surfaces &amp; Definiteness <span class="card-sub">Jun 19 Fri · P6</span></a>
           <a href="placeholder.html" class="card acc-la" data-id="la-markov"><span class="card-badge badge-new">NEW</span> Powers, Markov Chains &amp; Linear ODEs <span class="card-sub">Jun 17 Wed · P5</span></a>
-        </div>
-      </div>
-
-      <div class="subsection-wrap" data-section="review">
-        <div class="subsection-label">Review Notes</div>
-        <div class="card-grid">
-          <a href="LA/theory.html" class="card acc-la card-wide" data-id="la-theory"><span class="card-badge badge-new">NEW</span> Theory Summary · Ch. 3–8 <span class="card-sub">Definitions, theorems, proof sketches</span></a>
-          <a href="LA/computation.html" class="card acc-la card-wide" data-id="la-compute"><span class="card-badge badge-new">NEW</span> Computational Summary · Ch. 3–8 <span class="card-sub">Step-by-step recipes incl. QR procedure</span></a>
         </div>
       </div>
 
@@ -808,10 +813,11 @@
   ═══════════════════════════════════════ */
   function injectChecks() {
     document.querySelectorAll('.card[data-id]').forEach(card => {
+      if (card.dataset.nocheck) return;
       if (card.querySelector('.card-check')) return;
 
       const btn = document.createElement('button');
-      btn.className='card-check'; btn.title='Mark as done'; btn.textContent='✓';
+      btn.className='card-check'; btn.title='Mark as done';
       btn.setAttribute('aria-label','Mark session as done');
 
       const popup = document.createElement('div');
@@ -887,7 +893,7 @@
     const done  = getDone();
     const panel = document.querySelector(`.subj-panel[data-subj="${subj}"]`);
     if (!panel) return;
-    const all   = panel.querySelectorAll('[data-id]');
+    const all   = panel.querySelectorAll('[data-id]:not([data-nocheck])');
     const total = all.length;
     const count = [...all].filter(el=>done.has(el.dataset.id)).length;
     const pct   = total?(count/total*100):0;
