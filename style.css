@@ -484,3 +484,46 @@ details.flash[open] .flash-hint::after { transform: rotate(180deg); }
 
 /* Give cards room so the long titles don't run under the check circle */
 .card { padding-right: 42px; }
+
+/* ─────────────────────────────────────────
+   PAGE TRANSITIONS — cross-document View Transitions
+   Pure CSS, site-wide (every page links this stylesheet).
+   Chromium + Safari 18.2+ cross-fade between pages;
+   other browsers simply navigate normally (graceful fallback).
+───────────────────────────────────────── */
+
+/* Opt the whole site into multi-page view transitions */
+@view-transition {
+  navigation: auto;
+}
+
+/* Root transition: old page fades out & lifts slightly,
+   new page fades up into place — matches the fadeUp feel. */
+::view-transition-old(root) {
+  animation: vt-out 0.22s ease both;
+}
+::view-transition-new(root) {
+  animation: vt-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vt-out {
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Keep the top bar and progress bar anchored across navigations
+   (they don't fade with the body — the chrome stays solid while
+   the content swaps). Remove these two lines if you'd rather the
+   whole page cross-fade as one piece. */
+.topbar       { view-transition-name: studyhub-topbar; }
+.progress-wrap{ view-transition-name: studyhub-progress; }
+
+/* Accessibility: honour reduced-motion — instant, no slide. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
