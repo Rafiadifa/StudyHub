@@ -58,6 +58,10 @@
     .blk-calc { --subj-color: var(--calc); }
     .blk-la   { --subj-color: var(--la); }
 
+    /* ── Unavailable (placeholder) cards ── */
+    .card-soon { opacity: .4; pointer-events: none; cursor: default; }
+    .card-soon .card-sub::before { content: 'Coming soon · '; font-style: italic; }
+
     /* ── Cards ── */
     .card { position: relative; }
     .card[data-done="true"] { opacity: .45; }
@@ -224,16 +228,15 @@
         <div class="panel-exam"><strong>Final exam</strong>Jun 10, 2026</div>
       </div>
 
+
+      <div class="subsection-wrap" data-section="review" data-pinned="true">
+        <div class="subsection-label">Review Notes</div>
       <div class="filter-bar">
         <button class="fpill active" data-filter="all">All</button>
         <button class="fpill" data-filter="daily">Daily Practice</button>
-        <button class="fpill" data-filter="review">Review Notes</button>
         <button class="fpill" data-filter="exams">Exams &amp; Mocks</button>
         <button class="fpill fpill-due" data-filter="due">⭐ Due for Review</button>
       </div>
-
-      <div class="subsection-wrap" data-section="review">
-        <div class="subsection-label">Review Notes</div>
         <div class="card-grid">
           <a href="C++/code.html" class="card acc-cpp" data-id="cpp-code" data-nocheck="true">Review Code <span class="card-sub">All code</span></a>
           <a href="C++/Week2_Midterm_Review_EN.html" class="card acc-cpp" data-id="cpp-w2" data-nocheck="true">Week 2 <span class="card-sub">Data types</span></a>
@@ -289,16 +292,15 @@
         <div class="panel-exam"><strong>Final exam</strong>Jun 23, 2026</div>
       </div>
 
+
+      <div class="subsection-wrap" data-section="review" data-pinned="true">
+        <div class="subsection-label">Review Notes</div>
       <div class="filter-bar">
         <button class="fpill active" data-filter="all">All</button>
         <button class="fpill" data-filter="daily">Daily Practice</button>
-        <button class="fpill" data-filter="review">Review Notes</button>
         <button class="fpill" data-filter="exams">Exams &amp; Mocks</button>
         <button class="fpill fpill-due" data-filter="due">⭐ Due for Review</button>
       </div>
-
-      <div class="subsection-wrap" data-section="review">
-        <div class="subsection-label">Review Notes</div>
         <div class="card-grid">
           <a href="Calc/theory.html" class="card acc-calc card-wide" data-id="calc-theory" data-nocheck="true">Theory Reference <span class="card-badge badge-new">NEW</span><span class="card-sub">Ch. 12–18 · definitions, theorems, proof intuitions</span></a>
           <a href="Calc/computational.html" class="card acc-calc card-wide" data-id="calc-compute" data-nocheck="true">Computational Reference <span class="card-badge badge-new">NEW</span><span class="card-sub">Ch. 12–18 · step-by-step method recipes</span></a>
@@ -363,16 +365,15 @@
         <div class="panel-exam"><strong>Final exam</strong>Jun 25, 2026</div>
       </div>
 
+
+      <div class="subsection-wrap" data-section="review" data-pinned="true">
+        <div class="subsection-label">Review Notes</div>
       <div class="filter-bar">
         <button class="fpill active" data-filter="all">All</button>
         <button class="fpill" data-filter="daily">Daily Practice</button>
-        <button class="fpill" data-filter="review">Review Notes</button>
         <button class="fpill" data-filter="exams">Exams &amp; Mocks</button>
         <button class="fpill fpill-due" data-filter="due">⭐ Due for Review</button>
       </div>
-
-      <div class="subsection-wrap" data-section="review">
-        <div class="subsection-label">Review Notes</div>
         <div class="card-grid">
           <a href="LA/theory.html" class="card acc-la card-wide" data-id="la-theory" data-nocheck="true"><span class="card-badge badge-new">NEW</span> Theory Summary · Ch. 3–8 <span class="card-sub">Definitions, theorems, proof sketches</span></a>
           <a href="LA/computation.html" class="card acc-la card-wide" data-id="la-compute" data-nocheck="true"><span class="card-badge badge-new">NEW</span> Computational Summary · Ch. 3–8 <span class="card-sub">Step-by-step recipes incl. QR procedure</span></a>
@@ -746,6 +747,9 @@
   function applyFilter(panel, filter) {
     const sr = getSR(); const now = Date.now();
     panel.querySelectorAll('.subsection-wrap').forEach(wrap => {
+      // Pinned review section is always visible — never touched by filter
+      if (wrap.dataset.pinned) return;
+
       if (filter==='all') {
         wrap.classList.remove('fhide');
         wrap.querySelectorAll('.card').forEach(c=>c.classList.remove('fhide'));
@@ -754,15 +758,14 @@
       if (filter==='due') {
         wrap.classList.remove('fhide');
         let any=false;
-        wrap.querySelectorAll('.card[data-id]').forEach(c => {
+        wrap.querySelectorAll('.card[data-id]:not([data-nocheck])').forEach(c => {
           const r=sr[c.dataset.id]; const due=r&&r.due<=now;
           c.classList.toggle('fhide',!due); if(due)any=true;
         });
         if(!any) wrap.classList.add('fhide');
         return;
       }
-      const match = wrap.dataset.section === filter.replace('exams','exams'); // all section names match filter names
-      const sectionMap = {daily:'daily',review:'review',exams:'exams'};
+      const sectionMap = {daily:'daily',exams:'exams'};
       const matches = sectionMap[filter]===wrap.dataset.section;
       wrap.classList.toggle('fhide',!matches);
       if(matches) wrap.querySelectorAll('.card').forEach(c=>c.classList.remove('fhide'));
@@ -986,6 +989,12 @@
   /* ═══════════════════════════════════════
      INIT
   ═══════════════════════════════════════ */
+  // Mark placeholder cards as unavailable
+  document.querySelectorAll('a.card[href="placeholder.html"]').forEach(c => {
+    c.classList.add('card-soon');
+    c.removeAttribute('href');
+  });
+
   initTodayBanner();
   injectChecks();
   applyDoneStyles();
