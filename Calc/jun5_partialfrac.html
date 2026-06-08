@@ -6,6 +6,7 @@
   <title>Calc A2 · Partial Fractions + Improper · 5 Jun</title>
   <link rel="stylesheet" href="../style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>.conn-problem{background:color-mix(in oklab,var(--accent) 4%,transparent);border-radius:14px;padding:4px 20px;margin-bottom:8px;}.conn-chain{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-top:8px;}@supports not (background:color-mix(in oklab,red 50%,blue)){.conn-problem{background:var(--bg2);}}</style>
 </head>
 <body class="subject-calc">
 
@@ -44,6 +45,7 @@
       </div>
 
       <!-- ══ Problem 1 ══ -->
+      <div class="problem conn-problem"><div class="problem-header"><span class="problem-num">★ Connected Problem</span><span class="problem-topic">Decompose, integrate, take the limit</span><span class="problem-pts">exam-style</span></div><div class="problem-body"><div class="context-box">Consider \(\displaystyle I=\int_1^{\infty}\frac{1}{x^2+x}\,dx\).<div class="conn-chain">chains: partial fractions · antiderivative · improper limit · convergence</div></div><ol class="parts"><li><span class="part-label">(a)</span><div class="part-content"><div class="part-question">Decompose the integrand.</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\dfrac{1}{x(x+1)}=\dfrac1x-\dfrac1{x+1}\). <div class="key-result">as shown.</div></div></div></div></div></li><li><span class="part-label">(b)</span><div class="part-content"><div class="part-question">Find the antiderivative.</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\ln|x|-\ln|x+1|=\ln\left|\dfrac{x}{x+1}\right|\). <div class="key-result">as shown.</div></div></div></div></div></li><li><span class="part-label">(c)</span><div class="part-content"><div class="part-question">Evaluate from \(1\) to \(t\).</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\ln\dfrac{t}{t+1}-\ln\dfrac12\). <div class="key-result">as shown.</div></div></div></div></div></li><li><span class="part-label">(d)</span><div class="part-content"><div class="part-question">Take \(t\to\infty\): does it converge?</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\dfrac{t}{t+1}\to1\Rightarrow\ln\to0\); limit \(=0-\ln\tfrac12=\ln2\). <div class="key-result">Converges to \(\ln2\).</div></div></div></div></div></li></ol></div></div>
       <div class="problem">
         <div class="problem-header">
           <span class="problem-num">Problem 1</span>

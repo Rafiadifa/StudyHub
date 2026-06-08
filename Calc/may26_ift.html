@@ -6,6 +6,7 @@
   <title>Calc A2 · Inverse Function Theorem · 26 May</title>
   <link rel="stylesheet" href="../style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>.conn-problem{background:color-mix(in oklab,var(--accent) 4%,transparent);border-radius:14px;padding:4px 20px;margin-bottom:8px;}.conn-chain{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-top:8px;}@supports not (background:color-mix(in oklab,red 50%,blue)){.conn-problem{background:var(--bg2);}}</style>
 </head>
 <body class="subject-calc">
 
@@ -44,6 +45,7 @@
       </div>
 
       <!-- ══ Problem 1 ══ -->
+      <div class="problem conn-problem"><div class="problem-header"><span class="problem-num">★ Connected Problem</span><span class="problem-topic">The complex-squaring map</span><span class="problem-pts">exam-style</span></div><div class="problem-body"><div class="context-box">Let \(F(x,y)=(x^2-y^2,\ 2xy)\).<div class="conn-chain">chains: Jacobian · determinant · invertibility · derivative of the inverse</div></div><ol class="parts"><li><span class="part-label">(a)</span><div class="part-content"><div class="part-question">Compute \([DF]\).</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\([DF]=\begin{pmatrix}2x&-2y\\2y&2x\end{pmatrix}\). <div class="key-result">as shown.</div></div></div></div></div></li><li><span class="part-label">(b)</span><div class="part-content"><div class="part-question">Where is \(F\) locally invertible?</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\det[DF]=4x^2+4y^2=4(x^2+y^2)\), nonzero except at the origin. <div class="key-result">Invertible everywhere except \((0,0)\).</div></div></div></div></div></li><li><span class="part-label">(c)</span><div class="part-content"><div class="part-question">At \(P=(1,1)\), give \([DF^{-1}]\) at the image point.</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\([DF(1,1)]=\begin{pmatrix}2&-2\\2&2\end{pmatrix}\), \(\det=8\); \([DF^{-1}]=[DF]^{-1}=\tfrac18\begin{pmatrix}2&2\\-2&2\end{pmatrix}\). <div class="key-result">\(=\tfrac14\begin{pmatrix}1&1\\-1&1\end{pmatrix}\).</div></div></div></div></div></li><li><span class="part-label">(d)</span><div class="part-content"><div class="part-question">What is that image point \(F(1,1)\)?</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(F(1,1)=(1-1,\ 2)=(0,2)\). <div class="key-result">\((0,2)\).</div></div></div></div></div></li></ol></div></div>
       <div class="problem">
         <div class="problem-header">
           <span class="problem-num">Problem 1</span>

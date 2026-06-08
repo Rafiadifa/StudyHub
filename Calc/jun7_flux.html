@@ -6,6 +6,7 @@
   <title>Calc A2 · Flux &amp; Surface Integrals · 7 Jun</title>
   <link rel="stylesheet" href="../style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>.conn-problem{background:color-mix(in oklab,var(--accent) 4%,transparent);border-radius:14px;padding:4px 20px;margin-bottom:8px;}.conn-chain{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-top:8px;}@supports not (background:color-mix(in oklab,red 50%,blue)){.conn-problem{background:var(--bg2);}}</style>
 </head>
 <body class="subject-calc">
 
@@ -44,6 +45,7 @@
       </div>
 
       <!-- ══ Problem 1 ══ -->
+      <div class="problem conn-problem"><div class="problem-header"><span class="problem-num">★ Connected Problem</span><span class="problem-topic">Flux through a closed cylinder</span><span class="problem-pts">exam-style</span></div><div class="problem-body"><div class="context-box">Let \(\mathbf F=(x,\ y,\ 2z)\) and let \(S\) be the closed cylinder \(x^2+y^2\le1,\ 0\le z\le1\) (with both caps), outward normal.<div class="conn-chain">chains: divergence · Divergence Theorem · cap flux · deduce the rest</div></div><ol class="parts"><li><span class="part-label">(a)</span><div class="part-content"><div class="part-question">Compute \(\nabla\cdot\mathbf F\).</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(1+1+2=4\). <div class="key-result">\(\nabla\cdot\mathbf F=4\).</div></div></div></div></div></li><li><span class="part-label">(b)</span><div class="part-content"><div class="part-question">Total outward flux via the Divergence Theorem.</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\iiint_V 4\,dV=4\cdot(\pi\cdot1)=4\pi\). <div class="key-result">\(4\pi\).</div></div></div></div></div></li><li><span class="part-label">(c)</span><div class="part-content"><div class="part-question">Flux through the top cap \(z=1\) (\(\mathbf n=(0,0,1)\)).</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\mathbf F\cdot\mathbf n=2z=2\); \(\iint 2\,dA=2\pi\). <div class="key-result">\(2\pi\).</div></div></div></div></div></li><li><span class="part-label">(d)</span><div class="part-content"><div class="part-question">The bottom cap \(z=0\) gives \(0\) flux. Deduce the side flux.</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>Side \(=\) total \(-\) top \(-\) bottom \(=4\pi-2\pi-0=2\pi\). <div class="key-result">Side flux \(=2\pi\).</div></div></div></div></div></li></ol></div></div>
       <div class="problem">
         <div class="problem-header">
           <span class="problem-num">Problem 1</span>

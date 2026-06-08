@@ -6,6 +6,7 @@
   <title>Calc A2 · Work &amp; Line Integrals · 6 Jun</title>
   <link rel="stylesheet" href="../style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>.conn-problem{background:color-mix(in oklab,var(--accent) 4%,transparent);border-radius:14px;padding:4px 20px;margin-bottom:8px;}.conn-chain{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);margin-top:8px;}@supports not (background:color-mix(in oklab,red 50%,blue)){.conn-problem{background:var(--bg2);}}</style>
 </head>
 <body class="subject-calc">
 
@@ -44,6 +45,7 @@
       </div>
 
       <!-- ══ Problem 1 ══ -->
+      <div class="problem conn-problem"><div class="problem-header"><span class="problem-num">★ Connected Problem</span><span class="problem-topic">Is the field conservative?</span><span class="problem-pts">exam-style</span></div><div class="problem-body"><div class="context-box">Let \(\mathbf F=(2xy+y,\ x^2+x)\) and let \(\gamma\) go from \((0,0)\) to \((1,1)\).<div class="conn-chain">chains: curl test · potential function · Gradient Theorem · path-independence</div></div><ol class="parts"><li><span class="part-label">(a)</span><div class="part-content"><div class="part-question">Apply the curl test.</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(P_y=2x+1=Q_x=2x+1\) ✓ conservative (on all of \(\mathbb R^2\), simply connected). <div class="key-result">Conservative.</div></div></div></div></div></li><li><span class="part-label">(b)</span><div class="part-content"><div class="part-question">Find a potential \(\phi\).</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\int(2xy+y)\,dx=x^2y+xy+g(y)\); \(\partial_y=x^2+x+g'=x^2+x\Rightarrow g'=0\). <div class="key-result">\(\phi=x^2y+xy\).</div></div></div></div></div></li><li><span class="part-label">(c)</span><div class="part-content"><div class="part-question">Compute the work along \(\gamma\).</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>\(\phi(1,1)-\phi(0,0)=(1+1)-0=2\). <div class="key-result">Work \(=2\).</div></div></div></div></div></li><li><span class="part-label">(d)</span><div class="part-content"><div class="part-question">Would a different path from \((0,0)\) to \((1,1)\) change the answer?</div><div class="ans-toggle"><button class="ans-btn" onclick="toggleAns(this)">Show Answer</button><div class="answer"><div class="ans-part"><span class="ans-part-label">Solution</span>No — conservative on a simply-connected domain ⇒ path-independent. <div class="key-result">Same value \(2\).</div></div></div></div></div></li></ol></div></div>
       <div class="problem">
         <div class="problem-header">
           <span class="problem-num">Problem 1</span>
